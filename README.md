@@ -37,7 +37,7 @@ internal static void HandlePacket(Packet packet)
 
 ### Sending data
 ```cs
-// Example call to build and send data
+// Example method to build and send data
 public static void SendData(string packetHeader, params string[] packetData)
 {
     var packet = new Packet(packetHeader, packetData);
@@ -75,7 +75,7 @@ internal static void HandlePacket(System.Net.Sockets.TcpClient client, Packet pa
 
 ### Sending data
 ```cs
-// Example call to build and send data
+// Example method to build and send data
 public static void SendData(System.Net.Sockets.TcpClient client, string packetHeader, params string[] packetData)
 {
     var packet = new Packet(packetHeader, packetData);
