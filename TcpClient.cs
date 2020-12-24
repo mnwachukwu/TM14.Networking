@@ -48,8 +48,8 @@ namespace TM14.Networking
         public TcpClient(string serverIp, int port, ReadMessageMode readMessageMode = ReadMessageMode.Internally)
         {
             client = new System.Net.Sockets.TcpClient(serverIp, port);
-
             ReadMessageMode = readMessageMode;
+
             if (readMessageMode == ReadMessageMode.Internally)
             {
                 var t = new Thread(ReadMessages);
