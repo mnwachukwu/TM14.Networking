@@ -4,7 +4,7 @@ Wrapper classes around the `System.Net.Sockets.TcpClient` and `System.Net.Socket
 
 In order to make quick usage of the data transfer functionality, a `Packet` implementation has been included so that structured data contracts can be created between a client and server program.
 
-It is written in .Net Standard 2.0 so that it can be used in your .Net Framework, .Net Core, and .Net 5 applications.
+It is written against .Net Standard 2.0 so that it can be used in your .Net Framework, .Net Core, and .Net 5 applications.
 
 # Example Usage
 

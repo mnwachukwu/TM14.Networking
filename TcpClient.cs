@@ -35,17 +35,26 @@ namespace TM14.Networking
         /// </summary>
         public bool IsLoggedIn { get; }
 
+        private ReadMessageMode ReadMessageMode { get; set; }
+
         /// <summary>
         /// Intantiates a client and connects to the specified IP on the specified port.
         /// This method also starts a new thread which reads messages from the server.
         /// </summary>
         /// <param name="serverIp">The IP to connect to.</param>
         /// <param name="port">The port to connect over.</param>
-        public TcpClient(string serverIp, int port)
+        /// <param name="readMessageMode">Should this client read messages in its own thread (internally),
+        ///                               or will it be processed on some other thread (externally)?</param>
+        public TcpClient(string serverIp, int port, ReadMessageMode readMessageMode = ReadMessageMode.Internally)
         {
             client = new System.Net.Sockets.TcpClient(serverIp, port);
-            var t = new Thread(ReadMessages);
-            t.Start();
+
+            ReadMessageMode = readMessageMode;
+            if (readMessageMode == ReadMessageMode.Internally)
+            {
+                var t = new Thread(ReadMessages);
+                t.Start();
+            }
         }
 
         /// <summary>
@@ -63,18 +72,30 @@ namespace TM14.Networking
         /// Handles reading packets from the server, passing it to the HandleData method.
         /// </summary>
         /// <param name="obj"></param>
-        private void ReadMessages(object obj)
+        public void ReadMessages(object obj)
         {
             var stream = client.GetStream();
             var bytes = new byte[DataTransferProtocol.BufferSize];
 
             try
             {
-                int i;
-                while ((i = stream.Read(bytes, 0, bytes.Length)) != 0)
+                if (ReadMessageMode == ReadMessageMode.Internally)
                 {
-                    var data = Encoding.ASCII.GetString(bytes, 0, i);
-                    HandleData(data);
+                    int i;
+                    while ((i = stream.Read(bytes, 0, bytes.Length)) != 0)
+                    {
+                        var data = Encoding.ASCII.GetString(bytes, 0, i);
+                        HandleData(data);
+                    }
+                }
+                else
+                {
+                    if (stream.DataAvailable)
+                    {
+                        var i = stream.Read(bytes, 0, bytes.Length);
+                        var data = Encoding.ASCII.GetString(bytes, 0, i);
+                        HandleData(data);
+                    }
                 }
             }
             catch (Exception e)
