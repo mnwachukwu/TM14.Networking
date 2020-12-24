@@ -30,11 +30,6 @@ namespace TM14.Networking
         /// </summary>
         public bool IsConnected => client != null && client.Connected;
 
-        /// <summary>
-        /// Determines if the user has been authenticated, and is clear to handle non-authentication packets.
-        /// </summary>
-        public bool IsLoggedIn { get; }
-
         private ReadMessageMode ReadMessageMode { get; set; }
 
         /// <summary>
@@ -52,7 +47,7 @@ namespace TM14.Networking
 
             if (readMessageMode == ReadMessageMode.Internally)
             {
-                var t = new Thread(ReadMessages);
+                var t = new Thread(ReadMessagesInternally);
                 t.Start();
             }
         }
@@ -70,32 +65,58 @@ namespace TM14.Networking
 
         /// <summary>
         /// Handles reading packets from the server, passing it to the HandleData method.
+        /// <remarks> This method will block the calling thread and intended to be used by the
+        ///           TcpClient class. </remarks>
         /// </summary>
-        /// <param name="obj"></param>
-        public void ReadMessages(object obj)
+        private void ReadMessagesInternally()
         {
+            if (ReadMessageMode != ReadMessageMode.Internally)
+            {
+                return;
+            }
+
             var stream = client.GetStream();
             var bytes = new byte[DataTransferProtocol.BufferSize];
 
             try
             {
-                if (ReadMessageMode == ReadMessageMode.Internally)
+                int i;
+                while ((i = stream.Read(bytes, 0, bytes.Length)) != 0)
                 {
-                    int i;
-                    while ((i = stream.Read(bytes, 0, bytes.Length)) != 0)
-                    {
-                        var data = Encoding.ASCII.GetString(bytes, 0, i);
-                        HandleData(data);
-                    }
+                    var data = Encoding.ASCII.GetString(bytes, 0, i);
+                    HandleData(data);
                 }
-                else
+            }
+            catch (Exception e)
+            {
+                ConsoleMessage($"Exception: {e}");
+                // TODO: Display a message to the user here
+                client.Close();
+            }
+        }
+
+        /// <summary>
+        /// Handles reading packets from the server, passing it to the HandleData method.
+        /// <remarks> This method will not block the calling thread and is intended to be used outside
+        ///           of the TcpClient class inside a loop. </remarks>
+        /// </summary>
+        public void ReadMessages()
+        {
+            if (ReadMessageMode != ReadMessageMode.Externally)
+            {
+                return;
+            }
+
+            var stream = client.GetStream();
+            var bytes = new byte[DataTransferProtocol.BufferSize];
+
+            try
+            {
+                if (stream.DataAvailable)
                 {
-                    if (stream.DataAvailable)
-                    {
-                        var i = stream.Read(bytes, 0, bytes.Length);
-                        var data = Encoding.ASCII.GetString(bytes, 0, i);
-                        HandleData(data);
-                    }
+                    var i = stream.Read(bytes, 0, bytes.Length);
+                    var data = Encoding.ASCII.GetString(bytes, 0, i);
+                    HandleData(data);
                 }
             }
             catch (Exception e)
