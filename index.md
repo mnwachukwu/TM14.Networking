@@ -1,37 +1,88 @@
-## Welcome to GitHub Pages
+# TM14.Networking
 
-You can use the [editor on GitHub](https://github.com/mnwachukwu/TM14.Networking/edit/gh-pages/index.md) to maintain and preview the content for your website in Markdown files.
+Wrapper classes around the `System.Net.Sockets.TcpClient` and `System.Net.Sockets.TcpListener` classes to make rapid use of those classes to transfer data between applications.
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+In order to make quick usage of the data transfer functionality, a `Packet` implementation has been included so that structured data contracts can be created between a client and server program.
 
-### Markdown
+It is written in .Net Standard 2.0 so that it can be used in your .Net Framework, .Net Core, and .Net 5 applications.
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+# Example Usage
 
-```markdown
-Syntax highlighted code block
+## Client
+```cs
+// Initiate the TcpClient somewhere
+var TcpClient = new TcpClient(ServerIp, ServerPort);
+TcpClient.HasHandledPacket += TcpClient_HasHandledPacket;
 
-# Header 1
-## Header 2
-### Header 3
+//////////////////////
+/// Receiving data ///
+//////////////////////
 
-- Bulleted
-- List
+// Example TcpClient_HasHandledPacket Method
+private static void TcpClient_HasHandledPacket(object sender, HasHandledPacketEventArgs e)
+{
+    HandlePacket(e.Packet);
+}
 
-1. Numbered
-2. List
+// Example HandlePacket Method
+internal static void HandlePacket(Packet packet)
+{
+    switch (packet.Header.ToLower())
+    {
+        case "a data header here":
+            // Do something with the packet data
+            break;
+    }
+}
 
-**Bold** and _Italic_ and `Code` text
+////////////////////
+/// Sending data ///
+////////////////////
 
-[Link](url) and ![Image](src)
+// Example call to build and send data
+public static void SendData(string packetHeader, params string[] packetData)
+{
+    var packet = new Packet(packetHeader, packetData);
+    TcpClient.SendData(packet);
+}
 ```
 
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
+## Server
+```cs
+// Initiate the TcpServer somewhere
+var TcpServer = new TcpServer(ServerIp, ServerPort);
+TcpServer.HasHandledPacket += TcpServer_HasHandledPacket;
+TcpServer.StartListener();
 
-### Jekyll Themes
+//////////////////////
+/// Receiving data ///
+//////////////////////
 
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/mnwachukwu/TM14.Networking/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
+// Example TcpServer_HasHandledPacket Method
+private static void TcpServer_HasHandledPacket(object sender, HasHandledPacketEventArgs e)
+{
+    HandlePacket(e.Sender, e.Packet);
+}
 
-### Support or Contact
+// Example HandlePacket Method
+internal static void HandlePacket(System.Net.Sockets.TcpClient client, Packet packet)
+{
+    switch (packet.Header.ToLower())
+    {
+        case "a data header here":
+            // Do something with the packet data
+            break;
+    }
+}
 
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://github.com/contact) and we’ll help you sort it out.
+////////////////////
+/// Sending data ///
+////////////////////
+
+// Example call to build and send data
+public static void SendData(System.Net.Sockets.TcpClient client, string packetHeader, params string[] packetData)
+{
+    var packet = new Packet(packetHeader, packetData);
+    TcpServer.SendDataTo(client, packet);
+}
+```
