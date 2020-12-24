@@ -31,7 +31,7 @@ namespace TM14.Networking
         /// <summary>
         /// A list of connected clients.
         /// </summary>
-        public List<System.Net.Sockets.TcpClient> ConnectedClients { get; private set; }
+        public List<System.Net.Sockets.TcpClient> ConnectedClients { get; }
 
         /// <summary>
         /// Determines if the server is currently listening for connections.
@@ -64,7 +64,7 @@ namespace TM14.Networking
             {
                 var client = server.AcceptTcpClient();
                 ConnectedClients.Add(client);
-                ConsoleMessage("Client connected!"); // TODO: Add the client's IP address here
+                ConsoleMessage($"Client connected from {client.Client.RemoteEndPoint}.");
                 var t = new Thread(HandleClient);
                 t.Start(client);
             }
@@ -170,10 +170,7 @@ namespace TM14.Networking
         /// <param name="data">The packet of data to send.</param>
         public void SendDataToAll(Packet data)
         {
-            foreach (var client in ConnectedClients)
-            {
-                SendDataTo(client, data);
-            }
+            SendDataTo(ConnectedClients, data);
         }
 
         /// <summary>

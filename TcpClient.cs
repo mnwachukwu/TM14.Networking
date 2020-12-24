@@ -30,7 +30,11 @@ namespace TM14.Networking
         /// </summary>
         public bool IsConnected => client != null && client.Connected;
 
-        private ReadMessageMode ReadMessageMode { get; set; }
+        /// <summary>
+        /// Determines if the <see cref="TcpClient"/> will read messages in its own thread or if the client
+        /// will wait for a calling thread to read messages.
+        /// </summary>
+        private ReadMessageMode ReadMessageMode { get; }
 
         /// <summary>
         /// Intantiates a client and connects to the specified IP on the specified port.
@@ -66,7 +70,7 @@ namespace TM14.Networking
         /// <summary>
         /// Handles reading packets from the server, passing it to the HandleData method.
         /// <remarks> This method will block the calling thread and intended to be used by the
-        ///           TcpClient class. </remarks>
+        ///           <see cref="TcpClient"/> class. </remarks>
         /// </summary>
         private void ReadMessagesInternally()
         {
@@ -98,7 +102,7 @@ namespace TM14.Networking
         /// <summary>
         /// Handles reading packets from the server, passing it to the HandleData method.
         /// <remarks> This method will not block the calling thread and is intended to be used outside
-        ///           of the TcpClient class inside a loop. </remarks>
+        ///           of the <see cref="TcpClient"/> class inside a loop. </remarks>
         /// </summary>
         public void ReadMessages()
         {
