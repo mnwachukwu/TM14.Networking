@@ -1,0 +1,72 @@
+﻿using System.Collections.Generic;
+using System.Linq;
+using Newtonsoft.Json;
+
+namespace TM14.Networking
+{
+    /// <summary>
+    /// A representation of a data packet that has a unique identifier, a header, and data.
+    /// </summary>
+    public class Packet
+    {
+        /// <summary>
+        /// The unique identifier of the packet.
+        /// </summary>
+        public string Guid { get; }
+
+        /// <summary>
+        /// The header of the packet. This typically represents the kind of data this packet contains.
+        /// </summary>
+        public string Header { get; }
+
+        /// <summary>
+        /// The data within the packet.
+        /// </summary>
+        public List<string> Data { get; private set; }
+
+        /// <summary>
+        /// Constructs a packet with a header and no data.
+        /// </summary>
+        /// <param name="header"></param>
+        public Packet(string header)
+        {
+            Guid = System.Guid.NewGuid().ToString();
+            Header = header;
+            Data = new List<string>();
+        }
+
+        /// <summary>
+        /// Constructs a packet with a header and data.
+        /// </summary>
+        /// <param name="header">The packet header.</param>
+        /// <param name="data">The packet data.</param>
+        [JsonConstructor]
+        public Packet(string header, params string[] data)
+        {
+            Guid = System.Guid.NewGuid().ToString();
+            Header = header;
+            Data = data.ToList();
+        }
+
+        /// <summary>
+        /// Adds data to the packet.
+        /// </summary>
+        /// <param name="data"></param>
+        public void AddData(params string[] data)
+        {
+            if (data != null)
+            {
+                Data = Data.Concat(data).ToList();
+            }
+        }
+
+        /// <summary>
+        /// Returns a string representation of the packet.
+        /// </summary>
+        /// <returns></returns>
+        public new string ToString()
+        {
+            return JsonConvert.SerializeObject(this);
+        }
+    }
+}
