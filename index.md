@@ -7,7 +7,6 @@ It is written in .Net Standard 2.0 so that it can be used in your .Net Framework
 # Example Usage
 
 ## Client
----
 ```cs
 // Initiate the TcpClient somewhere
 var TcpClient = new TcpClient(ServerIp, ServerPort);
@@ -45,7 +44,6 @@ public static void SendData(string packetHeader, params string[] packetData)
 ```
 
 ## Server
----
 ```cs
 // Initiate the TcpServer somewhere
 var TcpServer = new TcpServer(ServerIp, ServerPort);
