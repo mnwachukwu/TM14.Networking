@@ -12,17 +12,17 @@ namespace TM14.Networking
         /// <summary>
         /// The unique identifier of the packet.
         /// </summary>
-        public string Guid { get; }
+        public string Guid { get; set; }
 
         /// <summary>
         /// The header of the packet. This typically represents the kind of data this packet contains.
         /// </summary>
-        public string Header { get; }
+        public string Header { get; set; }
 
         /// <summary>
         /// The data within the packet.
         /// </summary>
-        public List<string> Data { get; private set; }
+        public List<string> Data { get; set; }
 
         /// <summary>
         /// Constructs a packet with a header and no data.
