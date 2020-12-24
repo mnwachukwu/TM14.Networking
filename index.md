@@ -13,11 +13,10 @@ It is written in .Net Standard 2.0 so that it can be used in your .Net Framework
 // Initiate the TcpClient somewhere
 var TcpClient = new TcpClient(ServerIp, ServerPort);
 TcpClient.HasHandledPacket += TcpClient_HasHandledPacket;
+```
 
-//////////////////////
-/// Receiving data ///
-//////////////////////
-
+### Receiving data
+```cs
 // Example TcpClient_HasHandledPacket Method
 private static void TcpClient_HasHandledPacket(object sender, HasHandledPacketEventArgs e)
 {
@@ -34,11 +33,10 @@ internal static void HandlePacket(Packet packet)
             break;
     }
 }
+```
 
-////////////////////
-/// Sending data ///
-////////////////////
-
+### Sending data
+```cs
 // Example call to build and send data
 public static void SendData(string packetHeader, params string[] packetData)
 {
@@ -53,11 +51,10 @@ public static void SendData(string packetHeader, params string[] packetData)
 var TcpServer = new TcpServer(ServerIp, ServerPort);
 TcpServer.HasHandledPacket += TcpServer_HasHandledPacket;
 TcpServer.StartListener();
+```
 
-//////////////////////
-/// Receiving data ///
-//////////////////////
-
+### Receiving data
+```cs
 // Example TcpServer_HasHandledPacket Method
 private static void TcpServer_HasHandledPacket(object sender, HasHandledPacketEventArgs e)
 {
@@ -74,11 +71,10 @@ internal static void HandlePacket(System.Net.Sockets.TcpClient client, Packet pa
             break;
     }
 }
+```
 
-////////////////////
-/// Sending data ///
-////////////////////
-
+### Sending data
+```cs
 // Example call to build and send data
 public static void SendData(System.Net.Sockets.TcpClient client, string packetHeader, params string[] packetData)
 {
