@@ -1,5 +1,3 @@
-# TM14.Networking
-
 Wrapper classes around the `System.Net.Sockets.TcpClient` and `System.Net.Sockets.TcpListener` classes to make rapid use of those classes to transfer data between applications.
 
 In order to make quick usage of the data transfer functionality, a `Packet` implementation has been included so that structured data contracts can be created between a client and server program.
@@ -9,6 +7,7 @@ It is written in .Net Standard 2.0 so that it can be used in your .Net Framework
 # Example Usage
 
 ## Client
+---
 ```cs
 // Initiate the TcpClient somewhere
 var TcpClient = new TcpClient(ServerIp, ServerPort);
@@ -46,6 +45,7 @@ public static void SendData(string packetHeader, params string[] packetData)
 ```
 
 ## Server
+---
 ```cs
 // Initiate the TcpServer somewhere
 var TcpServer = new TcpServer(ServerIp, ServerPort);
