@@ -73,7 +73,7 @@ namespace TM14.Networking
         /// <summary>
         /// Handles reading data from a client, passing it to the HandleData method.
         /// </summary>
-        /// <param name="obj"></param>
+        /// <param name="obj">The client whose data should be read.</param>
         private void ReadData(object obj)
         {
             var client = (System.Net.Sockets.TcpClient)obj;
