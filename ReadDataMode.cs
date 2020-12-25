@@ -1,6 +1,6 @@
 ﻿namespace TM14.Networking
 {
-    public enum ReadMessageMode
+    public enum ReadDataMode
     {
         Internally,
         Externally

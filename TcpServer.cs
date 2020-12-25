@@ -65,7 +65,7 @@ namespace TM14.Networking
                 var client = server.AcceptTcpClient();
                 ConnectedClients.Add(client);
                 ConsoleMessage($"Client connected from {client.Client.RemoteEndPoint}.");
-                var t = new Thread(HandleClient);
+                var t = new Thread(ReadData);
                 t.Start(client);
             }
         }
@@ -74,7 +74,7 @@ namespace TM14.Networking
         /// Handles reading data from a client, passing it to the HandleData method.
         /// </summary>
         /// <param name="obj"></param>
-        private void HandleClient(object obj)
+        private void ReadData(object obj)
         {
             var client = (System.Net.Sockets.TcpClient)obj;
             var stream = client.GetStream();

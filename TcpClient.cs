@@ -34,7 +34,7 @@ namespace TM14.Networking
         /// Determines if the <see cref="TcpClient"/> will read messages in its own thread or if the client
         /// will wait for a calling thread to read messages.
         /// </summary>
-        private ReadMessageMode ReadMessageMode { get; }
+        private ReadDataMode ReadDataMode { get; }
 
         /// <summary>
         /// Intantiates a client and connects to the specified IP on the specified port.
@@ -44,14 +44,14 @@ namespace TM14.Networking
         /// <param name="port">The port to connect over.</param>
         /// <param name="readMessageMode">Should this client read messages in its own thread (internally),
         ///                               or will it be processed on some other thread (externally)?</param>
-        public TcpClient(string serverIp, int port, ReadMessageMode readMessageMode = ReadMessageMode.Internally)
+        public TcpClient(string serverIp, int port, ReadDataMode readMessageMode = ReadDataMode.Internally)
         {
             client = new System.Net.Sockets.TcpClient(serverIp, port);
-            ReadMessageMode = readMessageMode;
+            ReadDataMode = readMessageMode;
 
-            if (readMessageMode == ReadMessageMode.Internally)
+            if (readMessageMode == ReadDataMode.Internally)
             {
-                var t = new Thread(ReadMessagesInternally);
+                var t = new Thread(ReadDataInternally);
                 t.Start();
             }
         }
@@ -72,9 +72,9 @@ namespace TM14.Networking
         /// <remarks> This method will block the calling thread and intended to be used by the
         ///           <see cref="TcpClient"/> class. </remarks>
         /// </summary>
-        private void ReadMessagesInternally()
+        private void ReadDataInternally()
         {
-            if (ReadMessageMode != ReadMessageMode.Internally)
+            if (ReadDataMode != ReadDataMode.Internally)
             {
                 return;
             }
@@ -104,9 +104,9 @@ namespace TM14.Networking
         /// <remarks> This method will not block the calling thread and is intended to be used outside
         ///           of the <see cref="TcpClient"/> class inside a loop. </remarks>
         /// </summary>
-        public void ReadMessages()
+        public void ReadData()
         {
-            if (ReadMessageMode != ReadMessageMode.Externally)
+            if (ReadDataMode != ReadDataMode.Externally)
             {
                 return;
             }
