@@ -52,6 +52,17 @@ namespace TM14.Networking
         }
 
         /// <summary>
+        /// Closes a connection to the client and removes them from the list of tracked clients.
+        /// </summary>
+        /// <param name="client"></param>
+        public void DisconnectClient(System.Net.Sockets.TcpClient client)
+        {
+            ConsoleMessage($"Client {client.Client.RemoteEndPoint} disconnected.");
+            client.Close();
+            ConnectedClients.Remove(client);
+        }
+
+        /// <summary>
         /// A method contianing an infinite loop which listens for new connections. Once a connection has been made,
         /// a new thread is spun up to handle data from that client and the method loops back to listening for a new
         /// connection.
@@ -87,12 +98,13 @@ namespace TM14.Networking
                     var data = Encoding.ASCII.GetString(bytes, 0, i);
                     HandleData(client, data);
                 }
+                DisconnectClient(client);
             }
             catch (Exception e)
             {
                 ConsoleMessage($"Exception: {e}");
                 // TODO: Send a message to the client here
-                client.Close();
+                DisconnectClient(client);
             }
         }
 
