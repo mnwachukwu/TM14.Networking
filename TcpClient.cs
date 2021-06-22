@@ -13,7 +13,7 @@ namespace TM14.Networking
         /// <summary>
         /// The underlying <see cref="System.Net.Sockets.TcpClient"/> this object utilizes.
         /// </summary>
-        private readonly System.Net.Sockets.TcpClient client;
+        private readonly System.Net.Sockets.TcpClient _client;
 
         /// <summary>
         /// An event which is invoked whenever the networking pipeline has a message.
@@ -28,7 +28,7 @@ namespace TM14.Networking
         /// <summary>
         /// Determines if the underlying <see cref="System.Net.Sockets.TcpClient"/> is connected.
         /// </summary>
-        public bool IsConnected => client != null && client.Connected;
+        public bool IsConnected => _client != null && _client.Connected;
 
         /// <summary>
         /// Determines if the <see cref="TcpClient"/> will read messages in its own thread or if the client
@@ -37,7 +37,7 @@ namespace TM14.Networking
         private ReadDataMode ReadDataMode { get; }
 
         /// <summary>
-        /// Intantiates a client and connects to the specified IP on the specified port.
+        /// Instantiates a client and connects to the specified IP on the specified port.
         /// This method also starts a new thread which reads messages from the server.
         /// </summary>
         /// <param name="serverIp">The IP to connect to.</param>
@@ -46,7 +46,7 @@ namespace TM14.Networking
         ///                               or will it be processed on some other thread (externally)?</param>
         public TcpClient(string serverIp, int port, ReadDataMode readMessageMode = ReadDataMode.Internally)
         {
-            client = new System.Net.Sockets.TcpClient(serverIp, port);
+            _client = new System.Net.Sockets.TcpClient(serverIp, port);
             ReadDataMode = readMessageMode;
 
             if (readMessageMode == ReadDataMode.Internally)
@@ -62,7 +62,7 @@ namespace TM14.Networking
         /// <param name="data">The packet of data to send.</param>
         public void SendData(Packet data)
         {
-            var stream = client.GetStream();
+            var stream = _client.GetStream();
             var dataBytes = Encoding.ASCII.GetBytes(data.ToString());
             stream.Write(dataBytes, 0, dataBytes.Length);
         }
@@ -79,7 +79,7 @@ namespace TM14.Networking
                 return;
             }
 
-            var stream = client.GetStream();
+            var stream = _client.GetStream();
             var bytes = new byte[DataTransferProtocol.BufferSize];
 
             try
@@ -95,7 +95,7 @@ namespace TM14.Networking
             {
                 ConsoleMessage($"Exception: {e}");
                 // TODO: Display a message to the user here
-                client.Close();
+                _client.Close();
             }
         }
 
@@ -111,7 +111,7 @@ namespace TM14.Networking
                 return;
             }
 
-            var stream = client.GetStream();
+            var stream = _client.GetStream();
             var bytes = new byte[DataTransferProtocol.BufferSize];
 
             try
@@ -127,7 +127,7 @@ namespace TM14.Networking
             {
                 ConsoleMessage($"Exception: {e}");
                 // TODO: Display a message to the user here
-                client.Close();
+                _client.Close();
             }
         }
 
@@ -150,7 +150,7 @@ namespace TM14.Networking
         /// </summary>
         public void Close()
         {
-            client.Close();
+            _client.Close();
         }
 
         /// <summary>
@@ -170,7 +170,7 @@ namespace TM14.Networking
         /// <summary>
         /// Invokes an event containing a string message.
         /// </summary>
-        /// <param name="e">The event arguements.</param>
+        /// <param name="e">The event arguments.</param>
         protected virtual void OnHasConsoleMessage(HasConsoleMessageEventArgs e)
         {
             var handler = HasConsoleMessage;
@@ -180,7 +180,7 @@ namespace TM14.Networking
         /// <summary>
         /// Invokes an event containing a <see cref="Packet"/>.
         /// </summary>
-        /// <param name="e">The event arguements.</param>
+        /// <param name="e">The event arguments.</param>
         protected virtual void OnHasHandledPacket(HasHandledPacketEventArgs e)
         {
             var handler = HasHandledPacket;

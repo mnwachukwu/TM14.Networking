@@ -16,7 +16,7 @@ namespace TM14.Networking
         /// <summary>
         /// The underlying <see cref="TcpListener"/> this object uses to communicate with clients.
         /// </summary>
-        private readonly TcpListener server;
+        private readonly TcpListener _server;
 
         /// <summary>
         /// An event which is invoked whenever the networking pipeline has a message.
@@ -48,7 +48,7 @@ namespace TM14.Networking
             var localAddr = IPAddress.Parse(ip);
             IsActive = true;
             ConnectedClients = new List<System.Net.Sockets.TcpClient>();
-            server = new TcpListener(localAddr, port);
+            _server = new TcpListener(localAddr, port);
         }
 
         /// <summary>
@@ -63,7 +63,7 @@ namespace TM14.Networking
         }
 
         /// <summary>
-        /// A method contianing an infinite loop which listens for new connections. Once a connection has been made,
+        /// A method containing an infinite loop which listens for new connections. Once a connection has been made,
         /// a new thread is spun up to handle data from that client and the method loops back to listening for a new
         /// connection.
         /// </summary>
@@ -73,7 +73,7 @@ namespace TM14.Networking
 
             while (IsActive)
             {
-                var client = server.AcceptTcpClient();
+                var client = _server.AcceptTcpClient();
                 ConnectedClients.Add(client);
                 ConsoleMessage($"Client connected from {client.Client.RemoteEndPoint}.");
                 var t = new Thread(ReadData);
@@ -129,7 +129,7 @@ namespace TM14.Networking
         /// </summary>
         public void StartListener()
         {
-            server.Start();
+            _server.Start();
 
             try
             {
@@ -140,7 +140,7 @@ namespace TM14.Networking
                 ConsoleMessage($"SocketException: {e}");
             }
 
-            server.Stop();
+            _server.Stop();
         }
 
         /// <summary>
@@ -168,7 +168,7 @@ namespace TM14.Networking
         /// </summary>
         /// <param name="clients">The list of clients to send data to.</param>
         /// <param name="data">The packet of data to send.</param>
-        public void SendDataTo(List<System.Net.Sockets.TcpClient> clients, Packet data)
+        public void SendDataTo(IEnumerable<System.Net.Sockets.TcpClient> clients, Packet data)
         {
             foreach (var client in clients)
             {
@@ -202,7 +202,7 @@ namespace TM14.Networking
         /// <summary>
         /// Invokes an event containing a string message.
         /// </summary>
-        /// <param name="e">The event arguements.</param>
+        /// <param name="e">The event arguments.</param>
         protected virtual void OnHasConsoleMessage(HasConsoleMessageEventArgs e)
         {
             var handler = HasConsoleMessage;
@@ -212,7 +212,7 @@ namespace TM14.Networking
         /// <summary>
         /// Invokes an event containing a <see cref="Packet"/>.
         /// </summary>
-        /// <param name="e">The event arguements.</param>
+        /// <param name="e">The event arguments.</param>
         protected virtual void OnHasHandledPacket(HasHandledPacketEventArgs e)
         {
             var handler = HasHandledPacket;

@@ -3,7 +3,7 @@
 namespace TM14.Networking
 {
     /// <summary>
-    /// Arguements to raise with a HasHandledPacket event.
+    /// Arguments to raise with a HasHandledPacket event.
     /// </summary>
     public class HasHandledPacketEventArgs : EventArgs
     {
