@@ -6,6 +6,8 @@ In order to make quick usage of the data transfer functionality, a `Packet` impl
 
 It is written against .Net Standard 2.0 so that it can be used in your .Net Framework, .Net Core, and .Net 5 applications.
 
+Copyright &copy; [Studio TM14](https://tm14.net/)
+
 # Example Usage
 
 ## Client
