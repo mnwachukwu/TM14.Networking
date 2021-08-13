@@ -2,6 +2,7 @@
 using System.Text;
 using System.Threading;
 using Newtonsoft.Json;
+using TM14.Networking.Events;
 
 namespace TM14.Networking
 {
@@ -13,7 +14,7 @@ namespace TM14.Networking
         /// <summary>
         /// The underlying <see cref="System.Net.Sockets.TcpClient"/> this object utilizes.
         /// </summary>
-        private readonly System.Net.Sockets.TcpClient _client;
+        private readonly System.Net.Sockets.TcpClient client;
 
         /// <summary>
         /// An event which is invoked whenever the networking pipeline has a message.
@@ -28,7 +29,7 @@ namespace TM14.Networking
         /// <summary>
         /// Determines if the underlying <see cref="System.Net.Sockets.TcpClient"/> is connected.
         /// </summary>
-        public bool IsConnected => _client != null && _client.Connected;
+        public bool IsConnected => client != null && client.Connected;
 
         /// <summary>
         /// Determines if the <see cref="TcpClient"/> will read messages in its own thread or if the client
@@ -46,7 +47,7 @@ namespace TM14.Networking
         ///                               or will it be processed on some other thread (externally)?</param>
         public TcpClient(string serverIp, int port, ReadDataMode readMessageMode = ReadDataMode.Internally)
         {
-            _client = new System.Net.Sockets.TcpClient(serverIp, port);
+            client = new System.Net.Sockets.TcpClient(serverIp, port);
             ReadDataMode = readMessageMode;
 
             if (readMessageMode == ReadDataMode.Internally)
@@ -62,9 +63,14 @@ namespace TM14.Networking
         /// <param name="data">The packet of data to send.</param>
         public void SendData(Packet data)
         {
-            var stream = _client.GetStream();
-            var dataBytes = Encoding.ASCII.GetBytes(data.ToString());
-            stream.Write(dataBytes, 0, dataBytes.Length);
+            if (IsConnected)
+            {
+                var stream = client.GetStream();
+                var keyBytes = Convert.FromBase64String(DataTransferProtocol.SecretKey);
+                var encryptedPacketString = AesHmacCrypto.SimpleEncrypt(data.ToString(), keyBytes, keyBytes);
+                var dataBytes = Encoding.Unicode.GetBytes(encryptedPacketString + DataTransferProtocol.PacketSeperator);
+                stream.Write(dataBytes, 0, dataBytes.Length);
+            }
         }
 
         /// <summary>
@@ -79,7 +85,7 @@ namespace TM14.Networking
                 return;
             }
 
-            var stream = _client.GetStream();
+            var stream = client.GetStream();
             var bytes = new byte[DataTransferProtocol.BufferSize];
 
             try
@@ -87,15 +93,22 @@ namespace TM14.Networking
                 int i;
                 while ((i = stream.Read(bytes, 0, bytes.Length)) != 0)
                 {
-                    var data = Encoding.ASCII.GetString(bytes, 0, i);
-                    HandleData(data);
+                    var data = Encoding.Unicode.GetString(bytes, 0, i);
+                    var dataParsed = data.Split(DataTransferProtocol.PacketSeperator);
+                    var keyBytes = Convert.FromBase64String(DataTransferProtocol.SecretKey);
+
+                    foreach (var d in dataParsed)
+                    {
+                        var decryptedPacketString = AesHmacCrypto.SimpleDecrypt(d, keyBytes, keyBytes);
+                        HandleData(decryptedPacketString);
+                    }
                 }
             }
             catch (Exception e)
             {
                 ConsoleMessage($"Exception: {e}");
                 // TODO: Display a message to the user here
-                _client.Close();
+                client.Close();
             }
         }
 
@@ -111,7 +124,7 @@ namespace TM14.Networking
                 return;
             }
 
-            var stream = _client.GetStream();
+            var stream = client.GetStream();
             var bytes = new byte[DataTransferProtocol.BufferSize];
 
             try
@@ -119,15 +132,26 @@ namespace TM14.Networking
                 if (stream.DataAvailable)
                 {
                     var i = stream.Read(bytes, 0, bytes.Length);
-                    var data = Encoding.ASCII.GetString(bytes, 0, i);
-                    HandleData(data);
+                    var data = Encoding.Unicode.GetString(bytes, 0, i);
+                    var dataParsed = data.Split(DataTransferProtocol.PacketSeperator);
+                    var keyBytes = Convert.FromBase64String(DataTransferProtocol.SecretKey);
+
+                    foreach (var d in dataParsed)
+                    {
+                        if (!string.IsNullOrEmpty(d))
+                        {
+                            var decryptedPacketString = AesHmacCrypto.SimpleDecrypt(d, keyBytes, keyBytes);
+                            HandleData(decryptedPacketString);
+                        }
+                    }
                 }
             }
             catch (Exception e)
             {
                 ConsoleMessage($"Exception: {e}");
                 // TODO: Display a message to the user here
-                _client.Close();
+                client.Close();
+                // TODO: When reading messages externally, this needs to stop the external reader process (like a timer)
             }
         }
 
@@ -150,7 +174,7 @@ namespace TM14.Networking
         /// </summary>
         public void Close()
         {
-            _client.Close();
+            client.Close();
         }
 
         /// <summary>

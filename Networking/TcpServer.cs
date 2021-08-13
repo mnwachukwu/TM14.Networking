@@ -5,6 +5,7 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using Newtonsoft.Json;
+using TM14.Networking.Events;
 
 namespace TM14.Networking
 {
@@ -16,7 +17,7 @@ namespace TM14.Networking
         /// <summary>
         /// The underlying <see cref="TcpListener"/> this object uses to communicate with clients.
         /// </summary>
-        private readonly TcpListener _server;
+        private readonly TcpListener server;
 
         /// <summary>
         /// An event which is invoked whenever the networking pipeline has a message.
@@ -27,6 +28,11 @@ namespace TM14.Networking
         /// An event which is invoked whenever the server sends data.
         /// </summary>
         public event EventHandler<HasHandledPacketEventArgs> HasHandledPacket;
+
+        /// <summary>
+        /// An event which is invoked whenever a client is disconnected.
+        /// </summary>
+        public event EventHandler<ClientDisconnectedEventArgs> ClientDisconnected;
 
         /// <summary>
         /// A list of connected clients.
@@ -48,7 +54,7 @@ namespace TM14.Networking
             var localAddr = IPAddress.Parse(ip);
             IsActive = true;
             ConnectedClients = new List<System.Net.Sockets.TcpClient>();
-            _server = new TcpListener(localAddr, port);
+            server = new TcpListener(localAddr, port);
         }
 
         /// <summary>
@@ -73,7 +79,7 @@ namespace TM14.Networking
 
             while (IsActive)
             {
-                var client = _server.AcceptTcpClient();
+                var client = server.AcceptTcpClient();
                 ConnectedClients.Add(client);
                 ConsoleMessage($"Client connected from {client.Client.RemoteEndPoint}.");
                 var t = new Thread(ReadData);
@@ -95,8 +101,18 @@ namespace TM14.Networking
                 int i;
                 while ((i = stream.Read(bytes, 0, bytes.Length)) != 0)
                 {
-                    var data = Encoding.ASCII.GetString(bytes, 0, i);
-                    HandleData(client, data);
+                    var data = Encoding.Unicode.GetString(bytes, 0, i);
+                    var dataParsed = data.Split(DataTransferProtocol.PacketSeperator);
+                    var keyBytes = Convert.FromBase64String(DataTransferProtocol.SecretKey);
+
+                    foreach (var d in dataParsed)
+                    {
+                        if (!string.IsNullOrEmpty(d))
+                        {
+                            var decryptedPacketString = AesHmacCrypto.SimpleDecrypt(d, keyBytes, keyBytes);
+                            HandleData(client, decryptedPacketString);
+                        }
+                    }
                 }
                 DisconnectClient(client);
             }
@@ -129,7 +145,7 @@ namespace TM14.Networking
         /// </summary>
         public void StartListener()
         {
-            _server.Start();
+            server.Start();
 
             try
             {
@@ -140,7 +156,7 @@ namespace TM14.Networking
                 ConsoleMessage($"SocketException: {e}");
             }
 
-            _server.Stop();
+            server.Stop();
         }
 
         /// <summary>
@@ -159,7 +175,9 @@ namespace TM14.Networking
         public void SendDataTo(System.Net.Sockets.TcpClient client, Packet data)
         {
             var stream = client.GetStream();
-            var dataBytes = Encoding.ASCII.GetBytes(data.ToString());
+            var keyBytes = Convert.FromBase64String(DataTransferProtocol.SecretKey);
+            var encryptedPacketString = AesHmacCrypto.SimpleEncrypt(data.ToString(), keyBytes, keyBytes);
+            var dataBytes = Encoding.Unicode.GetBytes(encryptedPacketString + DataTransferProtocol.PacketSeperator);
             stream.Write(dataBytes, 0, dataBytes.Length);
         }
 
@@ -216,6 +234,16 @@ namespace TM14.Networking
         protected virtual void OnHasHandledPacket(HasHandledPacketEventArgs e)
         {
             var handler = HasHandledPacket;
+            handler?.Invoke(this, e);
+        }
+
+        /// <summary>
+        /// Invokes an event containing a disconnecting <see cref="System.Net.Sockets.TcpClient"/>.
+        /// </summary>
+        /// <param name="e">The event arguements.</param>
+        protected virtual void OnClientDisconnected(ClientDisconnectedEventArgs e)
+        {
+            var handler = ClientDisconnected;
             handler?.Invoke(this, e);
         }
     }

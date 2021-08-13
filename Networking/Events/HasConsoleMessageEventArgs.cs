@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TM14.Networking
+namespace TM14.Networking.Events
 {
     /// <summary>
     /// Arguments to raise with a HasConsoleMessage event.
