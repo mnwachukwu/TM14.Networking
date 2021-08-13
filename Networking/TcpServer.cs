@@ -63,6 +63,9 @@ namespace TM14.Networking
         /// <param name="client"></param>
         public void DisconnectClient(System.Net.Sockets.TcpClient client)
         {
+            var eventArgs = new ClientDisconnectedEventArgs { Client = client };
+
+            OnClientDisconnected(eventArgs);
             ConsoleMessage($"Client {client.Client.RemoteEndPoint} disconnected.");
             client.Close();
             ConnectedClients.Remove(client);
