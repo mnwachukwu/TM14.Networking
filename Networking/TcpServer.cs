@@ -73,7 +73,7 @@ namespace TM14.Networking
         /// <summary>
         /// Adds an IP to the IP exclusion list.
         /// </summary>
-        /// <param name="ip"></param>
+        /// <param name="ip">IP to exclude.</param>
         public void Exclude(string ip)
         {
             ExcludedIPs.Add(ip);
@@ -82,7 +82,7 @@ namespace TM14.Networking
         /// <summary>
         /// Adds a range of IPs to the IP exclusion list.
         /// </summary>
-        /// <param name="ips"></param>
+        /// <param name="ips">List of IPs to exclude.</param>
         public void Exclude(IEnumerable<string> ips)
         {
             if (ExcludedIPs.Any())
@@ -98,7 +98,7 @@ namespace TM14.Networking
         /// <summary>
         /// Closes a connection to the client and removes them from the list of tracked clients.
         /// </summary>
-        /// <param name="client"></param>
+        /// <param name="client">Client to disconnect.</param>
         public void DisconnectClient(System.Net.Sockets.TcpClient client)
         {
             var eventArgs = new ClientDisconnectedEventArgs { Client = client };
