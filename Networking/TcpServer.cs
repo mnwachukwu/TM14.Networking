@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
@@ -40,9 +42,19 @@ namespace TM14.Networking
         public List<System.Net.Sockets.TcpClient> ConnectedClients { get; }
 
         /// <summary>
+        /// IPs to exclude when accepting connections.
+        /// </summary>
+        public List<string> ExcludedIPs { get; set; }
+
+        /// <summary>
         /// Determines if the server is currently listening for connections.
         /// </summary>
         private bool IsActive { get; set; }
+
+        /// <summary>
+        /// Contains a collection of <see cref="ReadData"/> threads, indexed by the client utilizing the thread.
+        /// </summary>
+        private Dictionary<System.Net.Sockets.TcpClient, Thread> ReadDataThread { get; }
 
         /// <summary>
         /// Instantiates a server listener which listens for connections on the specified port.
@@ -54,7 +66,33 @@ namespace TM14.Networking
             var localAddr = IPAddress.Parse(ip);
             IsActive = true;
             ConnectedClients = new List<System.Net.Sockets.TcpClient>();
+            ReadDataThread = new Dictionary<System.Net.Sockets.TcpClient, Thread>();
             server = new TcpListener(localAddr, port);
+        }
+
+        /// <summary>
+        /// Adds an IP to the IP exclusion list.
+        /// </summary>
+        /// <param name="ip"></param>
+        public void Exclude(string ip)
+        {
+            ExcludedIPs.Add(ip);
+        }
+
+        /// <summary>
+        /// Adds a range of IPs to the IP exclusion list.
+        /// </summary>
+        /// <param name="ips"></param>
+        public void Exclude(IEnumerable<string> ips)
+        {
+            if (ExcludedIPs.Any())
+            {
+                ExcludedIPs.AddRange(ips);
+            }
+            else
+            {
+                ExcludedIPs = ips.ToList();
+            }
         }
 
         /// <summary>
@@ -67,8 +105,14 @@ namespace TM14.Networking
 
             OnClientDisconnected(eventArgs);
             ConsoleMessage($"Client {client.Client.RemoteEndPoint} disconnected.");
-            client.Close();
+
+            if (client.Connected)
+            {
+                client.Close();
+            }
+
             ConnectedClients.Remove(client);
+            ReadDataThread[client].Abort();
         }
 
         /// <summary>
@@ -83,10 +127,15 @@ namespace TM14.Networking
             while (IsActive)
             {
                 var client = server.AcceptTcpClient();
-                ConnectedClients.Add(client);
-                ConsoleMessage($"Client connected from {client.Client.RemoteEndPoint}.");
-                var t = new Thread(ReadData);
-                t.Start(client);
+                var ipAddress = ((IPEndPoint)client.Client.RemoteEndPoint).Address.ToString();
+
+                if (!ExcludedIPs.Contains(ipAddress))
+                {
+                    ConnectedClients.Add(client);
+                    ConsoleMessage($"Client connected from {client.Client.RemoteEndPoint}.");
+                    ReadDataThread[client] = new Thread(ReadData);
+                    ReadDataThread[client].Start(client);
+                }
             }
         }
 
@@ -117,13 +166,20 @@ namespace TM14.Networking
                         }
                     }
                 }
+
                 DisconnectClient(client);
+            }
+            catch (ThreadAbortException)
+            {
+                ReadDataThread.Remove(client);
             }
             catch (Exception e)
             {
-                ConsoleMessage($"Exception: {e}");
-                // TODO: Send a message to the client here
                 DisconnectClient(client);
+                ConnectedClients.Remove(client);
+                ReadDataThread.Remove(client);
+                Debug.WriteLine($"Exception: {e}");
+                // TODO: Send a message to the client here
             }
         }
 
@@ -170,6 +226,11 @@ namespace TM14.Networking
             IsActive = false;
         }
 
+        private bool ClientConnected(System.Net.Sockets.TcpClient client)
+        {
+            return client != null && client.Connected;
+        }
+
         /// <summary>
         /// Sends data to a specified client.
         /// </summary>
@@ -177,11 +238,24 @@ namespace TM14.Networking
         /// <param name="data">The packet of data to send.</param>
         public void SendDataTo(System.Net.Sockets.TcpClient client, Packet data)
         {
-            var stream = client.GetStream();
-            var keyBytes = Convert.FromBase64String(DataTransferProtocol.SecretKey);
-            var encryptedPacketString = AesHmacCrypto.SimpleEncrypt(data.ToString(), keyBytes, keyBytes);
-            var dataBytes = Encoding.Unicode.GetBytes(encryptedPacketString + DataTransferProtocol.PacketSeperator);
-            stream.Write(dataBytes, 0, dataBytes.Length);
+            if (ClientConnected(client))
+            {
+                var stream = client.GetStream();
+                var keyBytes = Convert.FromBase64String(DataTransferProtocol.SecretKey);
+                var encryptedPacketString = AesHmacCrypto.SimpleEncrypt(data.ToString(), keyBytes, keyBytes);
+                var dataBytes = Encoding.Unicode.GetBytes(encryptedPacketString + DataTransferProtocol.PacketSeperator);
+
+                try
+                {
+                    stream.Write(dataBytes, 0, dataBytes.Length);
+                }
+                catch (Exception e)
+                {
+                    ConnectedClients.Remove(client);
+                    ReadDataThread.Remove(client);
+                    Debug.WriteLine($"Exception: {e}");
+                }
+            }
         }
 
         /// <summary>

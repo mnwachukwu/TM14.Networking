@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Text;
 using System.Threading;
 using Newtonsoft.Json;
@@ -69,7 +70,16 @@ namespace TM14.Networking
                 var keyBytes = Convert.FromBase64String(DataTransferProtocol.SecretKey);
                 var encryptedPacketString = AesHmacCrypto.SimpleEncrypt(data.ToString(), keyBytes, keyBytes);
                 var dataBytes = Encoding.Unicode.GetBytes(encryptedPacketString + DataTransferProtocol.PacketSeperator);
-                stream.Write(dataBytes, 0, dataBytes.Length);
+
+                try
+                {
+                    stream.Write(dataBytes, 0, dataBytes.Length);
+                }
+                catch (Exception e)
+                {
+                    client.Close();
+                    Debug.WriteLine(e);
+                }
             }
         }
 
@@ -81,6 +91,11 @@ namespace TM14.Networking
         private void ReadDataInternally()
         {
             if (ReadDataMode != ReadDataMode.Internally)
+            {
+                return;
+            }
+
+            if (!client.Connected)
             {
                 return;
             }
@@ -106,9 +121,9 @@ namespace TM14.Networking
             }
             catch (Exception e)
             {
-                ConsoleMessage($"Exception: {e}");
-                // TODO: Display a message to the user here
                 client.Close();
+                Debug.WriteLine($"Exception: {e}");
+                // TODO: Display a message to the user here
             }
         }
 
@@ -120,6 +135,11 @@ namespace TM14.Networking
         public void ReadData()
         {
             if (ReadDataMode != ReadDataMode.Externally)
+            {
+                return;
+            }
+
+            if (!client.Connected)
             {
                 return;
             }
@@ -148,10 +168,10 @@ namespace TM14.Networking
             }
             catch (Exception e)
             {
-                ConsoleMessage($"Exception: {e}");
-                // TODO: Display a message to the user here
                 client.Close();
-                // TODO: When reading messages externally, this needs to stop the external reader process (like a timer)
+                Debug.WriteLine($"Exception: {e}");
+                // TODO: Display a message to the user here
+                // TODO: When reading messages externally, this needs to stop the external reader process (such as a timer)
             }
         }
 
