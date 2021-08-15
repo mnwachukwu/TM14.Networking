@@ -6,7 +6,7 @@ namespace TM14.Networking
     {
         private string internalBuffer;
 
-        public Queue<string> Queue { get; set; }
+        internal Queue<string> Queue { get; set; }
 
         internal PacketBuffer()
         {
