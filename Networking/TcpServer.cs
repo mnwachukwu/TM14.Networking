@@ -57,6 +57,11 @@ namespace TM14.Networking
         private Dictionary<System.Net.Sockets.TcpClient, Thread> ReadDataThread { get; }
 
         /// <summary>
+        /// A buffer for reading packets in an orderly fashion.
+        /// </summary>
+        private PacketBuffer PacketBuffer { get; }
+
+        /// <summary>
         /// Instantiates a server listener which listens for connections on the specified port.
         /// </summary>
         /// <param name="ip">The IP address of the computer the server program is running on.</param>
@@ -112,7 +117,11 @@ namespace TM14.Networking
             }
 
             ConnectedClients.Remove(client);
-            ReadDataThread[client].Abort();
+
+            if (ReadDataThread.ContainsKey(client))
+            {
+                ReadDataThread[client].Abort();
+            }
         }
 
         /// <summary>
@@ -154,16 +163,14 @@ namespace TM14.Networking
                 while ((i = stream.Read(bytes, 0, bytes.Length)) != 0)
                 {
                     var data = Encoding.Unicode.GetString(bytes, 0, i);
-                    var dataParsed = data.Split(DataTransferProtocol.PacketSeperator);
                     var keyBytes = Convert.FromBase64String(DataTransferProtocol.SecretKey);
 
-                    foreach (var d in dataParsed)
+                    PacketBuffer.Enqueue(data);
+
+                    while (PacketBuffer.Queue.Any())
                     {
-                        if (!string.IsNullOrEmpty(d))
-                        {
-                            var decryptedPacketString = AesHmacCrypto.SimpleDecrypt(d, keyBytes, keyBytes);
-                            HandleData(client, decryptedPacketString);
-                        }
+                        var decryptedPacketString = AesHmacCrypto.SimpleDecrypt(PacketBuffer.Queue.Dequeue(), keyBytes, keyBytes);
+                        HandleData(client, decryptedPacketString);
                     }
                 }
 
@@ -243,7 +250,7 @@ namespace TM14.Networking
                 var stream = client.GetStream();
                 var keyBytes = Convert.FromBase64String(DataTransferProtocol.SecretKey);
                 var encryptedPacketString = AesHmacCrypto.SimpleEncrypt(data.ToString(), keyBytes, keyBytes);
-                var dataBytes = Encoding.Unicode.GetBytes(encryptedPacketString + DataTransferProtocol.PacketSeperator);
+                var dataBytes = Encoding.Unicode.GetBytes(encryptedPacketString + DataTransferProtocol.PacketDelimiter);
 
                 try
                 {

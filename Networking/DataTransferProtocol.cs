@@ -13,10 +13,10 @@
         /// <summary>
         /// A character used to keep individual packets seperated.
         /// </summary>
-        public const char PacketSeperator = '¤';
+        public const char PacketDelimiter = '¤';
 
         /// <summary>
-        /// A secret key to encrypt data sent with and to decrypt data receive by this library.
+        /// A secret key used to encrypt and decrypt data sent with and receive by this library.
         /// </summary>
         public static string SecretKey { get; set; }
     }

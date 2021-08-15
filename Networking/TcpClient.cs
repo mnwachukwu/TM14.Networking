@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Linq;
 using System.Text;
 using System.Threading;
 using Newtonsoft.Json;
@@ -39,6 +40,11 @@ namespace TM14.Networking
         private ReadDataMode ReadDataMode { get; }
 
         /// <summary>
+        /// A buffer for reading packets in an orderly fashion.
+        /// </summary>
+        private PacketBuffer PacketBuffer { get; }
+
+        /// <summary>
         /// Instantiates a client and connects to the specified IP on the specified port.
         /// This method also starts a new thread which reads messages from the server.
         /// </summary>
@@ -69,7 +75,7 @@ namespace TM14.Networking
                 var stream = client.GetStream();
                 var keyBytes = Convert.FromBase64String(DataTransferProtocol.SecretKey);
                 var encryptedPacketString = AesHmacCrypto.SimpleEncrypt(data.ToString(), keyBytes, keyBytes);
-                var dataBytes = Encoding.Unicode.GetBytes(encryptedPacketString + DataTransferProtocol.PacketSeperator);
+                var dataBytes = Encoding.Unicode.GetBytes(encryptedPacketString + DataTransferProtocol.PacketDelimiter);
 
                 try
                 {
@@ -109,12 +115,13 @@ namespace TM14.Networking
                 while ((i = stream.Read(bytes, 0, bytes.Length)) != 0)
                 {
                     var data = Encoding.Unicode.GetString(bytes, 0, i);
-                    var dataParsed = data.Split(DataTransferProtocol.PacketSeperator);
                     var keyBytes = Convert.FromBase64String(DataTransferProtocol.SecretKey);
 
-                    foreach (var d in dataParsed)
+                    PacketBuffer.Enqueue(data);
+
+                    while (PacketBuffer.Queue.Any())
                     {
-                        var decryptedPacketString = AesHmacCrypto.SimpleDecrypt(d, keyBytes, keyBytes);
+                        var decryptedPacketString = AesHmacCrypto.SimpleDecrypt(PacketBuffer.Queue.Dequeue(), keyBytes, keyBytes);
                         HandleData(decryptedPacketString);
                     }
                 }
@@ -153,16 +160,14 @@ namespace TM14.Networking
                 {
                     var i = stream.Read(bytes, 0, bytes.Length);
                     var data = Encoding.Unicode.GetString(bytes, 0, i);
-                    var dataParsed = data.Split(DataTransferProtocol.PacketSeperator);
                     var keyBytes = Convert.FromBase64String(DataTransferProtocol.SecretKey);
 
-                    foreach (var d in dataParsed)
+                    PacketBuffer.Enqueue(data);
+
+                    while (PacketBuffer.Queue.Any())
                     {
-                        if (!string.IsNullOrEmpty(d))
-                        {
-                            var decryptedPacketString = AesHmacCrypto.SimpleDecrypt(d, keyBytes, keyBytes);
-                            HandleData(decryptedPacketString);
-                        }
+                        var decryptedPacketString = AesHmacCrypto.SimpleDecrypt(PacketBuffer.Queue.Dequeue(), keyBytes, keyBytes);
+                        HandleData(decryptedPacketString);
                     }
                 }
             }
