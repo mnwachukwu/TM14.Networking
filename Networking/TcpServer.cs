@@ -69,10 +69,12 @@ namespace TM14.Networking
         public TcpServer(string ip, int port)
         {
             var localAddr = IPAddress.Parse(ip);
+
+            server = new TcpListener(localAddr, port);
             IsActive = true;
             ConnectedClients = new List<System.Net.Sockets.TcpClient>();
             ReadDataThread = new Dictionary<System.Net.Sockets.TcpClient, Thread>();
-            server = new TcpListener(localAddr, port);
+            PacketBuffer = new PacketBuffer();
         }
 
         /// <summary>

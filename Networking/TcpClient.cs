@@ -56,6 +56,7 @@ namespace TM14.Networking
         {
             client = new System.Net.Sockets.TcpClient(serverIp, port);
             ReadDataMode = readMessageMode;
+            PacketBuffer = new PacketBuffer();
 
             if (readMessageMode == ReadDataMode.Internally)
             {
