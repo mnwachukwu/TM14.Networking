@@ -27,7 +27,7 @@ namespace TM14.Networking
         /// <summary>
         /// Constructs a packet with a header and no data.
         /// </summary>
-        /// <param name="header"></param>
+        /// <param name="header">The packet header.</param>
         public Packet(string header)
         {
             Guid = System.Guid.NewGuid().ToString();
@@ -63,7 +63,7 @@ namespace TM14.Networking
         /// <summary>
         /// Adds string data to the packet.
         /// </summary>
-        /// <param name="data"></param>
+        /// <param name="data">The packet data.</param>
         public void AddData(params string[] data)
         {
             if (data != null)
@@ -75,7 +75,7 @@ namespace TM14.Networking
         /// <summary>
         /// Adds object data to the packet.
         /// </summary>
-        /// <param name="data"></param>
+        /// <param name="data">The packet data.</param>
         public void AddData(params object[] data)
         {
             var dataStrings = data.Select(JsonConvert.SerializeObject).ToArray();
@@ -85,7 +85,7 @@ namespace TM14.Networking
         /// <summary>
         /// Returns a JSON string representation of the packet.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>A string representation of the packet.</returns>
         public new string ToString()
         {
             return JsonConvert.SerializeObject(this);

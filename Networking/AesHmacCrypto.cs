@@ -13,6 +13,9 @@ using System.Text;
 
 namespace TM14.Networking
 {
+    /// <summary>
+    /// A class used to encrypt and decrypt data.
+    /// </summary>
     public static class AesHmacCrypto
     {
         private static readonly RandomNumberGenerator Random = RandomNumberGenerator.Create();
@@ -215,9 +218,9 @@ namespace TM14.Networking
                     //Postpend tag
                     binaryWriter.Write(tag);
                 }
+
                 return encryptedStream.ToArray();
             }
-
         }
 
         /// <summary>
@@ -290,6 +293,7 @@ namespace TM14.Networking
                                 encryptedMessage.Length - nonSecretPayloadLength - iv.Length - sentTag.Length
                             );
                         }
+
                         //Return Plain Text
                         return plainTextStream.ToArray();
                     }
@@ -405,6 +409,5 @@ namespace TM14.Networking
 
             return SimpleDecrypt(encryptedMessage, cryptKey, authKey, cryptSalt.Length + authSalt.Length + nonSecretPayloadLength);
         }
-
     }
 }

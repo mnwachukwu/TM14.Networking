@@ -34,8 +34,8 @@ namespace TM14.Networking
         public bool IsConnected => client != null && client.Connected;
 
         /// <summary>
-        /// Determines if the <see cref="TcpClient"/> will read messages in its own thread or if the client
-        /// will wait for a calling thread to read messages.
+        /// Determines if the <see cref="TcpClient"/> will read data in its own thread or if the client
+        /// will wait for a calling thread to read data.
         /// </summary>
         private ReadDataMode ReadDataMode { get; }
 
@@ -46,19 +46,21 @@ namespace TM14.Networking
 
         /// <summary>
         /// Instantiates a client and connects to the specified IP on the specified port.
-        /// This method also starts a new thread which reads messages from the server.
+        /// This method also starts a new thread which reads data from the server.
         /// </summary>
         /// <param name="serverIp">The IP to connect to.</param>
         /// <param name="port">The port to connect over.</param>
-        /// <param name="readMessageMode">Should this client read messages in its own thread (internally),
-        ///                               or will it be processed on some other thread (externally)?</param>
-        public TcpClient(string serverIp, int port, ReadDataMode readMessageMode = ReadDataMode.Internally)
+        /// <param name="readDataMode">
+        /// Should this client read data in its own thread (internally),
+        /// or will it be processed on some other thread (externally)?
+        /// </param>
+        public TcpClient(string serverIp, int port, ReadDataMode readDataMode = ReadDataMode.Internally)
         {
             client = new System.Net.Sockets.TcpClient(serverIp, port);
-            ReadDataMode = readMessageMode;
+            ReadDataMode = readDataMode;
             PacketBuffer = new PacketBuffer();
 
-            if (readMessageMode == ReadDataMode.Internally)
+            if (readDataMode == ReadDataMode.Internally)
             {
                 var t = new Thread(ReadDataInternally);
                 t.Start();
@@ -91,9 +93,11 @@ namespace TM14.Networking
         }
 
         /// <summary>
-        /// Handles reading packets from the server, passing it to the HandleData method.
-        /// <remarks> This method will block the calling thread and intended to be used by the
-        ///           <see cref="TcpClient"/> class. </remarks>
+        /// Handles reading data from the server, passing it to the HandleData method.
+        /// <remarks>
+        /// This method will block the calling thread and intended to be used by the
+        /// <see cref="TcpClient"/> class.
+        /// </remarks>
         /// </summary>
         private void ReadDataInternally()
         {
@@ -136,9 +140,11 @@ namespace TM14.Networking
         }
 
         /// <summary>
-        /// Handles reading packets from the server, passing it to the HandleData method.
-        /// <remarks> This method will not block the calling thread and is intended to be used outside
-        ///           of the <see cref="TcpClient"/> class inside a loop. </remarks>
+        /// Handles reading data from the server, passing it to the HandleData method.
+        /// <remarks>
+        /// This method will not block the calling thread and is intended to be used outside
+        /// of the <see cref="TcpClient"/> class inside a loop.
+        /// </remarks>
         /// </summary>
         public void ReadData()
         {
@@ -177,7 +183,7 @@ namespace TM14.Networking
                 client.Close();
                 Debug.WriteLine($"Exception: {e}");
                 // TODO: Display a message to the user here
-                // TODO: When reading messages externally, this needs to stop the external reader process (such as a timer)
+                // TODO: When reading data externally, this needs to stop the external reader process (such as a timer)
             }
         }
 
