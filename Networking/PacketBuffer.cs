@@ -6,24 +6,23 @@ namespace TM14.Networking
     {
         private string internalBuffer;
 
-        internal Queue<string> Queue { get; set; }
+        internal Queue<string> Queue { get; }
 
         internal PacketBuffer()
         {
             Queue = new Queue<string>();
         }
 
-        internal void Enqueue(string buffer)
+        internal void Enqueue(string data)
         {
-            internalBuffer += buffer;
+            internalBuffer += data;
 
             while (internalBuffer.Contains(DataTransferProtocol.PacketDelimiter.ToString()))
             {
-                var sliceLength = internalBuffer.IndexOf(DataTransferProtocol.PacketDelimiter);
-                var legibleSlice = internalBuffer.Substring(0, sliceLength);
+                var delimiterIndex = internalBuffer.IndexOf(DataTransferProtocol.PacketDelimiter);
 
-                Queue.Enqueue(legibleSlice);
-                internalBuffer = internalBuffer.Remove(0, sliceLength + 1);
+                Queue.Enqueue(internalBuffer.Substring(0, delimiterIndex));
+                internalBuffer = internalBuffer.Remove(0, delimiterIndex + 1);
             }
         }
     }
