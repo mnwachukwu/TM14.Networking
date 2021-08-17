@@ -45,6 +45,16 @@ namespace TM14.Networking
         private PacketBuffer PacketBuffer { get; }
 
         /// <summary>
+        /// An event which is invoked whenever a connection to the server is established.
+        /// </summary>
+        public event EventHandler<EventArgs> Connected;
+
+        /// <summary>
+        /// An event which is invoked whenever a connection to the server is closed.
+        /// </summary>
+        public event EventHandler<EventArgs> Disconnected;
+
+        /// <summary>
         /// Instantiates a client and connects to the specified IP on the specified port.
         /// This method also starts a new thread which reads data from the server.
         /// </summary>
@@ -59,6 +69,7 @@ namespace TM14.Networking
             client = new System.Net.Sockets.TcpClient(serverIp, port);
             ReadDataMode = readDataMode;
             PacketBuffer = new PacketBuffer();
+            OnConnect(null);
 
             if (readDataMode == ReadDataMode.Internally)
             {
@@ -86,7 +97,7 @@ namespace TM14.Networking
                 }
                 catch (Exception e)
                 {
-                    client.Close();
+                    Close();
                     Debug.WriteLine(e);
                 }
             }
@@ -133,7 +144,7 @@ namespace TM14.Networking
             }
             catch (Exception e)
             {
-                client.Close();
+                Close();
                 Debug.WriteLine($"Exception: {e}");
                 // TODO: Display a message to the user here
             }
@@ -180,7 +191,7 @@ namespace TM14.Networking
             }
             catch (Exception e)
             {
-                client.Close();
+                Close();
                 Debug.WriteLine($"Exception: {e}");
                 // TODO: Display a message to the user here
                 // TODO: When reading data externally, this needs to stop the external reader process (such as a timer)
@@ -198,6 +209,7 @@ namespace TM14.Networking
                 Sender = null,
                 Packet = JsonConvert.DeserializeObject<Packet>(data)
             };
+
             OnHasHandledPacket(args);
         }
 
@@ -207,6 +219,7 @@ namespace TM14.Networking
         public void Close()
         {
             client.Close();
+            OnDisconnect(null);
         }
 
         /// <summary>
@@ -220,6 +233,7 @@ namespace TM14.Networking
                 Message = message,
                 TimeStamp = DateTime.Now
             };
+
             OnHasConsoleMessage(args);
         }
 
@@ -227,7 +241,7 @@ namespace TM14.Networking
         /// Invokes an event containing a string message.
         /// </summary>
         /// <param name="e">The event arguments.</param>
-        protected virtual void OnHasConsoleMessage(HasConsoleMessageEventArgs e)
+        private void OnHasConsoleMessage(HasConsoleMessageEventArgs e)
         {
             var handler = HasConsoleMessage;
             handler?.Invoke(this, e);
@@ -237,9 +251,29 @@ namespace TM14.Networking
         /// Invokes an event containing a <see cref="Packet"/>.
         /// </summary>
         /// <param name="e">The event arguments.</param>
-        protected virtual void OnHasHandledPacket(HasHandledPacketEventArgs e)
+        private void OnHasHandledPacket(HasHandledPacketEventArgs e)
         {
             var handler = HasHandledPacket;
+            handler?.Invoke(this, e);
+        }
+
+        /// <summary>
+        /// Invokes an event signifying that the client has been connected.
+        /// </summary>
+        /// <param name="e"></param>
+        private void OnConnect(EventArgs e)
+        {
+            var handler = Connected;
+            handler?.Invoke(this, e);
+        }
+
+        /// <summary>
+        /// Invokes an event signifying that the client has been disconnected.
+        /// </summary>
+        /// <param name="e"></param>
+        private void OnDisconnect(EventArgs e)
+        {
+            var handler = Disconnected;
             handler?.Invoke(this, e);
         }
     }

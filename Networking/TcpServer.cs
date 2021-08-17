@@ -32,6 +32,11 @@ namespace TM14.Networking
         public event EventHandler<HasHandledPacketEventArgs> HasHandledPacket;
 
         /// <summary>
+        /// An event which is invoked whenever a client is connected.
+        /// </summary>
+        public event EventHandler<ClientConnectedEventArgs> ClientConnected;
+
+        /// <summary>
         /// An event which is invoked whenever a client is disconnected.
         /// </summary>
         public event EventHandler<ClientDisconnectedEventArgs> ClientDisconnected;
@@ -108,9 +113,9 @@ namespace TM14.Networking
         /// <param name="client">Client to disconnect.</param>
         public void DisconnectClient(System.Net.Sockets.TcpClient client)
         {
-            var eventArgs = new ClientDisconnectedEventArgs { Client = client };
-
-            OnClientDisconnected(eventArgs);
+            var args = new ClientDisconnectedEventArgs { Client = client };
+            
+            OnClientDisconnected(args);
             ConsoleMessage($"Client {client.Client.RemoteEndPoint} disconnected.");
 
             if (client.Connected)
@@ -123,6 +128,7 @@ namespace TM14.Networking
             if (ReadDataThread.ContainsKey(client))
             {
                 ReadDataThread[client].Abort();
+                ReadDataThread.Remove(client);
             }
         }
 
@@ -142,8 +148,11 @@ namespace TM14.Networking
 
                 if (!ExcludedIPs.Contains(ipAddress))
                 {
-                    ConnectedClients.Add(client);
+                    var args = new ClientConnectedEventArgs { Client = client };
+
+                    OnClientConnected(args);
                     ConsoleMessage($"Client connected from {client.Client.RemoteEndPoint}.");
+                    ConnectedClients.Add(client);
                     ReadDataThread[client] = new Thread(ReadData);
                     ReadDataThread[client].Start(client);
                 }
@@ -185,8 +194,6 @@ namespace TM14.Networking
             catch (Exception e)
             {
                 DisconnectClient(client);
-                ConnectedClients.Remove(client);
-                ReadDataThread.Remove(client);
                 Debug.WriteLine($"Exception: {e}");
                 // TODO: Send a message to the client here
             }
@@ -204,6 +211,7 @@ namespace TM14.Networking
                 Sender = sender,
                 Packet = JsonConvert.DeserializeObject<Packet>(data)
             };
+
             OnHasHandledPacket(args);
         }
 
@@ -235,7 +243,7 @@ namespace TM14.Networking
             IsActive = false;
         }
 
-        private bool ClientConnected(System.Net.Sockets.TcpClient client)
+        public bool IsClientConnected(System.Net.Sockets.TcpClient client)
         {
             return client != null && client.Connected;
         }
@@ -247,7 +255,7 @@ namespace TM14.Networking
         /// <param name="data">The packet of data to send.</param>
         public void SendDataTo(System.Net.Sockets.TcpClient client, Packet data)
         {
-            if (ClientConnected(client))
+            if (IsClientConnected(client))
             {
                 var stream = client.GetStream();
                 var keyBytes = Convert.FromBase64String(DataTransferProtocol.SecretKey);
@@ -260,8 +268,7 @@ namespace TM14.Networking
                 }
                 catch (Exception e)
                 {
-                    ConnectedClients.Remove(client);
-                    ReadDataThread.Remove(client);
+                    DisconnectClient(client);
                     Debug.WriteLine($"Exception: {e}");
                 }
             }
@@ -300,6 +307,7 @@ namespace TM14.Networking
                 Message = message,
                 TimeStamp = DateTime.Now
             };
+
             OnHasConsoleMessage(args);
         }
 
@@ -307,7 +315,7 @@ namespace TM14.Networking
         /// Invokes an event containing a string message.
         /// </summary>
         /// <param name="e">The event arguments.</param>
-        protected virtual void OnHasConsoleMessage(HasConsoleMessageEventArgs e)
+        private void OnHasConsoleMessage(HasConsoleMessageEventArgs e)
         {
             var handler = HasConsoleMessage;
             handler?.Invoke(this, e);
@@ -317,7 +325,7 @@ namespace TM14.Networking
         /// Invokes an event containing a <see cref="Packet"/>.
         /// </summary>
         /// <param name="e">The event arguments.</param>
-        protected virtual void OnHasHandledPacket(HasHandledPacketEventArgs e)
+        private void OnHasHandledPacket(HasHandledPacketEventArgs e)
         {
             var handler = HasHandledPacket;
             handler?.Invoke(this, e);
@@ -327,9 +335,19 @@ namespace TM14.Networking
         /// Invokes an event containing a disconnecting <see cref="System.Net.Sockets.TcpClient"/>.
         /// </summary>
         /// <param name="e">The event arguements.</param>
-        protected virtual void OnClientDisconnected(ClientDisconnectedEventArgs e)
+        private void OnClientDisconnected(ClientDisconnectedEventArgs e)
         {
             var handler = ClientDisconnected;
+            handler?.Invoke(this, e);
+        }
+
+        /// <summary>
+        /// Invokes an event containing a disconnecting <see cref="System.Net.Sockets.TcpClient"/>.
+        /// </summary>
+        /// <param name="e">The event arguements.</param>
+        private void OnClientConnected(ClientConnectedEventArgs e)
+        {
+            var handler = ClientConnected;
             handler?.Invoke(this, e);
         }
     }
