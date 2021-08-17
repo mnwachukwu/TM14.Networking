@@ -314,6 +314,11 @@ namespace TM14.Networking
             handler?.Invoke(this, e);
         }
 
+        /// <summary>
+        /// Invokes an event signifying that the client failed to connect to the server.
+        /// The event contains the underlying <see cref="SocketException"/> which caused the failure.
+        /// </summary>
+        /// <param name="e"></param>
         private void OnConnectionFailed(ConnectionFailedEventArgs e)
         {
             var handler = ConnectionFailed;
