@@ -5,7 +5,7 @@ namespace TM14.Networking.Events
     /// <summary>
     /// Arguments to raise with a HasHandledPacket event.
     /// </summary>
-    public class HasHandledPacketEventArgs : EventArgs
+    public class HasPacketEventArgs : EventArgs
     {
         /// <summary>
         /// The sender of the packet. If null, the sender was the server.

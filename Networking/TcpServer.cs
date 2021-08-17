@@ -24,12 +24,12 @@ namespace TM14.Networking
         /// <summary>
         /// An event which is invoked whenever the networking pipeline has a message.
         /// </summary>
-        public event EventHandler<HasConsoleMessageEventArgs> HasConsoleMessage;
+        public event EventHandler<HasMessageEventArgs> HasMessage;
 
         /// <summary>
         /// An event which is invoked whenever the server sends data.
         /// </summary>
-        public event EventHandler<HasHandledPacketEventArgs> HasHandledPacket;
+        public event EventHandler<HasPacketEventArgs> HasPacket;
 
         /// <summary>
         /// An event which is invoked whenever a client is connected.
@@ -49,12 +49,12 @@ namespace TM14.Networking
         /// <summary>
         /// IPs to exclude when accepting connections.
         /// </summary>
-        public List<string> ExcludedIPs { get; set; }
+        public List<string> ExcludedIps { get; set; }
 
         /// <summary>
         /// Determines if the server is currently listening for connections.
         /// </summary>
-        private bool IsActive { get; set; }
+        public bool IsActive { get; private set; }
 
         /// <summary>
         /// Contains a collection of <see cref="ReadData"/> threads, indexed by the client utilizing the thread.
@@ -67,7 +67,7 @@ namespace TM14.Networking
         private PacketBuffer PacketBuffer { get; }
 
         /// <summary>
-        /// Instantiates a server listener which listens for connections on the specified port.
+        /// Instantiates a server and prepares it to listen for connections.
         /// </summary>
         /// <param name="ip">The IP address of the computer the server program is running on.</param>
         /// <param name="port">The port on which the server program is listening.</param>
@@ -76,7 +76,6 @@ namespace TM14.Networking
             var localAddr = IPAddress.Parse(ip);
 
             server = new TcpListener(localAddr, port);
-            IsActive = true;
             ConnectedClients = new List<System.Net.Sockets.TcpClient>();
             ReadDataThread = new Dictionary<System.Net.Sockets.TcpClient, Thread>();
             PacketBuffer = new PacketBuffer();
@@ -88,7 +87,7 @@ namespace TM14.Networking
         /// <param name="ip">IP to exclude.</param>
         public void Exclude(string ip)
         {
-            ExcludedIPs.Add(ip);
+            ExcludedIps.Add(ip);
         }
 
         /// <summary>
@@ -97,13 +96,13 @@ namespace TM14.Networking
         /// <param name="ips">List of IPs to exclude.</param>
         public void Exclude(IEnumerable<string> ips)
         {
-            if (ExcludedIPs.Any())
+            if (ExcludedIps.Any())
             {
-                ExcludedIPs.AddRange(ips);
+                ExcludedIps.AddRange(ips);
             }
             else
             {
-                ExcludedIPs = ips.ToList();
+                ExcludedIps = ips.ToList();
             }
         }
 
@@ -116,7 +115,6 @@ namespace TM14.Networking
             var args = new ClientDisconnectedEventArgs { Client = client };
             
             OnClientDisconnected(args);
-            ConsoleMessage($"Client {client.Client.RemoteEndPoint} disconnected.");
 
             if (client.Connected)
             {
@@ -139,19 +137,18 @@ namespace TM14.Networking
         /// </summary>
         private void ListenerLoop()
         {
-            ConsoleMessage("Server is now listening for connections.");
+            Message("Server is now listening for connections.");
 
             while (IsActive)
             {
                 var client = server.AcceptTcpClient();
                 var ipAddress = ((IPEndPoint)client.Client.RemoteEndPoint).Address.ToString();
 
-                if (!ExcludedIPs.Contains(ipAddress))
+                if (!ExcludedIps.Contains(ipAddress))
                 {
                     var args = new ClientConnectedEventArgs { Client = client };
 
                     OnClientConnected(args);
-                    ConsoleMessage($"Client connected from {client.Client.RemoteEndPoint}.");
                     ConnectedClients.Add(client);
                     ReadDataThread[client] = new Thread(ReadData);
                     ReadDataThread[client].Start(client);
@@ -200,28 +197,13 @@ namespace TM14.Networking
         }
 
         /// <summary>
-        /// Builds a <see cref="HasHandledPacketEventArgs"/> to raise with an event invocation.
-        /// </summary>
-        /// <param name="sender">The client that sent the packet.</param>
-        /// <param name="data">The string representation of the data packet.</param>
-        private void HandleData(System.Net.Sockets.TcpClient sender, string data)
-        {
-            var args = new HasHandledPacketEventArgs
-            {
-                Sender = sender,
-                Packet = JsonConvert.DeserializeObject<Packet>(data)
-            };
-
-            OnHasHandledPacket(args);
-        }
-
-        /// <summary>
         /// Calls the method containing the listen loop after preparing the server to start listening for connections.
         /// This method also stops the server from listening after the listen loop has been broken.
         /// </summary>
         public void StartListener()
         {
             server.Start();
+            IsActive = true;
 
             try
             {
@@ -229,10 +211,11 @@ namespace TM14.Networking
             }
             catch (SocketException e)
             {
-                ConsoleMessage($"SocketException: {e}");
+                Debug.Write($"SocketException: {e.Message}");
             }
 
             server.Stop();
+            IsActive = false;
         }
 
         /// <summary>
@@ -243,6 +226,11 @@ namespace TM14.Networking
             IsActive = false;
         }
 
+        /// <summary>
+        /// Determines if a particular client is connected to the server.
+        /// </summary>
+        /// <param name="client">The client to check.</param>
+        /// <returns>True if connected, false otherwise.</returns>
         public bool IsClientConnected(System.Net.Sockets.TcpClient client)
         {
             return client != null && client.Connected;
@@ -297,27 +285,43 @@ namespace TM14.Networking
         }
 
         /// <summary>
-        /// Builds a <see cref="HasConsoleMessageEventArgs"/> to raise with an event invocation.
+        /// Builds a <see cref="HasPacketEventArgs"/> to raise with an event invocation.
+        /// </summary>
+        /// <param name="sender">The client that sent the packet.</param>
+        /// <param name="data">The string representation of the data packet.</param>
+        private void HandleData(System.Net.Sockets.TcpClient sender, string data)
+        {
+            var args = new HasPacketEventArgs
+            {
+                Sender = sender,
+                Packet = JsonConvert.DeserializeObject<Packet>(data)
+            };
+
+            OnHasPacket(args);
+        }
+
+        /// <summary>
+        /// Builds a <see cref="HasMessageEventArgs"/> to raise with an event invocation.
         /// </summary>
         /// <param name="message">The message.</param>
-        public void ConsoleMessage(string message)
+        public void Message(string message)
         {
-            var args = new HasConsoleMessageEventArgs
+            var args = new HasMessageEventArgs
             {
                 Message = message,
                 TimeStamp = DateTime.Now
             };
 
-            OnHasConsoleMessage(args);
+            OnHasMessage(args);
         }
 
         /// <summary>
         /// Invokes an event containing a string message.
         /// </summary>
         /// <param name="e">The event arguments.</param>
-        private void OnHasConsoleMessage(HasConsoleMessageEventArgs e)
+        private void OnHasMessage(HasMessageEventArgs e)
         {
-            var handler = HasConsoleMessage;
+            var handler = HasMessage;
             handler?.Invoke(this, e);
         }
 
@@ -325,19 +329,9 @@ namespace TM14.Networking
         /// Invokes an event containing a <see cref="Packet"/>.
         /// </summary>
         /// <param name="e">The event arguments.</param>
-        private void OnHasHandledPacket(HasHandledPacketEventArgs e)
+        private void OnHasPacket(HasPacketEventArgs e)
         {
-            var handler = HasHandledPacket;
-            handler?.Invoke(this, e);
-        }
-
-        /// <summary>
-        /// Invokes an event containing a disconnecting <see cref="System.Net.Sockets.TcpClient"/>.
-        /// </summary>
-        /// <param name="e">The event arguements.</param>
-        private void OnClientDisconnected(ClientDisconnectedEventArgs e)
-        {
-            var handler = ClientDisconnected;
+            var handler = HasPacket;
             handler?.Invoke(this, e);
         }
 
@@ -348,6 +342,20 @@ namespace TM14.Networking
         private void OnClientConnected(ClientConnectedEventArgs e)
         {
             var handler = ClientConnected;
+
+            Message($"Client {e.Client.Client.RemoteEndPoint} connected.");
+            handler?.Invoke(this, e);
+        }
+
+        /// <summary>
+        /// Invokes an event containing a disconnecting <see cref="System.Net.Sockets.TcpClient"/>.
+        /// </summary>
+        /// <param name="e">The event arguements.</param>
+        private void OnClientDisconnected(ClientDisconnectedEventArgs e)
+        {
+            var handler = ClientDisconnected;
+
+            Message($"Client {e.Client.Client.RemoteEndPoint} disconnected.");
             handler?.Invoke(this, e);
         }
     }

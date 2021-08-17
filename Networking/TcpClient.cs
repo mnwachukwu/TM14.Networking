@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Linq;
+using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using Newtonsoft.Json;
@@ -16,7 +17,7 @@ namespace TM14.Networking
         /// <summary>
         /// The underlying <see cref="System.Net.Sockets.TcpClient"/> this object utilizes.
         /// </summary>
-        private readonly System.Net.Sockets.TcpClient client;
+        private System.Net.Sockets.TcpClient client;
 
         /// <summary>
         /// An event which is invoked whenever a connection to the server is established.
@@ -29,14 +30,19 @@ namespace TM14.Networking
         public event EventHandler<EventArgs> Disconnected;
 
         /// <summary>
-        /// An event which is invoked whenever the networking pipeline has a message.
+        /// An event which is invoked whenever a connection attempt has failed.
         /// </summary>
-        public event EventHandler<HasConsoleMessageEventArgs> HasConsoleMessage;
+        public event EventHandler<ConnectionFailedEventArgs> ConnectionFailed;
+
+        /// <summary>
+        /// An event which is invoked whenever the networking library has a message.
+        /// </summary>
+        public event EventHandler<HasMessageEventArgs> HasMessage;
 
         /// <summary>
         /// An event which is invoked whenever the server sends data.
         /// </summary>
-        public event EventHandler<HasHandledPacketEventArgs> HasHandledPacket;
+        public event EventHandler<HasPacketEventArgs> HasPacket;
 
         /// <summary>
         /// Determines if the underlying <see cref="System.Net.Sockets.TcpClient"/> is connected.
@@ -55,8 +61,17 @@ namespace TM14.Networking
         private PacketBuffer PacketBuffer { get; }
 
         /// <summary>
-        /// Instantiates a client and connects to the specified IP on the specified port.
-        /// This method also starts a new thread which reads data from the server.
+        /// The IP address of the server the client will connect to.
+        /// </summary>
+        private string ServerIp { get; }
+
+        /// <summary>
+        /// The port which the client will communicate on.
+        /// </summary>
+        private int Port { get; }
+
+        /// <summary>
+        /// Instantiates a client and prepares it to connect to a server.
         /// </summary>
         /// <param name="serverIp">The IP to connect to.</param>
         /// <param name="port">The port to connect over.</param>
@@ -66,16 +81,10 @@ namespace TM14.Networking
         /// </param>
         public TcpClient(string serverIp, int port, ReadDataMode readDataMode = ReadDataMode.Internally)
         {
-            client = new System.Net.Sockets.TcpClient(serverIp, port);
+            ServerIp = serverIp;
+            Port = port;
             ReadDataMode = readDataMode;
             PacketBuffer = new PacketBuffer();
-            OnConnect(null);
-
-            if (readDataMode == ReadDataMode.Internally)
-            {
-                var t = new Thread(ReadDataInternally);
-                t.Start();
-            }
         }
 
         /// <summary>
@@ -97,7 +106,7 @@ namespace TM14.Networking
                 }
                 catch (Exception e)
                 {
-                    Close();
+                    Disconnect();
                     Debug.WriteLine(e);
                 }
             }
@@ -144,7 +153,7 @@ namespace TM14.Networking
             }
             catch (Exception e)
             {
-                Close();
+                Disconnect();
                 Debug.WriteLine($"Exception: {e}");
                 // TODO: Display a message to the user here
             }
@@ -191,7 +200,7 @@ namespace TM14.Networking
             }
             catch (Exception e)
             {
-                Close();
+                Disconnect();
                 Debug.WriteLine($"Exception: {e}");
                 // TODO: Display a message to the user here
                 // TODO: When reading data externally, this needs to stop the external reader process (such as a timer)
@@ -199,51 +208,79 @@ namespace TM14.Networking
         }
 
         /// <summary>
-        /// Builds a <see cref="HasHandledPacketEventArgs"/> to raise with an event invocation.
+        /// Builds a <see cref="HasPacketEventArgs"/> to raise with an event invocation.
         /// </summary>
         /// <param name="data">The string representation of the data packet.</param>
         private void HandleData(string data)
         {
-            var args = new HasHandledPacketEventArgs
+            var args = new HasPacketEventArgs
             {
                 Sender = null,
                 Packet = JsonConvert.DeserializeObject<Packet>(data)
             };
 
-            OnHasHandledPacket(args);
+            OnHasPacket(args);
+        }
+
+        /// <summary>
+        /// Attempts a connection to the server.
+        /// </summary>
+        public void Connect()
+        {
+            try
+            {
+                client = new System.Net.Sockets.TcpClient(ServerIp, Port);
+                OnConnect(null);
+
+                if (ReadDataMode == ReadDataMode.Internally)
+                {
+                    var t = new Thread(ReadDataInternally);
+                    t.Start();
+                }
+            }
+            catch (SocketException e)
+            {
+                var args = new ConnectionFailedEventArgs
+                {
+                    SocketException = e
+                };
+
+                OnConnectionFailed(args);
+                Debug.WriteLine($"SocketException: {e.Message}");
+            }
         }
 
         /// <summary>
         /// Closes the connection to the server.
         /// </summary>
-        public void Close()
+        public void Disconnect()
         {
             client.Close();
             OnDisconnect(null);
         }
 
         /// <summary>
-        /// Builds a <see cref="HasConsoleMessageEventArgs"/> to raise with an event invocation.
+        /// Builds a <see cref="HasMessageEventArgs"/> to raise with an event invocation.
         /// </summary>
         /// <param name="message">The message.</param>
-        internal void ConsoleMessage(string message)
+        internal void Message(string message)
         {
-            var args = new HasConsoleMessageEventArgs
+            var args = new HasMessageEventArgs
             {
                 Message = message,
                 TimeStamp = DateTime.Now
             };
 
-            OnHasConsoleMessage(args);
+            OnHasMessage(args);
         }
 
         /// <summary>
         /// Invokes an event containing a string message.
         /// </summary>
         /// <param name="e">The event arguments.</param>
-        private void OnHasConsoleMessage(HasConsoleMessageEventArgs e)
+        private void OnHasMessage(HasMessageEventArgs e)
         {
-            var handler = HasConsoleMessage;
+            var handler = HasMessage;
             handler?.Invoke(this, e);
         }
 
@@ -251,9 +288,9 @@ namespace TM14.Networking
         /// Invokes an event containing a <see cref="Packet"/>.
         /// </summary>
         /// <param name="e">The event arguments.</param>
-        private void OnHasHandledPacket(HasHandledPacketEventArgs e)
+        private void OnHasPacket(HasPacketEventArgs e)
         {
-            var handler = HasHandledPacket;
+            var handler = HasPacket;
             handler?.Invoke(this, e);
         }
 
@@ -274,6 +311,12 @@ namespace TM14.Networking
         private void OnDisconnect(EventArgs e)
         {
             var handler = Disconnected;
+            handler?.Invoke(this, e);
+        }
+
+        private void OnConnectionFailed(ConnectionFailedEventArgs e)
+        {
+            var handler = ConnectionFailed;
             handler?.Invoke(this, e);
         }
     }

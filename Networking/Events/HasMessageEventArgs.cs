@@ -5,7 +5,7 @@ namespace TM14.Networking.Events
     /// <summary>
     /// Arguments to raise with a HasConsoleMessage event.
     /// </summary>
-    public class HasConsoleMessageEventArgs : EventArgs
+    public class HasMessageEventArgs : EventArgs
     {
         /// <summary>
         /// The message.
@@ -13,7 +13,7 @@ namespace TM14.Networking.Events
         public string Message { get; set; }
 
         /// <summary>
-        /// The time at which the event was raised.
+        /// The time at which the message was sent.
         /// </summary>
         public DateTime TimeStamp { get; set; }
     }
