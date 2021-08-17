@@ -255,8 +255,11 @@ namespace TM14.Networking
         /// </summary>
         public void Disconnect()
         {
-            client.Close();
-            OnDisconnect(null);
+            if (client != null && client.Connected)
+            {
+                client.Close();
+                OnDisconnect(null);
+            }
         }
 
         /// <summary>
