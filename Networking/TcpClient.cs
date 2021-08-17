@@ -263,7 +263,7 @@ namespace TM14.Networking
         /// Builds a <see cref="HasMessageEventArgs"/> to raise with an event invocation.
         /// </summary>
         /// <param name="message">The message.</param>
-        internal void Message(string message)
+        private void Message(string message)
         {
             var args = new HasMessageEventArgs
             {
