@@ -79,6 +79,7 @@ namespace TM14.Networking
             ConnectedClients = new List<System.Net.Sockets.TcpClient>();
             ReadDataThread = new Dictionary<System.Net.Sockets.TcpClient, Thread>();
             PacketBuffer = new PacketBuffer();
+            ExcludedIps = new List<string>();
         }
 
         /// <summary>
