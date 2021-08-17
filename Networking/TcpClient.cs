@@ -19,6 +19,16 @@ namespace TM14.Networking
         private readonly System.Net.Sockets.TcpClient client;
 
         /// <summary>
+        /// An event which is invoked whenever a connection to the server is established.
+        /// </summary>
+        public event EventHandler<EventArgs> Connected;
+
+        /// <summary>
+        /// An event which is invoked whenever a connection to the server is closed.
+        /// </summary>
+        public event EventHandler<EventArgs> Disconnected;
+
+        /// <summary>
         /// An event which is invoked whenever the networking pipeline has a message.
         /// </summary>
         public event EventHandler<HasConsoleMessageEventArgs> HasConsoleMessage;
@@ -43,16 +53,6 @@ namespace TM14.Networking
         /// A buffer for reading packets in an orderly fashion.
         /// </summary>
         private PacketBuffer PacketBuffer { get; }
-
-        /// <summary>
-        /// An event which is invoked whenever a connection to the server is established.
-        /// </summary>
-        public event EventHandler<EventArgs> Connected;
-
-        /// <summary>
-        /// An event which is invoked whenever a connection to the server is closed.
-        /// </summary>
-        public event EventHandler<EventArgs> Disconnected;
 
         /// <summary>
         /// Instantiates a client and connects to the specified IP on the specified port.
