@@ -132,9 +132,9 @@ namespace TM14.Networking
         }
 
         /// <summary>
-        /// A method containing an infinite loop which listens for new connections. Once a connection has been made,
-        /// a new thread is spun up to handle data from that client and the method loops back to listening for a new
-        /// connection.
+        /// A method containing a loop which listens for new connections. Once a connection has been made,
+        /// a new thread is spun up to handle data from that client and the method loops back to listening
+        /// for a new connection.
         /// </summary>
         private void ListenerLoop()
         {

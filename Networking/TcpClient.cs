@@ -301,6 +301,8 @@ namespace TM14.Networking
         private void OnConnect(EventArgs e)
         {
             var handler = Connected;
+
+            Message("Connected to server.");
             handler?.Invoke(this, e);
         }
 
@@ -311,6 +313,8 @@ namespace TM14.Networking
         private void OnDisconnect(EventArgs e)
         {
             var handler = Disconnected;
+
+            Message("Disconnected from server.");
             handler?.Invoke(this, e);
         }
 
@@ -322,6 +326,8 @@ namespace TM14.Networking
         private void OnConnectionFailed(ConnectionFailedEventArgs e)
         {
             var handler = ConnectionFailed;
+
+            Message("Failed to connect to server.");
             handler?.Invoke(this, e);
         }
     }
