@@ -10,7 +10,7 @@ using TM14.Networking.Events;
 namespace TM14.Networking
 {
     /// <summary>
-    /// Wrapper for the <see cref="System.Net.Sockets.TcpClient"/> class to make utilizing it simpler.
+    /// A wrapper class around the <see cref="System.Net.Sockets.TcpClient"/> class used to handle connecting to a server and sending/receiving data.
     /// </summary>
     public class TcpClient
     {
@@ -40,7 +40,7 @@ namespace TM14.Networking
         public event EventHandler<HasMessageEventArgs> HasMessage;
 
         /// <summary>
-        /// An event which is invoked whenever the server sends data.
+        /// An event which is invoked whenever the client receives data and a packet becomes available for handling.
         /// </summary>
         public event EventHandler<HasPacketEventArgs> HasPacket;
 

@@ -12,7 +12,7 @@ using TM14.Networking.Events;
 namespace TM14.Networking
 {
     /// <summary>
-    /// A simplified server made to handle connected clients and sending/receiving data.
+    /// A wrapper class around the <see cref="TcpListener"/> class used to handle connected clients and sending/receiving data.
     /// </summary>
     public class TcpServer
     {
@@ -22,12 +22,12 @@ namespace TM14.Networking
         private readonly TcpListener server;
 
         /// <summary>
-        /// An event which is invoked whenever the networking pipeline has a message.
+        /// An event which is invoked whenever the networking library has a message.
         /// </summary>
         public event EventHandler<HasMessageEventArgs> HasMessage;
 
         /// <summary>
-        /// An event which is invoked whenever the server sends data.
+        /// An event which is invoked whenever the server receives data and a packet becomes available for handling.
         /// </summary>
         public event EventHandler<HasPacketEventArgs> HasPacket;
 
