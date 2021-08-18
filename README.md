@@ -1,4 +1,4 @@
-# TM14.Networking
+# TM14.Networking Quick Help
 
 This library contains wrapper classes around the `System.Net.Sockets.TcpClient` and `System.Net.Sockets.TcpListener` classes to make rapid use of those classes to transfer data between applications.
 
@@ -7,6 +7,8 @@ In order to make quick usage of the data transfer functionality, a `Packet` clas
 A `PacketBuffer` class is included to ensure every packet is sent and received reliably, with no malformed parts being parsed.
 
 It is written against .Net Standard 2.0 so that it can be used in your .Net Framework, .Net Core, and .Net 5 applications.
+
+This library makes use of JSON and as such, utilizes `Newtonsoft.Json` as a dependency.
 
 Copyright &copy; [Studio TM14](https://tm14.net/)
 
@@ -38,7 +40,7 @@ private static void TcpClient_HasHandledPacket(object sender, HasHandledPacketEv
 }
 
 // Example HandlePacket method (called from the event handler)
-internal static void HandlePacket(Packet packet)
+private static void HandlePacket(Packet packet)
 {
     switch (packet.Header.ToLower())
     {
@@ -77,7 +79,7 @@ private static void TcpServer_HasHandledPacket(object sender, HasHandledPacketEv
 }
 
 // Example HandlePacket method (called from the event handler)
-internal static void HandlePacket(System.Net.Sockets.TcpClient client, Packet packet)
+private static void HandlePacket(System.Net.Sockets.TcpClient client, Packet packet)
 {
     switch (packet.Header.ToLower())
     {
@@ -88,13 +90,15 @@ internal static void HandlePacket(System.Net.Sockets.TcpClient client, Packet pa
 }
 ```
 
-## Security
-### Setting a SecretKey
+# Security
+## Setting a SecretKey
 Within the `DataTransferProtocol` class, there is a member called `SecretKey` intended to secure trafic created by this library via encryption. It is defined as an `internal static string` so that you may use external secure mechanisms to set the value. It could also be defined as an `internal const string` so that you can set it in code, rather than during run-time. However, unless your application is obfuscated (encrypting or hiding away constant values), this compromises the network security of your application.
 
 The client and server applications implementing this library must have the same `SecretKey` when communicating with each other or else, they will not be able to decrypt each other's traffic.
 
-### Generating a SecretKey
+`SecretKey` can't be null or empty and it must be able to be converted from a base 64 `string` to a `byte[32]`.
+
+## Generating a SecretKey
 If you're looking for an easy way to get a secret key to use that's compatible with this library, consider the following method.
 
 ```cs
