@@ -10,7 +10,7 @@ It is written against .Net Standard 2.0 so that it can be used in your .Net Fram
 
 This library makes use of JSON and as such, utilizes `Newtonsoft.Json` as a dependency from NuGet.
 
-There is a detailed [documentation](https://networking.tm14.net/a00166.html) website if you need more guidance. There, you can find a full guide on the [Classes](https://networking.tm14.net/a00051.html) and [Events](https://networking.tm14.net/a00052.html) this library implements.
+There is a detailed [documentation](https://networking.tm14.net/a00166.html) website if you need more guidance. There, you can find a full guide on the [Classes](https://networking.tm14.net/a00051.html) and [Events](https://networking.tm14.net/a00052.html) this library provides.
 
 Copyright &copy; [Studio TM14](https://tm14.net/)
 
