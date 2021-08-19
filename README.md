@@ -12,7 +12,7 @@ This library makes use of JSON and as such, utilizes `Newtonsoft.Json` as a depe
 
 There is a detailed [documentation](https://networking.tm14.net/) website if you need more guidance. There, you can find a full guide on the [Classes](https://networking.tm14.net/a00051.html) and [Events](https://networking.tm14.net/a00052.html) this library provides.
 
-This project is open source on [Github](https://github.com/mnwachukwu/TM14.Networking), if you're interested in looking at the code base.
+This project is open source on [Github](https://github.com/mnwachukwu/TM14.Networking), if you're interested in looking at the code base. You can also find a download link to the .dll under the [Releases](https://github.com/mnwachukwu/TM14.Networking/releases) section on Github if you prefer to just use the compiled assembly in your project.
 
 Copyright &copy; [Studio TM14](https://tm14.net/)
 
