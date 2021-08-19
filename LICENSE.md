@@ -1,6 +1,6 @@
 # TM14.Networking License
 
-The MIT License (MIT)
+## The MIT License (MIT)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -21,3 +21,11 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 Copyright &copy; [Studio TM14](https://tm14.net/)
+
+##  AesHmacCrypto License
+
+This work (Modern Encryption of a String C#, by James Tuley), identified by James Tuley, is free of known copyright restrictions.
+
+https://gist.github.com/4336842
+
+http://creativecommons.org/publicdomain/mark/1.0/

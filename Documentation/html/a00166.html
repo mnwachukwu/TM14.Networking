@@ -95,16 +95,16 @@ $(document).ready(function(){initNavTree('a00166.html',''); initResizable(); });
 <p>There is a detailed <a href="https://networking.tm14.net/">documentation</a> website if you need more guidance. There, you can find a full guide on the <a href="https://networking.tm14.net/a00051.html">Classes</a> and <a href="https://networking.tm14.net/a00052.html">Events</a> this library provides.</p>
 <p>This project is open source on <a href="https://github.com/mnwachukwu/TM14.Networking">Github</a>, if you're interested in looking at the code base. You can also find a download link to the .dll under the <a href="https://github.com/mnwachukwu/TM14.Networking/releases">Releases</a> section on Github if you prefer to just use the compiled assembly in your project.</p>
 <p>Copyright &copy; <a href="https://tm14.net/">Studio TM14</a></p>
-<h1><a class="anchor" id="autotoc_md2"></a>
+<h1><a class="anchor" id="autotoc_md4"></a>
 Example Usage</h1>
-<h2><a class="anchor" id="autotoc_md3"></a>
+<h2><a class="anchor" id="autotoc_md5"></a>
 Client</h2>
-<h3><a class="anchor" id="autotoc_md4"></a>
+<h3><a class="anchor" id="autotoc_md6"></a>
 Initialize</h3>
 <div class="fragment"><div class="line"><span class="comment">// Initialize the TcpClient somewhere</span></div>
 <div class="line">var TcpClient = <span class="keyword">new</span> TcpClient(ServerIp, ServerPort);</div>
 <div class="line">TcpClient.HasPacket += TcpClient_HasPacket;</div>
-</div><!-- fragment --><h3><a class="anchor" id="autotoc_md5"></a>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md7"></a>
 Sending data</h3>
 <div class="fragment"><div class="line"><span class="comment">// Example method to build and send data</span></div>
 <div class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keywordtype">void</span> SendData(<span class="keywordtype">string</span> packetHeader, params <span class="keywordtype">string</span>[] packetData)</div>
@@ -112,7 +112,7 @@ Sending data</h3>
 <div class="line">    var packet = <span class="keyword">new</span> Packet(packetHeader, packetData);</div>
 <div class="line">    TcpClient.SendData(packet);</div>
 <div class="line">}</div>
-</div><!-- fragment --><h3><a class="anchor" id="autotoc_md6"></a>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md8"></a>
 Receiving data</h3>
 <div class="fragment"><div class="line"><span class="comment">// Example TcpClient_HasPacket event handler</span></div>
 <div class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keywordtype">void</span> TcpClient_HasPacket(<span class="keywordtype">object</span> sender, HasPacketEventArgs e)</div>
@@ -130,15 +130,15 @@ Receiving data</h3>
 <div class="line">            <span class="keywordflow">break</span>;</div>
 <div class="line">    }</div>
 <div class="line">}</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md7"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md9"></a>
 Server</h2>
-<h3><a class="anchor" id="autotoc_md8"></a>
+<h3><a class="anchor" id="autotoc_md10"></a>
 Initialize</h3>
 <div class="fragment"><div class="line"><span class="comment">// Initialize the TcpServer somewhere</span></div>
 <div class="line">var TcpServer = <span class="keyword">new</span> TcpServer(ServerIp, ServerPort);</div>
 <div class="line">TcpServer.HasPacket += TcpServer_HasPacket;</div>
 <div class="line">TcpServer.StartListener();</div>
-</div><!-- fragment --><h3><a class="anchor" id="autotoc_md9"></a>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md11"></a>
 Sending data</h3>
 <div class="fragment"><div class="line"><span class="comment">// Example method to build and send data</span></div>
 <div class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keywordtype">void</span> SendData(System.Net.Sockets.TcpClient client, <span class="keywordtype">string</span> packetHeader, params <span class="keywordtype">string</span>[] packetData)</div>
@@ -146,7 +146,7 @@ Sending data</h3>
 <div class="line">    var packet = <span class="keyword">new</span> Packet(packetHeader, packetData);</div>
 <div class="line">    TcpServer.SendDataTo(client, packet);</div>
 <div class="line">}</div>
-</div><!-- fragment --><h3><a class="anchor" id="autotoc_md10"></a>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md12"></a>
 Receiving data</h3>
 <div class="fragment"><div class="line"><span class="comment">// Example TcpServer_HasPacket event handler</span></div>
 <div class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keywordtype">void</span> TcpServer_HasPacket(<span class="keywordtype">object</span> sender, HasPacketEventArgs e)</div>
@@ -164,14 +164,14 @@ Receiving data</h3>
 <div class="line">            <span class="keywordflow">break</span>;</div>
 <div class="line">    }</div>
 <div class="line">}</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md11"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md13"></a>
 Security</h1>
-<h2><a class="anchor" id="autotoc_md12"></a>
+<h2><a class="anchor" id="autotoc_md14"></a>
 Setting a SecretKey</h2>
 <p>Within the <code>DataTransferProtocol</code> class, there is a member called <code>SecretKey</code> intended to secure trafic created by this library via encryption. It is defined as an <code>internal static string</code> so that you may use external secure mechanisms to set the value. It could also be defined as an <code>internal const string</code> so that you can set it in code, rather than during run-time. However, unless your application is obfuscated (encrypting or hiding away constant values), this compromises the network security of your application.</p>
 <p>The client and server applications implementing this library must have the same <code>SecretKey</code> when communicating with each other or else, they will not be able to decrypt each other's traffic.</p>
 <p><code>SecretKey</code> can't be null or empty and it must be able to be converted from a base 64 <code>string</code> to a <code>byte[32]</code>.</p>
-<h2><a class="anchor" id="autotoc_md13"></a>
+<h2><a class="anchor" id="autotoc_md15"></a>
 Generating a SecretKey</h2>
 <p>If you're looking for an easy way to get a secret key to use that's compatible with this library, consider the following method.</p>
 <div class="fragment"><div class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keywordtype">void</span> GenerateUsableKey()</div>

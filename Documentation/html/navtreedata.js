@@ -25,23 +25,26 @@
 var NAVTREE =
 [
   [ "TM14.Networking", "index.html", [
-    [ "TM14.Networking License", "a00165.html", null ],
+    [ "TM14.Networking License", "a00165.html", [
+      [ "The MIT License (MIT)", "a00165.html#autotoc_md1", null ],
+      [ "AesHmacCrypto License", "a00165.html#autotoc_md2", null ]
+    ] ],
     [ "TM14.Networking Quick Help", "a00166.html", [
-      [ "Example Usage", "a00166.html#autotoc_md2", [
-        [ "Client", "a00166.html#autotoc_md3", [
-          [ "Initialize", "a00166.html#autotoc_md4", null ],
-          [ "Sending data", "a00166.html#autotoc_md5", null ],
-          [ "Receiving data", "a00166.html#autotoc_md6", null ]
+      [ "Example Usage", "a00166.html#autotoc_md4", [
+        [ "Client", "a00166.html#autotoc_md5", [
+          [ "Initialize", "a00166.html#autotoc_md6", null ],
+          [ "Sending data", "a00166.html#autotoc_md7", null ],
+          [ "Receiving data", "a00166.html#autotoc_md8", null ]
         ] ],
-        [ "Server", "a00166.html#autotoc_md7", [
-          [ "Initialize", "a00166.html#autotoc_md8", null ],
-          [ "Sending data", "a00166.html#autotoc_md9", null ],
-          [ "Receiving data", "a00166.html#autotoc_md10", null ]
+        [ "Server", "a00166.html#autotoc_md9", [
+          [ "Initialize", "a00166.html#autotoc_md10", null ],
+          [ "Sending data", "a00166.html#autotoc_md11", null ],
+          [ "Receiving data", "a00166.html#autotoc_md12", null ]
         ] ]
       ] ],
-      [ "Security", "a00166.html#autotoc_md11", [
-        [ "Setting a SecretKey", "a00166.html#autotoc_md12", null ],
-        [ "Generating a SecretKey", "a00166.html#autotoc_md13", null ]
+      [ "Security", "a00166.html#autotoc_md13", [
+        [ "Setting a SecretKey", "a00166.html#autotoc_md14", null ],
+        [ "Generating a SecretKey", "a00166.html#autotoc_md15", null ]
       ] ]
     ] ],
     [ "Package Functions", "namespacemembers.html", [
