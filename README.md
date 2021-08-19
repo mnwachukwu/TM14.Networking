@@ -8,7 +8,7 @@ A `PacketBuffer` class is included to ensure every packet is sent and received r
 
 It is written against .Net Standard 2.0 so that it can be used in your .Net Framework, .Net Core, and .Net 5 applications.
 
-This library makes use of JSON and as such, utilizes `Newtonsoft.Json` as a dependency.
+This library makes use of JSON and as such, utilizes `Newtonsoft.Json` as a dependency from NuGet.
 
 Copyright &copy; [Studio TM14](https://tm14.net/)
 
