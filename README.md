@@ -10,6 +10,8 @@ It is written against .Net Standard 2.0 so that it can be used in your .Net Fram
 
 This library makes use of JSON and as such, utilizes `Newtonsoft.Json` as a dependency from NuGet.
 
+There is a detailed [documentation](https://networking.tm14.net/a00166.html) website if you need more guidance. There, you can find a full guide on the [Classes](https://networking.tm14.net/a00051.html) and [Events](https://networking.tm14.net/a00052.html) this library implements.
+
 Copyright &copy; [Studio TM14](https://tm14.net/)
 
 # Example Usage
@@ -18,7 +20,7 @@ Copyright &copy; [Studio TM14](https://tm14.net/)
 ```cs
 // Initialize the TcpClient somewhere
 var TcpClient = new TcpClient(ServerIp, ServerPort);
-TcpClient.HasHandledPacket += TcpClient_HasHandledPacket;
+TcpClient.HasPacket += TcpClient_HasPacket;
 ```
 
 ### Sending data
@@ -33,8 +35,8 @@ public static void SendData(string packetHeader, params string[] packetData)
 
 ### Receiving data
 ```cs
-// Example TcpClient_HasHandledPacket event handler
-private static void TcpClient_HasHandledPacket(object sender, HasHandledPacketEventArgs e)
+// Example TcpClient_HasPacket event handler
+private static void TcpClient_HasPacket(object sender, HasPacketEventArgs e)
 {
     HandlePacket(e.Packet);
 }
@@ -56,7 +58,7 @@ private static void HandlePacket(Packet packet)
 ```cs
 // Initialize the TcpServer somewhere
 var TcpServer = new TcpServer(ServerIp, ServerPort);
-TcpServer.HasHandledPacket += TcpServer_HasHandledPacket;
+TcpServer.HasPacket += TcpServer_HasPacket;
 TcpServer.StartListener();
 ```
 
@@ -72,8 +74,8 @@ public static void SendData(System.Net.Sockets.TcpClient client, string packetHe
 
 ### Receiving data
 ```cs
-// Example TcpServer_HasHandledPacket event handler
-private static void TcpServer_HasHandledPacket(object sender, HasHandledPacketEventArgs e)
+// Example TcpServer_HasPacket event handler
+private static void TcpServer_HasPacket(object sender, HasPacketEventArgs e)
 {
     HandlePacket(e.Sender, e.Packet);
 }
