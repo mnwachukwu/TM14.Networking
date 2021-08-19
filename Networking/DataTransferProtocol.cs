@@ -16,7 +16,7 @@
         public const char PacketDelimiter = '¤';
 
         /// <summary>
-        /// A secret key used to encrypt and decrypt data sent with and receive by this library.
+        /// A secret key used to encrypt and decrypt data sent with and received by this library.
         /// </summary>
         public static string SecretKey { get; set; }
     }
