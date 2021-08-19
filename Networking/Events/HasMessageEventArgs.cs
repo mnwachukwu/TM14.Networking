@@ -3,7 +3,7 @@
 namespace TM14.Networking.Events
 {
     /// <summary>
-    /// Arguments to raise with a HasConsoleMessage event.
+    /// Arguments to raise with a HasMessage event.
     /// </summary>
     public class HasMessageEventArgs : EventArgs
     {

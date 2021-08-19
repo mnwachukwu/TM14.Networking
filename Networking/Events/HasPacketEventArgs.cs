@@ -3,7 +3,7 @@
 namespace TM14.Networking.Events
 {
     /// <summary>
-    /// Arguments to raise with a HasHandledPacket event.
+    /// Arguments to raise with a HasPacket event.
     /// </summary>
     public class HasPacketEventArgs : EventArgs
     {
@@ -13,7 +13,7 @@ namespace TM14.Networking.Events
         public System.Net.Sockets.TcpClient Sender { get; set; }
 
         /// <summary>
-        /// The packet of data that was handled.
+        /// The packet of data that was received.
         /// </summary>
         public Packet Packet { get; set; }
     }
