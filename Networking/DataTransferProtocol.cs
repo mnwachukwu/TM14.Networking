@@ -20,6 +20,10 @@
         /// </summary>
         internal static string SecretKey { get; private set; }
 
+        /// <summary>
+        /// Sets a secret key to be used by the library to encrypt and decrypt traffic.
+        /// </summary>
+        /// <param name="key"></param>
         public static void SetSecretKey(string key)
         {
             SecretKey = key;
