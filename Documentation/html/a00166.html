@@ -168,7 +168,8 @@ Receiving data</h3>
 Security</h1>
 <h2><a class="anchor" id="autotoc_md14"></a>
 Setting a SecretKey</h2>
-<p>Within the <code>DataTransferProtocol</code> class, there is a member called <code>SecretKey</code> intended to secure trafic created by this library via encryption. It is defined as an <code>internal static string</code> so that you may use external secure mechanisms to set the value. It could also be defined as an <code>internal const string</code> so that you can set it in code, rather than during run-time. However, unless your application is obfuscated (encrypting or hiding away constant values), this compromises the network security of your application.</p>
+<p>Within the <code>DataTransferProtocol</code> class, there is a member called <code>SecretKey</code> intended to secure trafic created by this library via encryption. It can easily be set by calling the <code>DataTransferProtocol.SetSecretKey()</code> method.</p>
+<p><code>SecretKey</code> is defined as an <code>internal static string</code> so that you may use external secure mechanisms to set the value. It could also be defined as an <code>internal const string</code> so that you can set it in code, rather than during run-time. However, unless your application is obfuscated (encrypting or hiding away constant values), this compromises the network security of your application. This approach also breaks the <code>DataTransferProtocol.SetSecretKey()</code> method, but it can just be deleted.</p>
 <p>The client and server applications implementing this library must have the same <code>SecretKey</code> when communicating with each other or else, they will not be able to decrypt each other's traffic.</p>
 <p><code>SecretKey</code> can't be null or empty and it must be able to be converted from a base 64 <code>string</code> to a <code>byte[32]</code>.</p>
 <h2><a class="anchor" id="autotoc_md15"></a>

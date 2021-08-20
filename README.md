@@ -96,7 +96,9 @@ private static void HandlePacket(System.Net.Sockets.TcpClient client, Packet pac
 
 # Security
 ## Setting a SecretKey
-Within the `DataTransferProtocol` class, there is a member called `SecretKey` intended to secure trafic created by this library via encryption. It is defined as an `internal static string` so that you may use external secure mechanisms to set the value. It could also be defined as an `internal const string` so that you can set it in code, rather than during run-time. However, unless your application is obfuscated (encrypting or hiding away constant values), this compromises the network security of your application.
+Within the `DataTransferProtocol` class, there is a member called `SecretKey` intended to secure trafic created by this library via encryption. It can easily be set by calling the `DataTransferProtocol.SetSecretKey()` method.
+
+`SecretKey` is defined as an `internal static string` so that you may use external secure mechanisms to set the value. It could also be defined as an `internal const string` so that you can set it in code, rather than during run-time. However, unless your application is obfuscated (encrypting or hiding away constant values), this compromises the network security of your application. This approach also breaks the `DataTransferProtocol.SetSecretKey()` method, but it can just be deleted.
 
 The client and server applications implementing this library must have the same `SecretKey` when communicating with each other or else, they will not be able to decrypt each other's traffic.
 
