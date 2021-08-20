@@ -26,7 +26,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">TM14.Networking
-   &#160;<span id="projectnumber">1.0.0</span>
+   &#160;<span id="projectnumber">1.0.1</span>
    </div>
    <div id="projectbrief">Quick and simple implementation of TcpClient and TcpListener with a Packet data contract for data exchange, a PacketBuffer for orderly data exchange, and encryption features for secure data exchange.</div>
   </td>
@@ -84,7 +84,8 @@ $(document).ready(function(){initNavTree('a00072.html',''); initResizable(); });
 
 <div class="header">
   <div class="summary">
-<a href="#pub-static-attribs">Static Public Attributes</a> &#124;
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
+<a href="#pac-static-attribs">Static Package Attributes</a> &#124;
 <a href="#properties">Properties</a> &#124;
 <a href="a00069.html">List of all members</a>  </div>
   <div class="headertitle">
@@ -95,8 +96,14 @@ $(document).ready(function(){initNavTree('a00072.html',''); initResizable(); });
 <p>Establishes the set of protocols that the server and all clients must be aware of in order to transfer data without errors.  
  <a href="a00072.html#details">More...</a></p>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-attribs"></a>
-Static Public Attributes</h2></td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:a7d95b9126d87eb448c7cd0030ef05fe4"><td class="memItemLeft" align="right" valign="top"><a id="a7d95b9126d87eb448c7cd0030ef05fe4"></a>
+static void&#160;</td><td class="memItemRight" valign="bottom"><b>SetSecretKey</b> (string key)</td></tr>
+<tr class="separator:a7d95b9126d87eb448c7cd0030ef05fe4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pac-static-attribs"></a>
+Static Package Attributes</h2></td></tr>
 <tr class="memitem:a93b3e4296e4a978de3f1cdb09f8eacc2"><td class="memItemLeft" align="right" valign="top">const int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00072.html#a93b3e4296e4a978de3f1cdb09f8eacc2">BufferSize</a> = 1000000</td></tr>
 <tr class="memdesc:a93b3e4296e4a978de3f1cdb09f8eacc2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Establishes a buffer size of approximately 1Mb.  <a href="a00072.html#a93b3e4296e4a978de3f1cdb09f8eacc2">More...</a><br /></td></tr>
 <tr class="separator:a93b3e4296e4a978de3f1cdb09f8eacc2"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -106,7 +113,7 @@ Static Public Attributes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="properties"></a>
 Properties</h2></td></tr>
-<tr class="memitem:a486567e7c65cb73164c9b3e82b00c586"><td class="memItemLeft" align="right" valign="top">static string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00072.html#a486567e7c65cb73164c9b3e82b00c586">SecretKey</a><code> [get, set]</code></td></tr>
+<tr class="memitem:a486567e7c65cb73164c9b3e82b00c586"><td class="memItemLeft" align="right" valign="top">static string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00072.html#a486567e7c65cb73164c9b3e82b00c586">SecretKey</a><code> [get, private set]</code></td></tr>
 <tr class="memdesc:a486567e7c65cb73164c9b3e82b00c586"><td class="mdescLeft">&#160;</td><td class="mdescRight">A secret key used to encrypt and decrypt data sent with and received by this library.  <a href="a00072.html#a486567e7c65cb73164c9b3e82b00c586">More...</a><br /></td></tr>
 <tr class="separator:a486567e7c65cb73164c9b3e82b00c586"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -128,7 +135,7 @@ Properties</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">package</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -152,7 +159,7 @@ Properties</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">package</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -177,7 +184,7 @@ Properties</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">get</span><span class="mlabel">set</span></span>  </td>
+<span class="mlabels"><span class="mlabel">static</span><span class="mlabel">get</span><span class="mlabel">private set</span><span class="mlabel">package</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">

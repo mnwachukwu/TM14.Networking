@@ -8,16 +8,21 @@
         /// <summary>
         /// Establishes a buffer size of approximately 1Mb.
         /// </summary>
-        public const int BufferSize = 1000000;
+        internal const int BufferSize = 1000000;
 
         /// <summary>
         /// A character used to keep individual packets seperated.
         /// </summary>
-        public const char PacketDelimiter = '¤';
+        internal const char PacketDelimiter = '¤';
 
         /// <summary>
         /// A secret key used to encrypt and decrypt data sent with and received by this library.
         /// </summary>
-        public static string SecretKey { get; set; }
+        internal static string SecretKey { get; private set; }
+
+        public static void SetSecretKey(string key)
+        {
+            SecretKey = key;
+        }
     }
 }

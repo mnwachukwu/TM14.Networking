@@ -26,7 +26,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">TM14.Networking
-   &#160;<span id="projectnumber">1.0.0</span>
+   &#160;<span id="projectnumber">1.0.1</span>
    </div>
    <div id="projectbrief">Quick and simple implementation of TcpClient and TcpListener with a Packet data contract for data exchange, a PacketBuffer for orderly data exchange, and encryption features for secure data exchange.</div>
   </td>
@@ -136,18 +136,12 @@ Properties</h2></td></tr>
 <tr class="memitem:a638c22ad9769b5312217c84bd2d83f33"><td class="memItemLeft" align="right" valign="top">List&lt; System.Net.Sockets.TcpClient &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00108.html#a638c22ad9769b5312217c84bd2d83f33">ConnectedClients</a><code> [get]</code></td></tr>
 <tr class="memdesc:a638c22ad9769b5312217c84bd2d83f33"><td class="mdescLeft">&#160;</td><td class="mdescRight">A list of connected clients.  <a href="a00108.html#a638c22ad9769b5312217c84bd2d83f33">More...</a><br /></td></tr>
 <tr class="separator:a638c22ad9769b5312217c84bd2d83f33"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab8018d0068efe9672232e8a0efc01b2f"><td class="memItemLeft" align="right" valign="top">List&lt; string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00108.html#ab8018d0068efe9672232e8a0efc01b2f">ExcludedIps</a><code> [get, set]</code></td></tr>
+<tr class="memitem:ab8018d0068efe9672232e8a0efc01b2f"><td class="memItemLeft" align="right" valign="top">List&lt; string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00108.html#ab8018d0068efe9672232e8a0efc01b2f">ExcludedIps</a><code> [get, private set]</code></td></tr>
 <tr class="memdesc:ab8018d0068efe9672232e8a0efc01b2f"><td class="mdescLeft">&#160;</td><td class="mdescRight">IPs to exclude when accepting connections.  <a href="a00108.html#ab8018d0068efe9672232e8a0efc01b2f">More...</a><br /></td></tr>
 <tr class="separator:ab8018d0068efe9672232e8a0efc01b2f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac77ac596f4feb2caa82c1fd2e81416a1"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00108.html#ac77ac596f4feb2caa82c1fd2e81416a1">IsActive</a><code> [get, private set]</code></td></tr>
 <tr class="memdesc:ac77ac596f4feb2caa82c1fd2e81416a1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines if the server is currently listening for connections.  <a href="a00108.html#ac77ac596f4feb2caa82c1fd2e81416a1">More...</a><br /></td></tr>
 <tr class="separator:ac77ac596f4feb2caa82c1fd2e81416a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2b5037db6f2b2078522fe9885df0f8bd"><td class="memItemLeft" align="right" valign="top">Dictionary&lt; System.Net.Sockets.TcpClient, Thread &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00108.html#a2b5037db6f2b2078522fe9885df0f8bd">ReadDataThread</a><code> [get]</code></td></tr>
-<tr class="memdesc:a2b5037db6f2b2078522fe9885df0f8bd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Contains a collection of <a class="el" href="a00108.html#aee3dfea3b59aab8f94b372405d9a9b8b" title="Handles reading data from a client, passing it to the HandleData method.">ReadData</a> threads, indexed by the client utilizing the thread.  <a href="a00108.html#a2b5037db6f2b2078522fe9885df0f8bd">More...</a><br /></td></tr>
-<tr class="separator:a2b5037db6f2b2078522fe9885df0f8bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a540b6dc95da72d9efa905be59ea1cf2a"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00100.html">PacketBuffer</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00108.html#a540b6dc95da72d9efa905be59ea1cf2a">PacketBuffer</a><code> [get]</code></td></tr>
-<tr class="memdesc:a540b6dc95da72d9efa905be59ea1cf2a"><td class="mdescLeft">&#160;</td><td class="mdescRight">A buffer for reading packets in an orderly fashion.  <a href="a00108.html#a540b6dc95da72d9efa905be59ea1cf2a">More...</a><br /></td></tr>
-<tr class="separator:a540b6dc95da72d9efa905be59ea1cf2a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="events"></a>
 Events</h2></td></tr>
@@ -196,6 +190,12 @@ Private Attributes</h2></td></tr>
 <tr class="memitem:abf7fd917bf1971ab80b272d9c6732d4f"><td class="memItemLeft" align="right" valign="top">readonly TcpListener&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00108.html#abf7fd917bf1971ab80b272d9c6732d4f">server</a></td></tr>
 <tr class="memdesc:abf7fd917bf1971ab80b272d9c6732d4f"><td class="mdescLeft">&#160;</td><td class="mdescRight">The underlying TcpListener this object uses to communicate with clients.  <a href="a00108.html#abf7fd917bf1971ab80b272d9c6732d4f">More...</a><br /></td></tr>
 <tr class="separator:abf7fd917bf1971ab80b272d9c6732d4f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8bdda5b4d1b5b1a3008172d4f9b7a6e5"><td class="memItemLeft" align="right" valign="top">readonly Dictionary&lt; System.Net.Sockets.TcpClient, Thread &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00108.html#a8bdda5b4d1b5b1a3008172d4f9b7a6e5">readDataThread</a></td></tr>
+<tr class="memdesc:a8bdda5b4d1b5b1a3008172d4f9b7a6e5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Contains a collection of <a class="el" href="a00108.html#aee3dfea3b59aab8f94b372405d9a9b8b" title="Handles reading data from a client, passing it to the HandleData method.">ReadData</a> threads, indexed by the client utilizing the thread.  <a href="a00108.html#a8bdda5b4d1b5b1a3008172d4f9b7a6e5">More...</a><br /></td></tr>
+<tr class="separator:a8bdda5b4d1b5b1a3008172d4f9b7a6e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a77e4591d63673c907a35a129db716bb4"><td class="memItemLeft" align="right" valign="top">readonly <a class="el" href="a00100.html">PacketBuffer</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00108.html#a77e4591d63673c907a35a129db716bb4">packetBuffer</a></td></tr>
+<tr class="memdesc:a77e4591d63673c907a35a129db716bb4"><td class="mdescLeft">&#160;</td><td class="mdescRight">A buffer for reading packets in an orderly fashion.  <a href="a00108.html#a77e4591d63673c907a35a129db716bb4">More...</a><br /></td></tr>
+<tr class="separator:a77e4591d63673c907a35a129db716bb4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>A wrapper class around the TcpListener class used to handle connected clients and sending/receiving data. </p>
@@ -758,6 +758,54 @@ Private Attributes</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
+<a id="a77e4591d63673c907a35a129db716bb4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a77e4591d63673c907a35a129db716bb4">&#9670;&nbsp;</a></span>packetBuffer</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">readonly <a class="el" href="a00100.html">PacketBuffer</a> TM14.Networking.TcpServer.packetBuffer</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>A buffer for reading packets in an orderly fashion. </p>
+
+</div>
+</div>
+<a id="a8bdda5b4d1b5b1a3008172d4f9b7a6e5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8bdda5b4d1b5b1a3008172d4f9b7a6e5">&#9670;&nbsp;</a></span>readDataThread</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">readonly Dictionary&lt;System.Net.Sockets.TcpClient, Thread&gt; TM14.Networking.TcpServer.readDataThread</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Contains a collection of <a class="el" href="a00108.html#aee3dfea3b59aab8f94b372405d9a9b8b" title="Handles reading data from a client, passing it to the HandleData method.">ReadData</a> threads, indexed by the client utilizing the thread. </p>
+
+</div>
+</div>
 <a id="abf7fd917bf1971ab80b272d9c6732d4f"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#abf7fd917bf1971ab80b272d9c6732d4f">&#9670;&nbsp;</a></span>server</h2>
 
@@ -822,7 +870,7 @@ Private Attributes</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">get</span><span class="mlabel">set</span></span>  </td>
+<span class="mlabels"><span class="mlabel">get</span><span class="mlabel">private set</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -852,54 +900,6 @@ Private Attributes</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Determines if the server is currently listening for connections. </p>
-
-</div>
-</div>
-<a id="a540b6dc95da72d9efa905be59ea1cf2a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a540b6dc95da72d9efa905be59ea1cf2a">&#9670;&nbsp;</a></span>PacketBuffer</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="a00100.html">PacketBuffer</a> TM14.Networking.TcpServer.PacketBuffer</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">get</span><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>A buffer for reading packets in an orderly fashion. </p>
-
-</div>
-</div>
-<a id="a2b5037db6f2b2078522fe9885df0f8bd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2b5037db6f2b2078522fe9885df0f8bd">&#9670;&nbsp;</a></span>ReadDataThread</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">Dictionary&lt;System.Net.Sockets.TcpClient, Thread&gt; TM14.Networking.TcpServer.ReadDataThread</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">get</span><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Contains a collection of <a class="el" href="a00108.html#aee3dfea3b59aab8f94b372405d9a9b8b" title="Handles reading data from a client, passing it to the HandleData method.">ReadData</a> threads, indexed by the client utilizing the thread. </p>
 
 </div>
 </div>

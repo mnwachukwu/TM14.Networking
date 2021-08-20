@@ -20,6 +20,27 @@ namespace TM14.Networking
         private System.Net.Sockets.TcpClient client;
 
         /// <summary>
+        /// Determines if the <see cref="TcpClient"/> will read data in its own thread or if the client
+        /// will wait for a calling thread to read data.
+        /// </summary>
+        private readonly ReadDataMode readDataMode;
+
+        /// <summary>
+        /// A buffer for reading packets in an orderly fashion.
+        /// </summary>
+        private readonly PacketBuffer packetBuffer;
+
+        /// <summary>
+        /// The IP address of the server the client will connect to.
+        /// </summary>
+        private readonly string serverIp;
+
+        /// <summary>
+        /// The port which the client will communicate on.
+        /// </summary>
+        private readonly int port;
+
+        /// <summary>
         /// An event which is invoked whenever a connection to the server is established.
         /// </summary>
         public event EventHandler<EventArgs> Connected;
@@ -50,27 +71,6 @@ namespace TM14.Networking
         public bool IsConnected => client != null && client.Connected;
 
         /// <summary>
-        /// Determines if the <see cref="TcpClient"/> will read data in its own thread or if the client
-        /// will wait for a calling thread to read data.
-        /// </summary>
-        private ReadDataMode ReadDataMode { get; }
-
-        /// <summary>
-        /// A buffer for reading packets in an orderly fashion.
-        /// </summary>
-        private PacketBuffer PacketBuffer { get; }
-
-        /// <summary>
-        /// The IP address of the server the client will connect to.
-        /// </summary>
-        private string ServerIp { get; }
-
-        /// <summary>
-        /// The port which the client will communicate on.
-        /// </summary>
-        private int Port { get; }
-
-        /// <summary>
         /// Instantiates a client and prepares it to connect to a server.
         /// </summary>
         /// <param name="serverIp">The IP to connect to.</param>
@@ -81,10 +81,10 @@ namespace TM14.Networking
         /// </param>
         public TcpClient(string serverIp, int port, ReadDataMode readDataMode = ReadDataMode.Internally)
         {
-            ServerIp = serverIp;
-            Port = port;
-            ReadDataMode = readDataMode;
-            PacketBuffer = new PacketBuffer();
+            this.serverIp = serverIp;
+            this.port = port;
+            this.readDataMode = readDataMode;
+            packetBuffer = new PacketBuffer();
         }
 
         /// <summary>
@@ -121,7 +121,7 @@ namespace TM14.Networking
         /// </summary>
         private void ReadDataInternally()
         {
-            if (ReadDataMode != ReadDataMode.Internally)
+            if (readDataMode != ReadDataMode.Internally)
             {
                 return;
             }
@@ -142,11 +142,11 @@ namespace TM14.Networking
                     var data = Encoding.Unicode.GetString(bytes, 0, i);
                     var keyBytes = Convert.FromBase64String(DataTransferProtocol.SecretKey);
 
-                    PacketBuffer.Enqueue(data);
+                    packetBuffer.Enqueue(data);
 
-                    while (PacketBuffer.Queue.Any())
+                    while (packetBuffer.Queue.Any())
                     {
-                        var decryptedPacketString = AesHmacCrypto.SimpleDecrypt(PacketBuffer.Queue.Dequeue(), keyBytes, keyBytes);
+                        var decryptedPacketString = AesHmacCrypto.SimpleDecrypt(packetBuffer.Queue.Dequeue(), keyBytes, keyBytes);
                         HandleData(decryptedPacketString);
                     }
                 }
@@ -168,7 +168,7 @@ namespace TM14.Networking
         /// </summary>
         public void ReadData()
         {
-            if (ReadDataMode != ReadDataMode.Externally)
+            if (readDataMode != ReadDataMode.Externally)
             {
                 return;
             }
@@ -189,11 +189,11 @@ namespace TM14.Networking
                     var data = Encoding.Unicode.GetString(bytes, 0, i);
                     var keyBytes = Convert.FromBase64String(DataTransferProtocol.SecretKey);
 
-                    PacketBuffer.Enqueue(data);
+                    packetBuffer.Enqueue(data);
 
-                    while (PacketBuffer.Queue.Any())
+                    while (packetBuffer.Queue.Any())
                     {
-                        var decryptedPacketString = AesHmacCrypto.SimpleDecrypt(PacketBuffer.Queue.Dequeue(), keyBytes, keyBytes);
+                        var decryptedPacketString = AesHmacCrypto.SimpleDecrypt(packetBuffer.Queue.Dequeue(), keyBytes, keyBytes);
                         HandleData(decryptedPacketString);
                     }
                 }
@@ -229,10 +229,10 @@ namespace TM14.Networking
         {
             try
             {
-                client = new System.Net.Sockets.TcpClient(ServerIp, Port);
+                client = new System.Net.Sockets.TcpClient(serverIp, port);
                 OnConnect(null);
 
-                if (ReadDataMode == ReadDataMode.Internally)
+                if (readDataMode == ReadDataMode.Internally)
                 {
                     var t = new Thread(ReadDataInternally);
                     t.Start();

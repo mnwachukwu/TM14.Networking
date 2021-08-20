@@ -6,6 +6,10 @@
     <RootNamespace>TM14.Networking</RootNamespace>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <Version>1.0.1</Version>
+    <Description>Quick and simple implementation of TcpClient and TcpListener with a Packet data contract for data exchange, a PacketBuffer for orderly data exchange, and encryption features for secure data exchange.</Description>
+    <Copyright>© 2021 Studio TM14</Copyright>
+    <Authors>Studio TM14</Authors>
   </PropertyGroup>
 
   <ItemGroup>

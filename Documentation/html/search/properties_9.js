@@ -1,5 +1,6 @@
 var searchData=
 [
-  ['readdatamode_146',['ReadDataMode',['../a00104.html#ac9d71f2a774e4ff09ccd5b8a67402eb6',1,'TM14::Networking::TcpClient']]],
-  ['readdatathread_147',['ReadDataThread',['../a00108.html#a2b5037db6f2b2078522fe9885df0f8bd',1,'TM14::Networking::TcpServer']]]
+  ['secretkey_151',['SecretKey',['../a00072.html#a486567e7c65cb73164c9b3e82b00c586',1,'TM14::Networking::DataTransferProtocol']]],
+  ['sender_152',['Sender',['../a00092.html#a4128fea96abc23c902e4a54ac6bcd337',1,'TM14::Networking::Events::HasPacketEventArgs']]],
+  ['socketexception_153',['SocketException',['../a00084.html#a241723b22b8cdc08d32eb08cb22d3963',1,'TM14::Networking::Events::ConnectionFailedEventArgs']]]
 ];

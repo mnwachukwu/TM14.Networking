@@ -22,6 +22,16 @@ namespace TM14.Networking
         private readonly TcpListener server;
 
         /// <summary>
+        /// Contains a collection of <see cref="ReadData"/> threads, indexed by the client utilizing the thread.
+        /// </summary>
+        private readonly Dictionary<System.Net.Sockets.TcpClient, Thread> readDataThread;
+
+        /// <summary>
+        /// A buffer for reading packets in an orderly fashion.
+        /// </summary>
+        private readonly PacketBuffer packetBuffer;
+
+        /// <summary>
         /// An event which is invoked whenever the networking library has a message.
         /// </summary>
         public event EventHandler<HasMessageEventArgs> HasMessage;
@@ -49,22 +59,12 @@ namespace TM14.Networking
         /// <summary>
         /// IPs to exclude when accepting connections.
         /// </summary>
-        public List<string> ExcludedIps { get; set; }
+        public List<string> ExcludedIps { get; private set; }
 
         /// <summary>
         /// Determines if the server is currently listening for connections.
         /// </summary>
         public bool IsActive { get; private set; }
-
-        /// <summary>
-        /// Contains a collection of <see cref="ReadData"/> threads, indexed by the client utilizing the thread.
-        /// </summary>
-        private Dictionary<System.Net.Sockets.TcpClient, Thread> ReadDataThread { get; }
-
-        /// <summary>
-        /// A buffer for reading packets in an orderly fashion.
-        /// </summary>
-        private PacketBuffer PacketBuffer { get; }
 
         /// <summary>
         /// Instantiates a server and prepares it to listen for connections.
@@ -77,8 +77,8 @@ namespace TM14.Networking
 
             server = new TcpListener(localAddr, port);
             ConnectedClients = new List<System.Net.Sockets.TcpClient>();
-            ReadDataThread = new Dictionary<System.Net.Sockets.TcpClient, Thread>();
-            PacketBuffer = new PacketBuffer();
+            readDataThread = new Dictionary<System.Net.Sockets.TcpClient, Thread>();
+            packetBuffer = new PacketBuffer();
             ExcludedIps = new List<string>();
         }
 
@@ -124,10 +124,10 @@ namespace TM14.Networking
 
             ConnectedClients.Remove(client);
 
-            if (ReadDataThread.ContainsKey(client))
+            if (readDataThread.ContainsKey(client))
             {
-                ReadDataThread[client].Abort();
-                ReadDataThread.Remove(client);
+                readDataThread[client].Abort();
+                readDataThread.Remove(client);
             }
         }
 
@@ -151,8 +151,8 @@ namespace TM14.Networking
 
                     OnClientConnected(args);
                     ConnectedClients.Add(client);
-                    ReadDataThread[client] = new Thread(ReadData);
-                    ReadDataThread[client].Start(client);
+                    readDataThread[client] = new Thread(ReadData);
+                    readDataThread[client].Start(client);
                 }
             }
         }
@@ -174,11 +174,11 @@ namespace TM14.Networking
                     var data = Encoding.Unicode.GetString(bytes, 0, i);
                     var keyBytes = Convert.FromBase64String(DataTransferProtocol.SecretKey);
 
-                    PacketBuffer.Enqueue(data);
+                    packetBuffer.Enqueue(data);
 
-                    while (PacketBuffer.Queue.Any())
+                    while (packetBuffer.Queue.Any())
                     {
-                        var decryptedPacketString = AesHmacCrypto.SimpleDecrypt(PacketBuffer.Queue.Dequeue(), keyBytes, keyBytes);
+                        var decryptedPacketString = AesHmacCrypto.SimpleDecrypt(packetBuffer.Queue.Dequeue(), keyBytes, keyBytes);
                         HandleData(client, decryptedPacketString);
                     }
                 }
@@ -187,7 +187,7 @@ namespace TM14.Networking
             }
             catch (ThreadAbortException)
             {
-                ReadDataThread.Remove(client);
+                readDataThread.Remove(client);
             }
             catch (Exception e)
             {
