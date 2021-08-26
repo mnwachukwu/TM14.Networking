@@ -41,6 +41,11 @@ namespace TM14.Networking
         private readonly int port;
 
         /// <summary>
+        /// Determines if the underlying <see cref="System.Net.Sockets.TcpClient"/> is connected.
+        /// </summary>
+        public bool IsConnected => client != null && client.Connected;
+
+        /// <summary>
         /// An event which is invoked whenever a connection to the server is established.
         /// </summary>
         public event EventHandler<EventArgs> Connected;
@@ -66,9 +71,9 @@ namespace TM14.Networking
         public event EventHandler<HasPacketEventArgs> HasPacket;
 
         /// <summary>
-        /// Determines if the underlying <see cref="System.Net.Sockets.TcpClient"/> is connected.
+        /// An event which is invoked whenever the networking library catches an exception in <see cref="ReadData"/>, <see cref="ReadDataInternally"/>, or <see cref="SendData"/>.
         /// </summary>
-        public bool IsConnected => client != null && client.Connected;
+        public event EventHandler<HasCaughtExceptionEventArgs> HasCaughtException;
 
         /// <summary>
         /// Instantiates a client and prepares it to connect to a server.
@@ -106,8 +111,20 @@ namespace TM14.Networking
                 }
                 catch (Exception e)
                 {
+                    // TODO: Display a message to the user here
+
+                    var args = new HasCaughtExceptionEventArgs
+                    {
+                        Exception = e,
+                        TimeStamp = DateTime.Now
+                    };
+
+                    OnHasCaughtException(args);
                     Disconnect();
-                    Debug.WriteLine(e);
+
+#if DEBUG
+                    throw;
+#endif
                 }
             }
         }
@@ -153,9 +170,20 @@ namespace TM14.Networking
             }
             catch (Exception e)
             {
-                Disconnect();
-                Debug.WriteLine($"Exception: {e}");
                 // TODO: Display a message to the user here
+
+                var args = new HasCaughtExceptionEventArgs
+                {
+                    Exception = e,
+                    TimeStamp = DateTime.Now
+                };
+
+                OnHasCaughtException(args);
+                Disconnect();
+
+#if DEBUG
+                throw;
+#endif
             }
         }
 
@@ -200,9 +228,20 @@ namespace TM14.Networking
             }
             catch (Exception e)
             {
-                Disconnect();
-                Debug.WriteLine($"Exception: {e}");
                 // TODO: Display a message to the user here
+
+                var args = new HasCaughtExceptionEventArgs
+                {
+                    Exception = e,
+                    TimeStamp = DateTime.Now
+                };
+
+                OnHasCaughtException(args);
+                Disconnect();
+
+#if DEBUG
+                throw;
+#endif
                 // TODO: When reading data externally, this needs to stop the external reader process (such as a timer)
             }
         }
@@ -331,6 +370,16 @@ namespace TM14.Networking
             var handler = ConnectionFailed;
 
             Message("Failed to connect to server.");
+            handler?.Invoke(this, e);
+        }
+
+        /// <summary>
+        /// Invokes an event containing an <see cref="Exception"/> that was caught.
+        /// </summary>
+        /// <param name="e"></param>
+        private void OnHasCaughtException(HasCaughtExceptionEventArgs e)
+        {
+            var handler = HasCaughtException;
             handler?.Invoke(this, e);
         }
     }

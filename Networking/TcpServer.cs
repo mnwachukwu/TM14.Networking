@@ -52,6 +52,11 @@ namespace TM14.Networking
         public event EventHandler<ClientDisconnectedEventArgs> ClientDisconnected;
 
         /// <summary>
+        /// An event which is invoked whenever the networking library catches an exception in <see cref="ReadData"/> or <see cref="SendDataTo(System.Net.Sockets.TcpClient,Packet)"/>.
+        /// </summary>
+        public event EventHandler<HasCaughtExceptionEventArgs> HasCaughtException;
+
+        /// <summary>
         /// A list of connected clients.
         /// </summary>
         public List<System.Net.Sockets.TcpClient> ConnectedClients { get; }
@@ -191,9 +196,19 @@ namespace TM14.Networking
             }
             catch (Exception e)
             {
-                DisconnectClient(client);
-                Debug.WriteLine($"Exception: {e}");
                 // TODO: Send a message to the client here
+
+                var args = new HasCaughtExceptionEventArgs
+                {
+                    Exception = e,
+                    TimeStamp = DateTime.Now
+                };
+
+                OnHasCaughtException(args);
+                DisconnectClient(client);
+#if DEBUG
+                throw;
+#endif
             }
         }
 
@@ -257,8 +272,19 @@ namespace TM14.Networking
                 }
                 catch (Exception e)
                 {
+                    // TODO: Send a message to the client here
+
+                    var args = new HasCaughtExceptionEventArgs
+                    {
+                        Exception = e,
+                        TimeStamp = DateTime.Now
+                    };
+
+                    OnHasCaughtException(args);
                     DisconnectClient(client);
-                    Debug.WriteLine($"Exception: {e}");
+#if DEBUG
+                    throw;
+#endif
                 }
             }
         }
@@ -357,6 +383,16 @@ namespace TM14.Networking
             var handler = ClientDisconnected;
 
             Message($"Client {e.Client.Client.RemoteEndPoint} disconnected.");
+            handler?.Invoke(this, e);
+        }
+
+        /// <summary>
+        /// Invokes an event containing an <see cref="Exception"/> that was caught.
+        /// </summary>
+        /// <param name="e"></param>
+        private void OnHasCaughtException(HasCaughtExceptionEventArgs e)
+        {
+            var handler = HasCaughtException;
             handler?.Invoke(this, e);
         }
     }
