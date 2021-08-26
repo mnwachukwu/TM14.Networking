@@ -171,6 +171,7 @@ namespace TM14.Networking
             var client = (System.Net.Sockets.TcpClient)obj;
             var stream = client.GetStream();
             var bytes = new byte[DataTransferProtocol.BufferSize];
+
             try
             {
                 int i;
@@ -206,9 +207,7 @@ namespace TM14.Networking
 
                 OnHasCaughtException(args);
                 DisconnectClient(client);
-#if DEBUG
-                throw;
-#endif
+                Debug.WriteLine($"Exception: {e.Message}");
             }
         }
 
@@ -282,9 +281,7 @@ namespace TM14.Networking
 
                     OnHasCaughtException(args);
                     DisconnectClient(client);
-#if DEBUG
-                    throw;
-#endif
+                    Debug.WriteLine($"Exception: {e.Message}");
                 }
             }
         }

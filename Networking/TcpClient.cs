@@ -121,10 +121,7 @@ namespace TM14.Networking
 
                     OnHasCaughtException(args);
                     Disconnect();
-
-#if DEBUG
-                    throw;
-#endif
+                    Debug.WriteLine($"Exception: {e.Message}");
                 }
             }
         }
@@ -180,10 +177,7 @@ namespace TM14.Networking
 
                 OnHasCaughtException(args);
                 Disconnect();
-
-#if DEBUG
-                throw;
-#endif
+                Debug.WriteLine($"Exception: {e.Message}");
             }
         }
 
@@ -238,10 +232,8 @@ namespace TM14.Networking
 
                 OnHasCaughtException(args);
                 Disconnect();
+                Debug.WriteLine($"Exception: {e.Message}");
 
-#if DEBUG
-                throw;
-#endif
                 // TODO: When reading data externally, this needs to stop the external reader process (such as a timer)
             }
         }
