@@ -148,7 +148,12 @@ namespace TM14.Networking
                 var client = server.AcceptTcpClient();
                 var ipAddress = ((IPEndPoint)client.Client.RemoteEndPoint).Address.ToString();
 
-                if (!ExcludedIps.Contains(ipAddress))
+                if (ExcludedIps.Contains(ipAddress))
+                {
+                    // TODO: Send a message indicating that the client has been excluded
+                    DisconnectClient(client);
+                }
+                else
                 {
                     OnClientConnected(client);
                     ConnectedClients.Add(client);

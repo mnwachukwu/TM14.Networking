@@ -20,10 +20,9 @@ namespace TM14.Networking
         private System.Net.Sockets.TcpClient client;
 
         /// <summary>
-        /// Determines if the <see cref="TcpClient"/> will read data in its own thread or if the client
-        /// will wait for a calling thread to read data.
+        /// The thread used to read data.
         /// </summary>
-        private readonly ReadDataMode readDataMode;
+        private Thread readDataThread;
 
         /// <summary>
         /// A buffer for reading packets in an orderly fashion.
@@ -80,15 +79,10 @@ namespace TM14.Networking
         /// </summary>
         /// <param name="serverIp">The IP to connect to.</param>
         /// <param name="port">The port to connect over.</param>
-        /// <param name="readDataMode">
-        /// Should this client read data in its own thread (internally),
-        /// or will it be processed on some other thread (externally)?
-        /// </param>
-        public TcpClient(string serverIp, int port, ReadDataMode readDataMode = ReadDataMode.Internally)
+        public TcpClient(string serverIp, int port)
         {
             this.serverIp = serverIp;
             this.port = port;
-            this.readDataMode = readDataMode;
             packetBuffer = new PacketBuffer();
         }
 
@@ -126,13 +120,8 @@ namespace TM14.Networking
         /// <see cref="TcpClient"/> class.
         /// </remarks>
         /// </summary>
-        private void ReadDataInternally()
+        private void ReadData()
         {
-            if (readDataMode != ReadDataMode.Internally)
-            {
-                return;
-            }
-
             if (!client.Connected)
             {
                 return;
@@ -170,56 +159,56 @@ namespace TM14.Networking
             }
         }
 
-        /// <summary>
-        /// Handles reading data from the server, passing it to the HandleData method.
-        /// <remarks>
-        /// This method will not block the calling thread and is intended to be used outside
-        /// of the <see cref="TcpClient"/> class inside a loop.
-        /// </remarks>
-        /// </summary>
-        public void ReadData()
-        {
-            if (readDataMode != ReadDataMode.Externally)
-            {
-                return;
-            }
+        ///// <summary>
+        ///// Handles reading data from the server, passing it to the HandleData method.
+        ///// <remarks>
+        ///// This method will not block the calling thread and is intended to be used outside
+        ///// of the <see cref="TcpClient"/> class inside a loop.
+        ///// </remarks>
+        ///// </summary>
+        //public void ReadData()
+        //{
+        //    if (readDataMode != ReadDataMode.Externally)
+        //    {
+        //        return;
+        //    }
 
-            if (!client.Connected)
-            {
-                return;
-            }
+        //    if (!client.Connected)
+        //    {
+        //        return;
+        //    }
 
-            var stream = client.GetStream();
-            var bytes = new byte[DataTransferProtocol.BufferSize];
+        //    var stream = client.GetStream();
+        //    var bytes = new byte[DataTransferProtocol.BufferSize];
 
-            try
-            {
-                if (stream.DataAvailable)
-                {
-                    var i = stream.Read(bytes, 0, bytes.Length);
-                    var data = Encoding.Unicode.GetString(bytes, 0, i);
-                    var keyBytes = Convert.FromBase64String(DataTransferProtocol.SecretKey);
+        //    try
+        //    {
+        //        if (stream.DataAvailable)
+        //        {
+        //            var i = stream.Read(bytes, 0, bytes.Length);
+        //            var data = Encoding.Unicode.GetString(bytes, 0, i);
+        //            var keyBytes = Convert.FromBase64String(DataTransferProtocol.SecretKey);
 
-                    packetBuffer.Enqueue(data);
+        //            packetBuffer.Enqueue(data);
 
-                    while (packetBuffer.Queue.Any())
-                    {
-                        var decryptedPacketString = AesHmacCrypto.SimpleDecrypt(packetBuffer.Queue.Dequeue(), keyBytes, keyBytes);
+        //            while (packetBuffer.Queue.Any())
+        //            {
+        //                var decryptedPacketString = AesHmacCrypto.SimpleDecrypt(packetBuffer.Queue.Dequeue(), keyBytes, keyBytes);
 
-                        HandleData(decryptedPacketString);
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                // TODO: Display a message to the user here
+        //                HandleData(decryptedPacketString);
+        //            }
+        //        }
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        // TODO: Display a message to the user here
 
-                OnHasCaughtException(e, DateTime.Now);
-                Disconnect();
+        //        OnHasCaughtException(e, DateTime.Now);
+        //        Disconnect();
 
-                // TODO: When reading data externally, this needs to stop the external reader process (such as a timer)
-            }
-        }
+        //        // TODO: When reading data externally, this needs to stop the external reader process (such as a timer)
+        //    }
+        //}
 
         /// <summary>
         /// Deserializes a string into a <see cref="Packet"/> that will be bubbled up to <see cref="HasPacket"/>.
@@ -241,13 +230,8 @@ namespace TM14.Networking
             {
                 client = new System.Net.Sockets.TcpClient(serverIp, port);
                 OnConnect();
-
-                if (readDataMode == ReadDataMode.Internally)
-                {
-                    var t = new Thread(ReadDataInternally);
-
-                    t.Start();
-                }
+                readDataThread = new Thread(ReadData);
+                readDataThread.Start();
             }
             catch (SocketException e)
             {
