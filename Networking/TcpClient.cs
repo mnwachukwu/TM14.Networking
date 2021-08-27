@@ -154,9 +154,12 @@ namespace TM14.Networking
                     while (packetBuffer.Queue.Any())
                     {
                         var decryptedPacketString = AesHmacCrypto.SimpleDecrypt(packetBuffer.Queue.Dequeue(), keyBytes, keyBytes);
+
                         HandleData(decryptedPacketString);
                     }
                 }
+
+                Disconnect();
             }
             catch (Exception e)
             {
@@ -202,6 +205,7 @@ namespace TM14.Networking
                     while (packetBuffer.Queue.Any())
                     {
                         var decryptedPacketString = AesHmacCrypto.SimpleDecrypt(packetBuffer.Queue.Dequeue(), keyBytes, keyBytes);
+
                         HandleData(decryptedPacketString);
                     }
                 }
@@ -224,6 +228,7 @@ namespace TM14.Networking
         private void HandleData(string data)
         {
             var packet = JsonConvert.DeserializeObject<Packet>(data);
+
             OnHasPacket(null, packet);
         }
 
@@ -240,6 +245,7 @@ namespace TM14.Networking
                 if (readDataMode == ReadDataMode.Internally)
                 {
                     var t = new Thread(ReadDataInternally);
+
                     t.Start();
                 }
             }

@@ -118,9 +118,7 @@ namespace TM14.Networking
         /// <param name="client">Client to disconnect.</param>
         public void DisconnectClient(System.Net.Sockets.TcpClient client)
         {
-            var args = new ClientDisconnectedEventArgs { Client = client };
-            
-            OnClientDisconnected(args);
+            OnClientDisconnected(client);
 
             if (client.Connected)
             {
@@ -152,9 +150,7 @@ namespace TM14.Networking
 
                 if (!ExcludedIps.Contains(ipAddress))
                 {
-                    var args = new ClientConnectedEventArgs { Client = client };
-
-                    OnClientConnected(args);
+                    OnClientConnected(client);
                     ConnectedClients.Add(client);
                     readDataThread[client] = new Thread(ReadData);
                     readDataThread[client].Start(client);
@@ -185,6 +181,7 @@ namespace TM14.Networking
                     while (packetBuffer.Queue.Any())
                     {
                         var decryptedPacketString = AesHmacCrypto.SimpleDecrypt(packetBuffer.Queue.Dequeue(), keyBytes, keyBytes);
+
                         HandleData(client, decryptedPacketString);
                     }
                 }
@@ -205,15 +202,14 @@ namespace TM14.Networking
                     TimeStamp = DateTime.Now
                 };
 
-                OnHasCaughtException(args);
+                OnHasCaughtException(e, DateTime.Now);
                 DisconnectClient(client);
-                Debug.WriteLine($"Exception: {e.Message}");
             }
         }
 
         /// <summary>
-        /// Calls the method containing the listen loop after preparing the server to start listening for connections.
-        /// This method also stops the server from listening after the listen loop has been broken.
+        /// Calls the internal method containing the listen loop after preparing the server to start listening for connections.
+        /// This method will also stop the server from listening after the listen loop has been broken or on error.
         /// </summary>
         public void StartListener()
         {
@@ -226,7 +222,7 @@ namespace TM14.Networking
             }
             catch (SocketException e)
             {
-                Debug.Write($"SocketException: {e.Message}");
+                OnHasCaughtException(e, DateTime.Now);
             }
 
             server.Stop();
@@ -273,15 +269,8 @@ namespace TM14.Networking
                 {
                     // TODO: Send a message to the client here
 
-                    var args = new HasCaughtExceptionEventArgs
-                    {
-                        Exception = e,
-                        TimeStamp = DateTime.Now
-                    };
-
-                    OnHasCaughtException(args);
+                    OnHasCaughtException(e, DateTime.Now);
                     DisconnectClient(client);
-                    Debug.WriteLine($"Exception: {e.Message}");
                 }
             }
         }
@@ -309,88 +298,108 @@ namespace TM14.Networking
         }
 
         /// <summary>
-        /// Builds a <see cref="HasPacketEventArgs"/> to raise with an event invocation.
+        /// Deserializes a string into a <see cref="Packet"/> that will be bubbled up to <see cref="HasPacket"/>.
         /// </summary>
         /// <param name="sender">The client that sent the packet.</param>
-        /// <param name="data">The string representation of the data packet.</param>
+        /// <param name="data">The string representation of the packet to deserialize.</param>
         private void HandleData(System.Net.Sockets.TcpClient sender, string data)
         {
-            var args = new HasPacketEventArgs
-            {
-                Sender = sender,
-                Packet = JsonConvert.DeserializeObject<Packet>(data)
-            };
+            var packet = JsonConvert.DeserializeObject<Packet>(data);
 
-            OnHasPacket(args);
+            OnHasPacket(sender, packet);
         }
 
         /// <summary>
-        /// Builds a <see cref="HasMessageEventArgs"/> to raise with an event invocation.
+        /// Creates a message that will be bubbled up to <see cref="HasMessage"/>.
         /// </summary>
         /// <param name="message">The message.</param>
         private void Message(string message)
         {
-            var args = new HasMessageEventArgs
-            {
-                Message = message,
-                TimeStamp = DateTime.Now
-            };
-
-            OnHasMessage(args);
+            OnHasMessage(message, DateTime.Now);
         }
 
         /// <summary>
-        /// Invokes an event containing a string message.
+        /// Invokes an event containing a message.
         /// </summary>
-        /// <param name="e">The event arguments.</param>
-        private void OnHasMessage(HasMessageEventArgs e)
+        /// <param name="message">The message to contain.</param>
+        /// <param name="timeStamp">The time at which the message was sent.</param>
+        private void OnHasMessage(string message, DateTime timeStamp)
         {
             var handler = HasMessage;
-            handler?.Invoke(this, e);
+            var eventArgs = new HasMessageEventArgs
+            {
+                Message = message,
+                TimeStamp = timeStamp
+            };
+
+            handler?.Invoke(this, eventArgs);
         }
 
         /// <summary>
         /// Invokes an event containing a <see cref="Packet"/>.
         /// </summary>
-        /// <param name="e">The event arguments.</param>
-        private void OnHasPacket(HasPacketEventArgs e)
+        /// <param name="sender">The client which sent the packet.</param>
+        /// <param name="packet">The packet to contain.</param>
+        private void OnHasPacket(System.Net.Sockets.TcpClient sender, Packet packet)
         {
             var handler = HasPacket;
-            handler?.Invoke(this, e);
+            var eventArgs = new HasPacketEventArgs
+            {
+                Sender = sender,
+                Packet = packet
+            };
+
+            handler?.Invoke(this, eventArgs);
         }
 
         /// <summary>
         /// Invokes an event containing a disconnecting <see cref="System.Net.Sockets.TcpClient"/>.
         /// </summary>
-        /// <param name="e">The event arguements.</param>
-        private void OnClientConnected(ClientConnectedEventArgs e)
+        /// <param name="client">The client to contain.</param>
+        private void OnClientConnected(System.Net.Sockets.TcpClient client)
         {
             var handler = ClientConnected;
+            var eventArgs = new ClientConnectedEventArgs
+            {
+                Client = client
+            };
 
-            Message($"Client {e.Client.Client.RemoteEndPoint} connected.");
-            handler?.Invoke(this, e);
+            Message($"Client {client.Client.RemoteEndPoint} connected.");
+            handler?.Invoke(this, eventArgs);
         }
 
         /// <summary>
         /// Invokes an event containing a disconnecting <see cref="System.Net.Sockets.TcpClient"/>.
         /// </summary>
-        /// <param name="e">The event arguements.</param>
-        private void OnClientDisconnected(ClientDisconnectedEventArgs e)
+        /// <param name="client">The client to contain.</param>
+        private void OnClientDisconnected(System.Net.Sockets.TcpClient client)
         {
             var handler = ClientDisconnected;
+            var eventArgs = new ClientDisconnectedEventArgs
+            {
+                Client = client
+            };
 
-            Message($"Client {e.Client.Client.RemoteEndPoint} disconnected.");
-            handler?.Invoke(this, e);
+            Message($"Client {client.Client.RemoteEndPoint} disconnected.");
+            handler?.Invoke(this, eventArgs);
         }
 
         /// <summary>
         /// Invokes an event containing an <see cref="Exception"/> that was caught.
         /// </summary>
-        /// <param name="e"></param>
-        private void OnHasCaughtException(HasCaughtExceptionEventArgs e)
+        /// <param name="exception">The exception to contain.</param>
+        /// <param name="timeStamp">The time at which the exception was thrown.</param>
+        private void OnHasCaughtException(Exception exception, DateTime timeStamp)
         {
             var handler = HasCaughtException;
-            handler?.Invoke(this, e);
+            var eventArgs = new HasCaughtExceptionEventArgs
+            {
+                Exception = exception,
+                TimeStamp = timeStamp
+            };
+
+            handler?.Invoke(this, eventArgs);
+            Debug.WriteLine($"Exception: {exception.Message}");
         }
     }
 }
