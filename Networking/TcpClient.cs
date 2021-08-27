@@ -159,57 +159,6 @@ namespace TM14.Networking
             }
         }
 
-        ///// <summary>
-        ///// Handles reading data from the server, passing it to the HandleData method.
-        ///// <remarks>
-        ///// This method will not block the calling thread and is intended to be used outside
-        ///// of the <see cref="TcpClient"/> class inside a loop.
-        ///// </remarks>
-        ///// </summary>
-        //public void ReadData()
-        //{
-        //    if (readDataMode != ReadDataMode.Externally)
-        //    {
-        //        return;
-        //    }
-
-        //    if (!client.Connected)
-        //    {
-        //        return;
-        //    }
-
-        //    var stream = client.GetStream();
-        //    var bytes = new byte[DataTransferProtocol.BufferSize];
-
-        //    try
-        //    {
-        //        if (stream.DataAvailable)
-        //        {
-        //            var i = stream.Read(bytes, 0, bytes.Length);
-        //            var data = Encoding.Unicode.GetString(bytes, 0, i);
-        //            var keyBytes = Convert.FromBase64String(DataTransferProtocol.SecretKey);
-
-        //            packetBuffer.Enqueue(data);
-
-        //            while (packetBuffer.Queue.Any())
-        //            {
-        //                var decryptedPacketString = AesHmacCrypto.SimpleDecrypt(packetBuffer.Queue.Dequeue(), keyBytes, keyBytes);
-
-        //                HandleData(decryptedPacketString);
-        //            }
-        //        }
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        // TODO: Display a message to the user here
-
-        //        OnHasCaughtException(e, DateTime.Now);
-        //        Disconnect();
-
-        //        // TODO: When reading data externally, this needs to stop the external reader process (such as a timer)
-        //    }
-        //}
-
         /// <summary>
         /// Deserializes a string into a <see cref="Packet"/> that will be bubbled up to <see cref="HasPacket"/>.
         /// </summary>
