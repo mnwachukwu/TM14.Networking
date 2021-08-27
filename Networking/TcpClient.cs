@@ -20,10 +20,9 @@ namespace TM14.Networking
         private System.Net.Sockets.TcpClient client;
 
         /// <summary>
-        /// Determines if the <see cref="TcpClient"/> will read data in its own thread or if the client
-        /// will wait for a calling thread to read data.
+        /// The thread used to read data.
         /// </summary>
-        private readonly ReadDataMode readDataMode;
+        private Thread readDataThread;
 
         /// <summary>
         /// A buffer for reading packets in an orderly fashion.
@@ -80,15 +79,10 @@ namespace TM14.Networking
         /// </summary>
         /// <param name="serverIp">The IP to connect to.</param>
         /// <param name="port">The port to connect over.</param>
-        /// <param name="readDataMode">
-        /// Should this client read data in its own thread (internally),
-        /// or will it be processed on some other thread (externally)?
-        /// </param>
-        public TcpClient(string serverIp, int port, ReadDataMode readDataMode = ReadDataMode.Internally)
+        public TcpClient(string serverIp, int port)
         {
             this.serverIp = serverIp;
             this.port = port;
-            this.readDataMode = readDataMode;
             packetBuffer = new PacketBuffer();
         }
 
@@ -113,15 +107,8 @@ namespace TM14.Networking
                 {
                     // TODO: Display a message to the user here
 
-                    var args = new HasCaughtExceptionEventArgs
-                    {
-                        Exception = e,
-                        TimeStamp = DateTime.Now
-                    };
-
-                    OnHasCaughtException(args);
+                    OnHasCaughtException(e, DateTime.Now);
                     Disconnect();
-                    Debug.WriteLine($"Exception: {e.Message}");
                 }
             }
         }
@@ -133,13 +120,8 @@ namespace TM14.Networking
         /// <see cref="TcpClient"/> class.
         /// </remarks>
         /// </summary>
-        private void ReadDataInternally()
+        private void ReadData()
         {
-            if (readDataMode != ReadDataMode.Internally)
-            {
-                return;
-            }
-
             if (!client.Connected)
             {
                 return;
@@ -151,6 +133,7 @@ namespace TM14.Networking
             try
             {
                 int i;
+
                 while ((i = stream.Read(bytes, 0, bytes.Length)) != 0)
                 {
                     var data = Encoding.Unicode.GetString(bytes, 0, i);
@@ -161,96 +144,31 @@ namespace TM14.Networking
                     while (packetBuffer.Queue.Any())
                     {
                         var decryptedPacketString = AesHmacCrypto.SimpleDecrypt(packetBuffer.Queue.Dequeue(), keyBytes, keyBytes);
+
                         HandleData(decryptedPacketString);
                     }
                 }
+
+                Disconnect();
             }
             catch (Exception e)
             {
                 // TODO: Display a message to the user here
 
-                var args = new HasCaughtExceptionEventArgs
-                {
-                    Exception = e,
-                    TimeStamp = DateTime.Now
-                };
-
-                OnHasCaughtException(args);
+                OnHasCaughtException(e, DateTime.Now);
                 Disconnect();
-                Debug.WriteLine($"Exception: {e.Message}");
             }
         }
 
         /// <summary>
-        /// Handles reading data from the server, passing it to the HandleData method.
-        /// <remarks>
-        /// This method will not block the calling thread and is intended to be used outside
-        /// of the <see cref="TcpClient"/> class inside a loop.
-        /// </remarks>
+        /// Deserializes a string into a <see cref="Packet"/> that will be bubbled up to <see cref="HasPacket"/>.
         /// </summary>
-        public void ReadData()
-        {
-            if (readDataMode != ReadDataMode.Externally)
-            {
-                return;
-            }
-
-            if (!client.Connected)
-            {
-                return;
-            }
-
-            var stream = client.GetStream();
-            var bytes = new byte[DataTransferProtocol.BufferSize];
-
-            try
-            {
-                if (stream.DataAvailable)
-                {
-                    var i = stream.Read(bytes, 0, bytes.Length);
-                    var data = Encoding.Unicode.GetString(bytes, 0, i);
-                    var keyBytes = Convert.FromBase64String(DataTransferProtocol.SecretKey);
-
-                    packetBuffer.Enqueue(data);
-
-                    while (packetBuffer.Queue.Any())
-                    {
-                        var decryptedPacketString = AesHmacCrypto.SimpleDecrypt(packetBuffer.Queue.Dequeue(), keyBytes, keyBytes);
-                        HandleData(decryptedPacketString);
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                // TODO: Display a message to the user here
-
-                var args = new HasCaughtExceptionEventArgs
-                {
-                    Exception = e,
-                    TimeStamp = DateTime.Now
-                };
-
-                OnHasCaughtException(args);
-                Disconnect();
-                Debug.WriteLine($"Exception: {e.Message}");
-
-                // TODO: When reading data externally, this needs to stop the external reader process (such as a timer)
-            }
-        }
-
-        /// <summary>
-        /// Builds a <see cref="HasPacketEventArgs"/> to raise with an event invocation.
-        /// </summary>
-        /// <param name="data">The string representation of the data packet.</param>
+        /// <param name="data">The string representation of the packet to deserialize.</param>
         private void HandleData(string data)
         {
-            var args = new HasPacketEventArgs
-            {
-                Sender = null,
-                Packet = JsonConvert.DeserializeObject<Packet>(data)
-            };
+            var packet = JsonConvert.DeserializeObject<Packet>(data);
 
-            OnHasPacket(args);
+            OnHasPacket(null, packet);
         }
 
         /// <summary>
@@ -261,23 +179,13 @@ namespace TM14.Networking
             try
             {
                 client = new System.Net.Sockets.TcpClient(serverIp, port);
-                OnConnect(null);
-
-                if (readDataMode == ReadDataMode.Internally)
-                {
-                    var t = new Thread(ReadDataInternally);
-                    t.Start();
-                }
+                OnConnect();
+                readDataThread = new Thread(ReadData);
+                readDataThread.Start();
             }
             catch (SocketException e)
             {
-                var args = new ConnectionFailedEventArgs
-                {
-                    SocketException = e
-                };
-
-                OnConnectionFailed(args);
-                Debug.WriteLine($"SocketException: {e.Message}");
+                OnConnectionFailed(e);
             }
         }
 
@@ -289,90 +197,109 @@ namespace TM14.Networking
             if (client != null && client.Connected)
             {
                 client.Close();
-                OnDisconnect(null);
+                OnDisconnect();
             }
         }
 
         /// <summary>
-        /// Builds a <see cref="HasMessageEventArgs"/> to raise with an event invocation.
+        /// Creates a message that will be bubbled up to <see cref="HasMessage"/>.
         /// </summary>
         /// <param name="message">The message.</param>
         private void Message(string message)
         {
-            var args = new HasMessageEventArgs
-            {
-                Message = message,
-                TimeStamp = DateTime.Now
-            };
-
-            OnHasMessage(args);
+            OnHasMessage(message, DateTime.Now);
         }
 
         /// <summary>
-        /// Invokes an event containing a string message.
+        /// Invokes an event containing a message.
         /// </summary>
-        /// <param name="e">The event arguments.</param>
-        private void OnHasMessage(HasMessageEventArgs e)
+        /// <param name="message">The message to contain.</param>
+        /// <param name="timeStamp">The time at which the message was sent.</param>
+        private void OnHasMessage(string message, DateTime timeStamp)
         {
             var handler = HasMessage;
-            handler?.Invoke(this, e);
+            var eventArgs = new HasMessageEventArgs
+            {
+                Message = message,
+                TimeStamp = timeStamp
+            };
+
+            handler?.Invoke(this, eventArgs);
         }
 
         /// <summary>
         /// Invokes an event containing a <see cref="Packet"/>.
         /// </summary>
-        /// <param name="e">The event arguments.</param>
-        private void OnHasPacket(HasPacketEventArgs e)
+        /// <param name="sender">The client which sent the packet.</param>
+        /// <param name="packet">The packet to contain.</param>
+        private void OnHasPacket(System.Net.Sockets.TcpClient sender, Packet packet)
         {
             var handler = HasPacket;
-            handler?.Invoke(this, e);
+            var eventArgs = new HasPacketEventArgs
+            {
+                Sender = sender,
+                Packet = packet
+            };
+
+            handler?.Invoke(this, eventArgs);
         }
 
         /// <summary>
         /// Invokes an event signifying that the client has been connected.
         /// </summary>
-        /// <param name="e"></param>
-        private void OnConnect(EventArgs e)
+        private void OnConnect()
         {
             var handler = Connected;
 
             Message("Connected to server.");
-            handler?.Invoke(this, e);
+            handler?.Invoke(this, EventArgs.Empty);
         }
 
         /// <summary>
         /// Invokes an event signifying that the client has been disconnected.
         /// </summary>
-        /// <param name="e"></param>
-        private void OnDisconnect(EventArgs e)
+        private void OnDisconnect()
         {
             var handler = Disconnected;
 
             Message("Disconnected from server.");
-            handler?.Invoke(this, e);
+            handler?.Invoke(this, EventArgs.Empty);
         }
 
         /// <summary>
         /// Invokes an event signifying that the client failed to connect to the server.
         /// The event contains the underlying <see cref="SocketException"/> which caused the failure.
         /// </summary>
-        /// <param name="e"></param>
-        private void OnConnectionFailed(ConnectionFailedEventArgs e)
+        /// <param name="exception">The socket exception to contain.</param>
+        private void OnConnectionFailed(SocketException exception)
         {
             var handler = ConnectionFailed;
+            var eventArgs = new ConnectionFailedEventArgs
+            {
+                SocketException = exception
+            };
 
             Message("Failed to connect to server.");
-            handler?.Invoke(this, e);
+            handler?.Invoke(this, eventArgs);
+            Debug.WriteLine($"SocketException: {exception.Message}");
         }
 
         /// <summary>
         /// Invokes an event containing an <see cref="Exception"/> that was caught.
         /// </summary>
-        /// <param name="e"></param>
-        private void OnHasCaughtException(HasCaughtExceptionEventArgs e)
+        /// <param name="exception">The exception to contain.</param>
+        /// <param name="timeStamp">The time at which the exception was thrown.</param>
+        private void OnHasCaughtException(Exception exception, DateTime timeStamp)
         {
             var handler = HasCaughtException;
-            handler?.Invoke(this, e);
+            var eventArgs = new HasCaughtExceptionEventArgs
+            {
+                Exception = exception,
+                TimeStamp = timeStamp
+            };
+
+            handler?.Invoke(this, eventArgs);
+            Debug.WriteLine($"Exception: {exception.Message}");
         }
     }
 }

@@ -1,5 +1,6 @@
 var searchData=
 [
-  ['hasmessageeventargs_85',['HasMessageEventArgs',['../a00088.html',1,'TM14::Networking::Events']]],
-  ['haspacketeventargs_86',['HasPacketEventArgs',['../a00092.html',1,'TM14::Networking::Events']]]
+  ['hascaughtexceptioneventargs_85',['HasCaughtExceptionEventArgs',['../a00088.html',1,'TM14::Networking::Events']]],
+  ['hasmessageeventargs_86',['HasMessageEventArgs',['../a00092.html',1,'TM14::Networking::Events']]],
+  ['haspacketeventargs_87',['HasPacketEventArgs',['../a00096.html',1,'TM14::Networking::Events']]]
 ];

@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>TM14.Networking: TM14.Networking.Events.HasPacketEventArgs Class Reference</title>
+<title>TM14.Networking: TM14.Networking.Events.HasMessageEventArgs Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -26,7 +26,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">TM14.Networking
-   &#160;<span id="projectnumber">v1.0.1</span>
+   &#160;<span id="projectnumber">v1.1.0</span>
    </div>
    <div id="projectbrief">Quick and simple implementation of TcpClient and TcpListener with a Packet data contract for data exchange, a PacketBuffer for orderly data exchange, and encryption features for secure data exchange.</div>
   </td>
@@ -87,14 +87,14 @@ $(document).ready(function(){initNavTree('a00092.html',''); initResizable(); });
 <a href="#properties">Properties</a> &#124;
 <a href="a00089.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">TM14.Networking.Events.HasPacketEventArgs Class Reference</div>  </div>
+<div class="title">TM14.Networking.Events.HasMessageEventArgs Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>Arguments to raise with a HasPacket event.  
+<p>Arguments to raise with a HasMessage event.  
  <a href="a00092.html#details">More...</a></p>
 <div class="dynheader">
-Inheritance diagram for TM14.Networking.Events.HasPacketEventArgs:</div>
+Inheritance diagram for TM14.Networking.Events.HasMessageEventArgs:</div>
 <div class="dyncontent">
  <div class="center">
   <img src="a00092.png" alt=""/>
@@ -102,18 +102,18 @@ Inheritance diagram for TM14.Networking.Events.HasPacketEventArgs:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="properties"></a>
 Properties</h2></td></tr>
-<tr class="memitem:a4128fea96abc23c902e4a54ac6bcd337"><td class="memItemLeft" align="right" valign="top">System.Net.Sockets.TcpClient&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00092.html#a4128fea96abc23c902e4a54ac6bcd337">Sender</a><code> [get, set]</code></td></tr>
-<tr class="memdesc:a4128fea96abc23c902e4a54ac6bcd337"><td class="mdescLeft">&#160;</td><td class="mdescRight">The sender of the packet. If null, the sender was the server.  <a href="a00092.html#a4128fea96abc23c902e4a54ac6bcd337">More...</a><br /></td></tr>
-<tr class="separator:a4128fea96abc23c902e4a54ac6bcd337"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a574d7ea2e14e6fbcb670af34f9755781"><td class="memItemLeft" align="right" valign="top"><a class="el" href="a00096.html">Packet</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00092.html#a574d7ea2e14e6fbcb670af34f9755781">Packet</a><code> [get, set]</code></td></tr>
-<tr class="memdesc:a574d7ea2e14e6fbcb670af34f9755781"><td class="mdescLeft">&#160;</td><td class="mdescRight">The packet of data that was received.  <a href="a00092.html#a574d7ea2e14e6fbcb670af34f9755781">More...</a><br /></td></tr>
-<tr class="separator:a574d7ea2e14e6fbcb670af34f9755781"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae6c3cf59ea60418d4920ed1f4c5073d1"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00092.html#ae6c3cf59ea60418d4920ed1f4c5073d1">Message</a><code> [get, set]</code></td></tr>
+<tr class="memdesc:ae6c3cf59ea60418d4920ed1f4c5073d1"><td class="mdescLeft">&#160;</td><td class="mdescRight">The message.  <a href="a00092.html#ae6c3cf59ea60418d4920ed1f4c5073d1">More...</a><br /></td></tr>
+<tr class="separator:ae6c3cf59ea60418d4920ed1f4c5073d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a61d64b7a3401ed3e5bbf8d06ce0529cf"><td class="memItemLeft" align="right" valign="top">DateTime&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00092.html#a61d64b7a3401ed3e5bbf8d06ce0529cf">TimeStamp</a><code> [get, set]</code></td></tr>
+<tr class="memdesc:a61d64b7a3401ed3e5bbf8d06ce0529cf"><td class="mdescLeft">&#160;</td><td class="mdescRight">The time at which the message was sent.  <a href="a00092.html#a61d64b7a3401ed3e5bbf8d06ce0529cf">More...</a><br /></td></tr>
+<tr class="separator:a61d64b7a3401ed3e5bbf8d06ce0529cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Arguments to raise with a HasPacket event. </p>
+<div class="textblock"><p>Arguments to raise with a HasMessage event. </p>
 </div><h2 class="groupheader">Property Documentation</h2>
-<a id="a574d7ea2e14e6fbcb670af34f9755781"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a574d7ea2e14e6fbcb670af34f9755781">&#9670;&nbsp;</a></span>Packet</h2>
+<a id="ae6c3cf59ea60418d4920ed1f4c5073d1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae6c3cf59ea60418d4920ed1f4c5073d1">&#9670;&nbsp;</a></span>Message</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -122,7 +122,7 @@ Properties</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="a00096.html">Packet</a> TM14.Networking.Events.HasPacketEventArgs.Packet</td>
+          <td class="memname">string TM14.Networking.Events.HasMessageEventArgs.Message</td>
         </tr>
       </table>
   </td>
@@ -132,12 +132,12 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>The packet of data that was received. </p>
+<p>The message. </p>
 
 </div>
 </div>
-<a id="a4128fea96abc23c902e4a54ac6bcd337"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4128fea96abc23c902e4a54ac6bcd337">&#9670;&nbsp;</a></span>Sender</h2>
+<a id="a61d64b7a3401ed3e5bbf8d06ce0529cf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a61d64b7a3401ed3e5bbf8d06ce0529cf">&#9670;&nbsp;</a></span>TimeStamp</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -146,7 +146,7 @@ Properties</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">System.Net.Sockets.TcpClient TM14.Networking.Events.HasPacketEventArgs.Sender</td>
+          <td class="memname">DateTime TM14.Networking.Events.HasMessageEventArgs.TimeStamp</td>
         </tr>
       </table>
   </td>
@@ -156,7 +156,7 @@ Properties</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>The sender of the packet. If null, the sender was the server. </p>
+<p>The time at which the message was sent. </p>
 
 </div>
 </div>
@@ -165,7 +165,7 @@ Properties</h2></td></tr>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="a00050.html">TM14</a></li><li class="navelem"><a class="el" href="a00051.html">Networking</a></li><li class="navelem"><a class="el" href="a00052.html">Events</a></li><li class="navelem"><a class="el" href="a00092.html">HasPacketEventArgs</a></li>
+    <li class="navelem"><a class="el" href="a00050.html">TM14</a></li><li class="navelem"><a class="el" href="a00051.html">Networking</a></li><li class="navelem"><a class="el" href="a00052.html">Events</a></li><li class="navelem"><a class="el" href="a00092.html">HasMessageEventArgs</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>

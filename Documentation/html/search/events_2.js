@@ -1,5 +1,6 @@
 var searchData=
 [
-  ['hasmessage_162',['HasMessage',['../a00104.html#a842012677723349043db0595cc39d29e',1,'TM14.Networking.TcpClient.HasMessage()'],['../a00108.html#ad7c066b4cb78599246169503a6c5a113',1,'TM14.Networking.TcpServer.HasMessage()']]],
-  ['haspacket_163',['HasPacket',['../a00104.html#a6eedd8d0db87b76e30d92612c36b2dd6',1,'TM14.Networking.TcpClient.HasPacket()'],['../a00108.html#afdba43bea3bf361ba80939d32f95ed00',1,'TM14.Networking.TcpServer.HasPacket()']]]
+  ['hascaughtexception_160',['HasCaughtException',['../a00108.html#a91df5f0318a66a0420ef1f499fd485a3',1,'TM14.Networking.TcpClient.HasCaughtException()'],['../a00112.html#a085418cf0db450fdb55d083aaee40aea',1,'TM14.Networking.TcpServer.HasCaughtException()']]],
+  ['hasmessage_161',['HasMessage',['../a00108.html#a842012677723349043db0595cc39d29e',1,'TM14.Networking.TcpClient.HasMessage()'],['../a00112.html#ad7c066b4cb78599246169503a6c5a113',1,'TM14.Networking.TcpServer.HasMessage()']]],
+  ['haspacket_162',['HasPacket',['../a00108.html#a6eedd8d0db87b76e30d92612c36b2dd6',1,'TM14.Networking.TcpClient.HasPacket()'],['../a00112.html#afdba43bea3bf361ba80939d32f95ed00',1,'TM14.Networking.TcpServer.HasPacket()']]]
 ];

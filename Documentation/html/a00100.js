@@ -1,7 +1,12 @@
 var a00100 =
 [
-    [ "PacketBuffer", "a00100.html#a56c9801a828053fcf6b4bb7600aae8e0", null ],
-    [ "Enqueue", "a00100.html#af231f1f0684574f1bb694f2902c794da", null ],
-    [ "internalBuffer", "a00100.html#a4f492b19db34c10f627fe70db9825c5a", null ],
-    [ "Queue", "a00100.html#a8e3b5f0a776c59dc6e1e68c13a07e913", null ]
+    [ "Packet", "a00100.html#aedde4431ea02d9d70ac4b8ac0fd5b614", null ],
+    [ "Packet", "a00100.html#a14c67a7a2814d3caf6ac8ceb42adc5a5", null ],
+    [ "Packet", "a00100.html#a89e153069c96976f76cf882a1737e1d5", null ],
+    [ "AddData", "a00100.html#a69c48ff5ae0137d1e11a8e433ff257d0", null ],
+    [ "AddData", "a00100.html#aae843fda8cdbfff99467af53c42560c2", null ],
+    [ "ToString", "a00100.html#af99a1c76db5e7cbc721d8dcf4fa78c63", null ],
+    [ "Data", "a00100.html#a46046195b4ddbf85d8f804583cc6e791", null ],
+    [ "Guid", "a00100.html#a06042bef777856ffd69001f17c22e1b3", null ],
+    [ "Header", "a00100.html#afc320ed0d5b2282667d858612436b841", null ]
 ];
