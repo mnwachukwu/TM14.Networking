@@ -202,12 +202,6 @@ namespace TM14.Networking
             {
                 // TODO: Send a message to the client here
 
-                var args = new HasCaughtExceptionEventArgs
-                {
-                    Exception = e,
-                    TimeStamp = DateTime.Now
-                };
-
                 OnHasCaughtException(e, DateTime.Now);
                 DisconnectClient(client);
             }
