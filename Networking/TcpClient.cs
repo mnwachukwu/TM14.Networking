@@ -60,7 +60,7 @@ namespace TM14.Networking
         public event EventHandler<ConnectionFailedEventArgs> ConnectionFailed;
 
         /// <summary>
-        /// An event which is invoked whenever the networking library has a message.
+        /// An event which is invoked whenever the library has a message.
         /// </summary>
         public event EventHandler<HasMessageEventArgs> HasMessage;
 
@@ -70,7 +70,7 @@ namespace TM14.Networking
         public event EventHandler<HasPacketEventArgs> HasPacket;
 
         /// <summary>
-        /// An event which is invoked whenever the networking library catches an exception in <see cref="ReadData"/>, <see cref="ReadDataInternally"/>, or <see cref="SendData"/>.
+        /// An event which is invoked whenever the library catches an exception in <see cref="ReadData"/> or <see cref="SendData"/>.
         /// </summary>
         public event EventHandler<HasCaughtExceptionEventArgs> HasCaughtException;
 

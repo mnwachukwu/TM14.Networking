@@ -32,7 +32,7 @@ namespace TM14.Networking
         private readonly PacketBuffer packetBuffer;
 
         /// <summary>
-        /// An event which is invoked whenever the networking library has a message.
+        /// An event which is invoked whenever the library has a message.
         /// </summary>
         public event EventHandler<HasMessageEventArgs> HasMessage;
 
@@ -52,7 +52,7 @@ namespace TM14.Networking
         public event EventHandler<ClientDisconnectedEventArgs> ClientDisconnected;
 
         /// <summary>
-        /// An event which is invoked whenever the networking library catches an exception in <see cref="ReadData"/> or <see cref="SendDataTo(System.Net.Sockets.TcpClient,Packet)"/>.
+        /// An event which is invoked whenever the library catches an exception in <see cref="ReadData"/> or <see cref="SendDataTo(System.Net.Sockets.TcpClient,Packet)"/>.
         /// </summary>
         public event EventHandler<HasCaughtExceptionEventArgs> HasCaughtException;
 
