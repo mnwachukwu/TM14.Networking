@@ -176,6 +176,7 @@ namespace TM14.Networking
             try
             {
                 int i;
+
                 while ((i = stream.Read(bytes, 0, bytes.Length)) != 0)
                 {
                     var data = Encoding.Unicode.GetString(bytes, 0, i);
