@@ -1,27 +1,7 @@
 var a00104 =
 [
-    [ "TcpClient", "a00104.html#a1fbab094382f2e483a715f894acd5ea3", null ],
-    [ "Connect", "a00104.html#a4cd7c563349786bc00bc25932682688d", null ],
-    [ "Disconnect", "a00104.html#a4426437209c7442452fc3d1b1f409b50", null ],
-    [ "HandleData", "a00104.html#a0616bf63ead49754a6035ddba63c34b6", null ],
-    [ "Message", "a00104.html#ad198492a5520e053c30debe112aa70aa", null ],
-    [ "OnConnect", "a00104.html#ab36e8d419a794a744b535821c15fbc4f", null ],
-    [ "OnConnectionFailed", "a00104.html#adb772b0224b423c3af580156d56bfa0a", null ],
-    [ "OnDisconnect", "a00104.html#ab78e4ec0699638a967b14470a8e09f4d", null ],
-    [ "OnHasMessage", "a00104.html#ab98cbc36fb2ec4818b90f7fcc4249985", null ],
-    [ "OnHasPacket", "a00104.html#a4ef3842e364441d4cdb776f02013860c", null ],
-    [ "ReadData", "a00104.html#ac0869584875f5ee01daf956d07626fb9", null ],
-    [ "ReadDataInternally", "a00104.html#a632c18430bfb11f1a5929bc91f240aac", null ],
-    [ "SendData", "a00104.html#a1ffdfe149b64c57da5976bea33752304", null ],
-    [ "client", "a00104.html#ace3f2c5becda0de8dedd648c3d38b7c3", null ],
-    [ "packetBuffer", "a00104.html#a7a66af2daeeb8be55e65640083e663bc", null ],
-    [ "port", "a00104.html#a672f401d301217d850317e599c594b3f", null ],
-    [ "readDataMode", "a00104.html#a48ea5a65fe31155f0e0a33c3a9eedd16", null ],
-    [ "serverIp", "a00104.html#a4f1ab98750514d54374a212b0fa9abe3", null ],
-    [ "IsConnected", "a00104.html#a6771a9101a72381af73908668e0f32f4", null ],
-    [ "Connected", "a00104.html#a24fed6465b47ee7a1710a45d47c43a0f", null ],
-    [ "ConnectionFailed", "a00104.html#a9dd413c17f3e785ea11649698c57641e", null ],
-    [ "Disconnected", "a00104.html#ab8bd7435207b1329049108e5390cee5c", null ],
-    [ "HasMessage", "a00104.html#a842012677723349043db0595cc39d29e", null ],
-    [ "HasPacket", "a00104.html#a6eedd8d0db87b76e30d92612c36b2dd6", null ]
+    [ "PacketBuffer", "a00104.html#a56c9801a828053fcf6b4bb7600aae8e0", null ],
+    [ "Enqueue", "a00104.html#af231f1f0684574f1bb694f2902c794da", null ],
+    [ "internalBuffer", "a00104.html#a4f492b19db34c10f627fe70db9825c5a", null ],
+    [ "Queue", "a00104.html#a8e3b5f0a776c59dc6e1e68c13a07e913", null ]
 ];

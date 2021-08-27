@@ -25,31 +25,27 @@
 var NAVTREE =
 [
   [ "TM14.Networking", "index.html", [
-    [ "TM14.Networking License", "a00165.html", [
-      [ "The MIT License (MIT)", "a00165.html#autotoc_md1", null ],
-      [ "AesHmacCrypto License", "a00165.html#autotoc_md2", null ]
+    [ "TM14.Networking License", "a00169.html", [
+      [ "The MIT License (MIT)", "a00169.html#autotoc_md1", null ],
+      [ "AesHmacCrypto License", "a00169.html#autotoc_md2", null ]
     ] ],
-    [ "TM14.Networking Quick Help", "a00166.html", [
-      [ "Example Usage", "a00166.html#autotoc_md4", [
-        [ "Client", "a00166.html#autotoc_md5", [
-          [ "Initialize", "a00166.html#autotoc_md6", null ],
-          [ "Sending data", "a00166.html#autotoc_md7", null ],
-          [ "Receiving data", "a00166.html#autotoc_md8", null ]
+    [ "TM14.Networking Quick Help", "a00170.html", [
+      [ "Example Usage", "a00170.html#autotoc_md4", [
+        [ "Client", "a00170.html#autotoc_md5", [
+          [ "Initialize", "a00170.html#autotoc_md6", null ],
+          [ "Sending data", "a00170.html#autotoc_md7", null ],
+          [ "Receiving data", "a00170.html#autotoc_md8", null ]
         ] ],
-        [ "Server", "a00166.html#autotoc_md9", [
-          [ "Initialize", "a00166.html#autotoc_md10", null ],
-          [ "Sending data", "a00166.html#autotoc_md11", null ],
-          [ "Receiving data", "a00166.html#autotoc_md12", null ]
+        [ "Server", "a00170.html#autotoc_md9", [
+          [ "Initialize", "a00170.html#autotoc_md10", null ],
+          [ "Sending data", "a00170.html#autotoc_md11", null ],
+          [ "Receiving data", "a00170.html#autotoc_md12", null ]
         ] ]
       ] ],
-      [ "Security", "a00166.html#autotoc_md13", [
-        [ "Setting a SecretKey", "a00166.html#autotoc_md14", null ],
-        [ "Generating a SecretKey", "a00166.html#autotoc_md15", null ]
+      [ "Security", "a00170.html#autotoc_md13", [
+        [ "Setting a SecretKey", "a00170.html#autotoc_md14", null ],
+        [ "Generating a SecretKey", "a00170.html#autotoc_md15", null ]
       ] ]
-    ] ],
-    [ "Package Functions", "namespacemembers.html", [
-      [ "All", "namespacemembers.html", null ],
-      [ "Enumerations", "namespacemembers_enum.html", null ]
     ] ],
     [ "Classes", "annotated.html", [
       [ "Class List", "annotated.html", "annotated_dup" ],

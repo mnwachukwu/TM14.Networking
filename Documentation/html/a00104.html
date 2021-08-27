@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>TM14.Networking: TM14.Networking.TcpClient Class Reference</title>
+<title>TM14.Networking: TM14.Networking.PacketBuffer Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -26,7 +26,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">TM14.Networking
-   &#160;<span id="projectnumber">v1.0.1</span>
+   &#160;<span id="projectnumber">v1.1.0</span>
    </div>
    <div id="projectbrief">Quick and simple implementation of TcpClient and TcpListener with a Packet data contract for data exchange, a PacketBuffer for orderly data exchange, and encryption features for secure data exchange.</div>
   </td>
@@ -84,195 +84,72 @@ $(document).ready(function(){initNavTree('a00104.html',''); initResizable(); });
 
 <div class="header">
   <div class="summary">
-<a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pac-methods">Package Functions</a> &#124;
 <a href="#properties">Properties</a> &#124;
-<a href="#events">Events</a> &#124;
-<a href="#pri-methods">Private Member Functions</a> &#124;
 <a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="a00101.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">TM14.Networking.TcpClient Class Reference</div>  </div>
+<div class="title">TM14.Networking.PacketBuffer Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>A wrapper class around the System.Net.Sockets.TcpClient class used to handle connecting to a server and sending/receiving data.  
+<p>A class which helps buffer packet data to ensure data is parsed correctly and in its entirety.  
  <a href="a00104.html#details">More...</a></p>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
-Public Member Functions</h2></td></tr>
-<tr class="memitem:a1fbab094382f2e483a715f894acd5ea3"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00104.html#a1fbab094382f2e483a715f894acd5ea3">TcpClient</a> (string <a class="el" href="a00104.html#a4f1ab98750514d54374a212b0fa9abe3">serverIp</a>, int <a class="el" href="a00104.html#a672f401d301217d850317e599c594b3f">port</a>, <a class="el" href="a00051.html#ae8f17164914364b8e5b3255503fef7d5">ReadDataMode</a> <a class="el" href="a00104.html#a48ea5a65fe31155f0e0a33c3a9eedd16">readDataMode</a>=<a class="el" href="a00051.html#ae8f17164914364b8e5b3255503fef7d5a8c8f467a4cf3c17edfc5a065af155d2d">ReadDataMode.Internally</a>)</td></tr>
-<tr class="memdesc:a1fbab094382f2e483a715f894acd5ea3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Instantiates a client and prepares it to connect to a server.  <a href="a00104.html#a1fbab094382f2e483a715f894acd5ea3">More...</a><br /></td></tr>
-<tr class="separator:a1fbab094382f2e483a715f894acd5ea3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1ffdfe149b64c57da5976bea33752304"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00104.html#a1ffdfe149b64c57da5976bea33752304">SendData</a> (<a class="el" href="a00096.html">Packet</a> data)</td></tr>
-<tr class="memdesc:a1ffdfe149b64c57da5976bea33752304"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sends data to the server.  <a href="a00104.html#a1ffdfe149b64c57da5976bea33752304">More...</a><br /></td></tr>
-<tr class="separator:a1ffdfe149b64c57da5976bea33752304"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac0869584875f5ee01daf956d07626fb9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00104.html#ac0869584875f5ee01daf956d07626fb9">ReadData</a> ()</td></tr>
-<tr class="memdesc:ac0869584875f5ee01daf956d07626fb9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handles reading data from the server, passing it to the HandleData method.  <a href="a00104.html#ac0869584875f5ee01daf956d07626fb9">More...</a><br /></td></tr>
-<tr class="separator:ac0869584875f5ee01daf956d07626fb9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4cd7c563349786bc00bc25932682688d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00104.html#a4cd7c563349786bc00bc25932682688d">Connect</a> ()</td></tr>
-<tr class="memdesc:a4cd7c563349786bc00bc25932682688d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Attempts a connection to the server.  <a href="a00104.html#a4cd7c563349786bc00bc25932682688d">More...</a><br /></td></tr>
-<tr class="separator:a4cd7c563349786bc00bc25932682688d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4426437209c7442452fc3d1b1f409b50"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00104.html#a4426437209c7442452fc3d1b1f409b50">Disconnect</a> ()</td></tr>
-<tr class="memdesc:a4426437209c7442452fc3d1b1f409b50"><td class="mdescLeft">&#160;</td><td class="mdescRight">Closes the connection to the server.  <a href="a00104.html#a4426437209c7442452fc3d1b1f409b50">More...</a><br /></td></tr>
-<tr class="separator:a4426437209c7442452fc3d1b1f409b50"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pac-methods"></a>
+Package Functions</h2></td></tr>
+<tr class="memitem:a56c9801a828053fcf6b4bb7600aae8e0"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00104.html#a56c9801a828053fcf6b4bb7600aae8e0">PacketBuffer</a> ()</td></tr>
+<tr class="memdesc:a56c9801a828053fcf6b4bb7600aae8e0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor.  <a href="a00104.html#a56c9801a828053fcf6b4bb7600aae8e0">More...</a><br /></td></tr>
+<tr class="separator:a56c9801a828053fcf6b4bb7600aae8e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af231f1f0684574f1bb694f2902c794da"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00104.html#af231f1f0684574f1bb694f2902c794da">Enqueue</a> (string data)</td></tr>
+<tr class="memdesc:af231f1f0684574f1bb694f2902c794da"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds data to the buffer for parsing.  <a href="a00104.html#af231f1f0684574f1bb694f2902c794da">More...</a><br /></td></tr>
+<tr class="separator:af231f1f0684574f1bb694f2902c794da"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="properties"></a>
 Properties</h2></td></tr>
-<tr class="memitem:a6771a9101a72381af73908668e0f32f4"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00104.html#a6771a9101a72381af73908668e0f32f4">IsConnected</a><code> [get]</code></td></tr>
-<tr class="memdesc:a6771a9101a72381af73908668e0f32f4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines if the underlying System.Net.Sockets.TcpClient is connected.  <a href="a00104.html#a6771a9101a72381af73908668e0f32f4">More...</a><br /></td></tr>
-<tr class="separator:a6771a9101a72381af73908668e0f32f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="events"></a>
-Events</h2></td></tr>
-<tr class="memitem:a24fed6465b47ee7a1710a45d47c43a0f"><td class="memItemLeft" align="right" valign="top">EventHandler&lt; EventArgs &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00104.html#a24fed6465b47ee7a1710a45d47c43a0f">Connected</a></td></tr>
-<tr class="memdesc:a24fed6465b47ee7a1710a45d47c43a0f"><td class="mdescLeft">&#160;</td><td class="mdescRight">An event which is invoked whenever a connection to the server is established.  <a href="a00104.html#a24fed6465b47ee7a1710a45d47c43a0f">More...</a><br /></td></tr>
-<tr class="separator:a24fed6465b47ee7a1710a45d47c43a0f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab8bd7435207b1329049108e5390cee5c"><td class="memItemLeft" align="right" valign="top">EventHandler&lt; EventArgs &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00104.html#ab8bd7435207b1329049108e5390cee5c">Disconnected</a></td></tr>
-<tr class="memdesc:ab8bd7435207b1329049108e5390cee5c"><td class="mdescLeft">&#160;</td><td class="mdescRight">An event which is invoked whenever a connection to the server is closed.  <a href="a00104.html#ab8bd7435207b1329049108e5390cee5c">More...</a><br /></td></tr>
-<tr class="separator:ab8bd7435207b1329049108e5390cee5c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9dd413c17f3e785ea11649698c57641e"><td class="memItemLeft" align="right" valign="top">EventHandler&lt; <a class="el" href="a00084.html">ConnectionFailedEventArgs</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00104.html#a9dd413c17f3e785ea11649698c57641e">ConnectionFailed</a></td></tr>
-<tr class="memdesc:a9dd413c17f3e785ea11649698c57641e"><td class="mdescLeft">&#160;</td><td class="mdescRight">An event which is invoked whenever a connection attempt has failed.  <a href="a00104.html#a9dd413c17f3e785ea11649698c57641e">More...</a><br /></td></tr>
-<tr class="separator:a9dd413c17f3e785ea11649698c57641e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a842012677723349043db0595cc39d29e"><td class="memItemLeft" align="right" valign="top">EventHandler&lt; <a class="el" href="a00088.html">HasMessageEventArgs</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00104.html#a842012677723349043db0595cc39d29e">HasMessage</a></td></tr>
-<tr class="memdesc:a842012677723349043db0595cc39d29e"><td class="mdescLeft">&#160;</td><td class="mdescRight">An event which is invoked whenever the networking library has a message.  <a href="a00104.html#a842012677723349043db0595cc39d29e">More...</a><br /></td></tr>
-<tr class="separator:a842012677723349043db0595cc39d29e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6eedd8d0db87b76e30d92612c36b2dd6"><td class="memItemLeft" align="right" valign="top">EventHandler&lt; <a class="el" href="a00092.html">HasPacketEventArgs</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00104.html#a6eedd8d0db87b76e30d92612c36b2dd6">HasPacket</a></td></tr>
-<tr class="memdesc:a6eedd8d0db87b76e30d92612c36b2dd6"><td class="mdescLeft">&#160;</td><td class="mdescRight">An event which is invoked whenever the client receives data and a packet becomes available for handling.  <a href="a00104.html#a6eedd8d0db87b76e30d92612c36b2dd6">More...</a><br /></td></tr>
-<tr class="separator:a6eedd8d0db87b76e30d92612c36b2dd6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
-Private Member Functions</h2></td></tr>
-<tr class="memitem:a632c18430bfb11f1a5929bc91f240aac"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00104.html#a632c18430bfb11f1a5929bc91f240aac">ReadDataInternally</a> ()</td></tr>
-<tr class="memdesc:a632c18430bfb11f1a5929bc91f240aac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Handles reading data from the server, passing it to the HandleData method.  <a href="a00104.html#a632c18430bfb11f1a5929bc91f240aac">More...</a><br /></td></tr>
-<tr class="separator:a632c18430bfb11f1a5929bc91f240aac"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0616bf63ead49754a6035ddba63c34b6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00104.html#a0616bf63ead49754a6035ddba63c34b6">HandleData</a> (string data)</td></tr>
-<tr class="memdesc:a0616bf63ead49754a6035ddba63c34b6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Builds a HasPacketEventArgs to raise with an event invocation.  <a href="a00104.html#a0616bf63ead49754a6035ddba63c34b6">More...</a><br /></td></tr>
-<tr class="separator:a0616bf63ead49754a6035ddba63c34b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad198492a5520e053c30debe112aa70aa"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00104.html#ad198492a5520e053c30debe112aa70aa">Message</a> (string message)</td></tr>
-<tr class="memdesc:ad198492a5520e053c30debe112aa70aa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Builds a HasMessageEventArgs to raise with an event invocation.  <a href="a00104.html#ad198492a5520e053c30debe112aa70aa">More...</a><br /></td></tr>
-<tr class="separator:ad198492a5520e053c30debe112aa70aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab98cbc36fb2ec4818b90f7fcc4249985"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00104.html#ab98cbc36fb2ec4818b90f7fcc4249985">OnHasMessage</a> (<a class="el" href="a00088.html">HasMessageEventArgs</a> e)</td></tr>
-<tr class="memdesc:ab98cbc36fb2ec4818b90f7fcc4249985"><td class="mdescLeft">&#160;</td><td class="mdescRight">Invokes an event containing a string message.  <a href="a00104.html#ab98cbc36fb2ec4818b90f7fcc4249985">More...</a><br /></td></tr>
-<tr class="separator:ab98cbc36fb2ec4818b90f7fcc4249985"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4ef3842e364441d4cdb776f02013860c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00104.html#a4ef3842e364441d4cdb776f02013860c">OnHasPacket</a> (<a class="el" href="a00092.html">HasPacketEventArgs</a> e)</td></tr>
-<tr class="memdesc:a4ef3842e364441d4cdb776f02013860c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Invokes an event containing a <a class="el" href="a00096.html" title="A representation of a data packet that has a unique identifier, a header, and data.">Packet</a>.  <a href="a00104.html#a4ef3842e364441d4cdb776f02013860c">More...</a><br /></td></tr>
-<tr class="separator:a4ef3842e364441d4cdb776f02013860c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab36e8d419a794a744b535821c15fbc4f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00104.html#ab36e8d419a794a744b535821c15fbc4f">OnConnect</a> (EventArgs e)</td></tr>
-<tr class="memdesc:ab36e8d419a794a744b535821c15fbc4f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Invokes an event signifying that the client has been connected.  <a href="a00104.html#ab36e8d419a794a744b535821c15fbc4f">More...</a><br /></td></tr>
-<tr class="separator:ab36e8d419a794a744b535821c15fbc4f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab78e4ec0699638a967b14470a8e09f4d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00104.html#ab78e4ec0699638a967b14470a8e09f4d">OnDisconnect</a> (EventArgs e)</td></tr>
-<tr class="memdesc:ab78e4ec0699638a967b14470a8e09f4d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Invokes an event signifying that the client has been disconnected.  <a href="a00104.html#ab78e4ec0699638a967b14470a8e09f4d">More...</a><br /></td></tr>
-<tr class="separator:ab78e4ec0699638a967b14470a8e09f4d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adb772b0224b423c3af580156d56bfa0a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00104.html#adb772b0224b423c3af580156d56bfa0a">OnConnectionFailed</a> (<a class="el" href="a00084.html">ConnectionFailedEventArgs</a> e)</td></tr>
-<tr class="memdesc:adb772b0224b423c3af580156d56bfa0a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Invokes an event signifying that the client failed to connect to the server. The event contains the underlying SocketException which caused the failure.  <a href="a00104.html#adb772b0224b423c3af580156d56bfa0a">More...</a><br /></td></tr>
-<tr class="separator:adb772b0224b423c3af580156d56bfa0a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8e3b5f0a776c59dc6e1e68c13a07e913"><td class="memItemLeft" align="right" valign="top">Queue&lt; string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00104.html#a8e3b5f0a776c59dc6e1e68c13a07e913">Queue</a><code> [get]</code></td></tr>
+<tr class="memdesc:a8e3b5f0a776c59dc6e1e68c13a07e913"><td class="mdescLeft">&#160;</td><td class="mdescRight">The list of buffered packets ready for processing and handling.  <a href="a00104.html#a8e3b5f0a776c59dc6e1e68c13a07e913">More...</a><br /></td></tr>
+<tr class="separator:a8e3b5f0a776c59dc6e1e68c13a07e913"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
 Private Attributes</h2></td></tr>
-<tr class="memitem:ace3f2c5becda0de8dedd648c3d38b7c3"><td class="memItemLeft" align="right" valign="top">System.Net.Sockets.TcpClient&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00104.html#ace3f2c5becda0de8dedd648c3d38b7c3">client</a></td></tr>
-<tr class="memdesc:ace3f2c5becda0de8dedd648c3d38b7c3"><td class="mdescLeft">&#160;</td><td class="mdescRight">The underlying System.Net.Sockets.TcpClient this object utilizes.  <a href="a00104.html#ace3f2c5becda0de8dedd648c3d38b7c3">More...</a><br /></td></tr>
-<tr class="separator:ace3f2c5becda0de8dedd648c3d38b7c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a48ea5a65fe31155f0e0a33c3a9eedd16"><td class="memItemLeft" align="right" valign="top">readonly <a class="el" href="a00051.html#ae8f17164914364b8e5b3255503fef7d5">ReadDataMode</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00104.html#a48ea5a65fe31155f0e0a33c3a9eedd16">readDataMode</a></td></tr>
-<tr class="memdesc:a48ea5a65fe31155f0e0a33c3a9eedd16"><td class="mdescLeft">&#160;</td><td class="mdescRight">Determines if the <a class="el" href="a00104.html" title="A wrapper class around the System.Net.Sockets.TcpClient class used to handle connecting to a server a...">TcpClient</a> will read data in its own thread or if the client will wait for a calling thread to read data.  <a href="a00104.html#a48ea5a65fe31155f0e0a33c3a9eedd16">More...</a><br /></td></tr>
-<tr class="separator:a48ea5a65fe31155f0e0a33c3a9eedd16"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7a66af2daeeb8be55e65640083e663bc"><td class="memItemLeft" align="right" valign="top">readonly <a class="el" href="a00100.html">PacketBuffer</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00104.html#a7a66af2daeeb8be55e65640083e663bc">packetBuffer</a></td></tr>
-<tr class="memdesc:a7a66af2daeeb8be55e65640083e663bc"><td class="mdescLeft">&#160;</td><td class="mdescRight">A buffer for reading packets in an orderly fashion.  <a href="a00104.html#a7a66af2daeeb8be55e65640083e663bc">More...</a><br /></td></tr>
-<tr class="separator:a7a66af2daeeb8be55e65640083e663bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4f1ab98750514d54374a212b0fa9abe3"><td class="memItemLeft" align="right" valign="top">readonly string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00104.html#a4f1ab98750514d54374a212b0fa9abe3">serverIp</a></td></tr>
-<tr class="memdesc:a4f1ab98750514d54374a212b0fa9abe3"><td class="mdescLeft">&#160;</td><td class="mdescRight">The IP address of the server the client will connect to.  <a href="a00104.html#a4f1ab98750514d54374a212b0fa9abe3">More...</a><br /></td></tr>
-<tr class="separator:a4f1ab98750514d54374a212b0fa9abe3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a672f401d301217d850317e599c594b3f"><td class="memItemLeft" align="right" valign="top">readonly int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00104.html#a672f401d301217d850317e599c594b3f">port</a></td></tr>
-<tr class="memdesc:a672f401d301217d850317e599c594b3f"><td class="mdescLeft">&#160;</td><td class="mdescRight">The port which the client will communicate on.  <a href="a00104.html#a672f401d301217d850317e599c594b3f">More...</a><br /></td></tr>
-<tr class="separator:a672f401d301217d850317e599c594b3f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4f492b19db34c10f627fe70db9825c5a"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00104.html#a4f492b19db34c10f627fe70db9825c5a">internalBuffer</a></td></tr>
+<tr class="memdesc:a4f492b19db34c10f627fe70db9825c5a"><td class="mdescLeft">&#160;</td><td class="mdescRight">The "under-the-hood" buffer that is used to read and prepare packets.  <a href="a00104.html#a4f492b19db34c10f627fe70db9825c5a">More...</a><br /></td></tr>
+<tr class="separator:a4f492b19db34c10f627fe70db9825c5a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>A wrapper class around the System.Net.Sockets.TcpClient class used to handle connecting to a server and sending/receiving data. </p>
+<div class="textblock"><p>A class which helps buffer packet data to ensure data is parsed correctly and in its entirety. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a1fbab094382f2e483a715f894acd5ea3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1fbab094382f2e483a715f894acd5ea3">&#9670;&nbsp;</a></span>TcpClient()</h2>
+<a id="a56c9801a828053fcf6b4bb7600aae8e0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a56c9801a828053fcf6b4bb7600aae8e0">&#9670;&nbsp;</a></span>PacketBuffer()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">TM14.Networking.TcpClient.TcpClient </td>
+          <td class="memname">TM14.Networking.PacketBuffer.PacketBuffer </td>
           <td>(</td>
-          <td class="paramtype">string&#160;</td>
-          <td class="paramname"><em>serverIp</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
+          <td class="paramname"></td><td>)</td>
           <td></td>
-          <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>port</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype"><a class="el" href="a00051.html#ae8f17164914364b8e5b3255503fef7d5">ReadDataMode</a>&#160;</td>
-          <td class="paramname"><em>readDataMode</em> = <code><a class="el" href="a00051.html#ae8f17164914364b8e5b3255503fef7d5a8c8f467a4cf3c17edfc5a065af155d2d">ReadDataMode.Internally</a></code>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">package</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
-<p>Instantiates a client and prepares it to connect to a server. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">serverIp</td><td>The IP to connect to.</td></tr>
-    <tr><td class="paramname">port</td><td>The port to connect over.</td></tr>
-    <tr><td class="paramname">readDataMode</td><td>Should this client read data in its own thread (internally), or will it be processed on some other thread (externally)? </td></tr>
-  </table>
-  </dd>
-</dl>
+<p>Default constructor. </p>
 
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a4cd7c563349786bc00bc25932682688d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4cd7c563349786bc00bc25932682688d">&#9670;&nbsp;</a></span>Connect()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void TM14.Networking.TcpClient.Connect </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Attempts a connection to the server. </p>
-
-</div>
-</div>
-<a id="a4426437209c7442452fc3d1b1f409b50"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4426437209c7442452fc3d1b1f409b50">&#9670;&nbsp;</a></span>Disconnect()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void TM14.Networking.TcpClient.Disconnect </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Closes the connection to the server. </p>
-
-</div>
-</div>
-<a id="a0616bf63ead49754a6035ddba63c34b6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0616bf63ead49754a6035ddba63c34b6">&#9670;&nbsp;</a></span>HandleData()</h2>
+<a id="af231f1f0684574f1bb694f2902c794da"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af231f1f0684574f1bb694f2902c794da">&#9670;&nbsp;</a></span>Enqueue()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -281,7 +158,7 @@ Private Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void TM14.Networking.TcpClient.HandleData </td>
+          <td class="memname">void TM14.Networking.PacketBuffer.Enqueue </td>
           <td>(</td>
           <td class="paramtype">string&#160;</td>
           <td class="paramname"><em>data</em></td><td>)</td>
@@ -290,293 +167,15 @@ Private Attributes</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
+<span class="mlabels"><span class="mlabel">package</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p>Builds a HasPacketEventArgs to raise with an event invocation. </p>
+<p>Adds data to the buffer for parsing. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">data</td><td>The string representation of the data packet.</td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a id="ad198492a5520e053c30debe112aa70aa"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad198492a5520e053c30debe112aa70aa">&#9670;&nbsp;</a></span>Message()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void TM14.Networking.TcpClient.Message </td>
-          <td>(</td>
-          <td class="paramtype">string&#160;</td>
-          <td class="paramname"><em>message</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Builds a HasMessageEventArgs to raise with an event invocation. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">message</td><td>The message.</td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a id="ab36e8d419a794a744b535821c15fbc4f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab36e8d419a794a744b535821c15fbc4f">&#9670;&nbsp;</a></span>OnConnect()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void TM14.Networking.TcpClient.OnConnect </td>
-          <td>(</td>
-          <td class="paramtype">EventArgs&#160;</td>
-          <td class="paramname"><em>e</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Invokes an event signifying that the client has been connected. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">e</td><td></td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a id="adb772b0224b423c3af580156d56bfa0a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#adb772b0224b423c3af580156d56bfa0a">&#9670;&nbsp;</a></span>OnConnectionFailed()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void TM14.Networking.TcpClient.OnConnectionFailed </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="a00084.html">ConnectionFailedEventArgs</a>&#160;</td>
-          <td class="paramname"><em>e</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Invokes an event signifying that the client failed to connect to the server. The event contains the underlying SocketException which caused the failure. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">e</td><td></td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a id="ab78e4ec0699638a967b14470a8e09f4d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab78e4ec0699638a967b14470a8e09f4d">&#9670;&nbsp;</a></span>OnDisconnect()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void TM14.Networking.TcpClient.OnDisconnect </td>
-          <td>(</td>
-          <td class="paramtype">EventArgs&#160;</td>
-          <td class="paramname"><em>e</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Invokes an event signifying that the client has been disconnected. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">e</td><td></td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a id="ab98cbc36fb2ec4818b90f7fcc4249985"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab98cbc36fb2ec4818b90f7fcc4249985">&#9670;&nbsp;</a></span>OnHasMessage()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void TM14.Networking.TcpClient.OnHasMessage </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="a00088.html">HasMessageEventArgs</a>&#160;</td>
-          <td class="paramname"><em>e</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Invokes an event containing a string message. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">e</td><td>The event arguments.</td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a id="a4ef3842e364441d4cdb776f02013860c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4ef3842e364441d4cdb776f02013860c">&#9670;&nbsp;</a></span>OnHasPacket()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void TM14.Networking.TcpClient.OnHasPacket </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="a00092.html">HasPacketEventArgs</a>&#160;</td>
-          <td class="paramname"><em>e</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Invokes an event containing a <a class="el" href="a00096.html" title="A representation of a data packet that has a unique identifier, a header, and data.">Packet</a>. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">e</td><td>The event arguments.</td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a id="ac0869584875f5ee01daf956d07626fb9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac0869584875f5ee01daf956d07626fb9">&#9670;&nbsp;</a></span>ReadData()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void TM14.Networking.TcpClient.ReadData </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Handles reading data from the server, passing it to the HandleData method. </p>
-<p>This method will not block the calling thread and is intended to be used outside of the <a class="el" href="a00104.html" title="A wrapper class around the System.Net.Sockets.TcpClient class used to handle connecting to a server a...">TcpClient</a> class inside a loop. </p>
-
-</div>
-</div>
-<a id="a632c18430bfb11f1a5929bc91f240aac"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a632c18430bfb11f1a5929bc91f240aac">&#9670;&nbsp;</a></span>ReadDataInternally()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void TM14.Networking.TcpClient.ReadDataInternally </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Handles reading data from the server, passing it to the HandleData method. </p>
-<p>This method will block the calling thread and intended to be used by the <a class="el" href="a00104.html" title="A wrapper class around the System.Net.Sockets.TcpClient class used to handle connecting to a server a...">TcpClient</a> class. </p>
-
-</div>
-</div>
-<a id="a1ffdfe149b64c57da5976bea33752304"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1ffdfe149b64c57da5976bea33752304">&#9670;&nbsp;</a></span>SendData()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">void TM14.Networking.TcpClient.SendData </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="a00096.html">Packet</a>&#160;</td>
-          <td class="paramname"><em>data</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>Sends data to the server. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">data</td><td>The packet of data to send.</td></tr>
+    <tr><td class="paramname">data</td><td>The data to buffer.</td></tr>
   </table>
   </dd>
 </dl>
@@ -584,8 +183,8 @@ Private Attributes</h2></td></tr>
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
-<a id="ace3f2c5becda0de8dedd648c3d38b7c3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ace3f2c5becda0de8dedd648c3d38b7c3">&#9670;&nbsp;</a></span>client</h2>
+<a id="a4f492b19db34c10f627fe70db9825c5a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4f492b19db34c10f627fe70db9825c5a">&#9670;&nbsp;</a></span>internalBuffer</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -594,7 +193,7 @@ Private Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">System.Net.Sockets.TcpClient TM14.Networking.TcpClient.client</td>
+          <td class="memname">string TM14.Networking.PacketBuffer.internalBuffer</td>
         </tr>
       </table>
   </td>
@@ -604,109 +203,13 @@ Private Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p>The underlying System.Net.Sockets.TcpClient this object utilizes. </p>
-
-</div>
-</div>
-<a id="a7a66af2daeeb8be55e65640083e663bc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7a66af2daeeb8be55e65640083e663bc">&#9670;&nbsp;</a></span>packetBuffer</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">readonly <a class="el" href="a00100.html">PacketBuffer</a> TM14.Networking.TcpClient.packetBuffer</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>A buffer for reading packets in an orderly fashion. </p>
-
-</div>
-</div>
-<a id="a672f401d301217d850317e599c594b3f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a672f401d301217d850317e599c594b3f">&#9670;&nbsp;</a></span>port</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">readonly int TM14.Networking.TcpClient.port</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>The port which the client will communicate on. </p>
-
-</div>
-</div>
-<a id="a48ea5a65fe31155f0e0a33c3a9eedd16"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a48ea5a65fe31155f0e0a33c3a9eedd16">&#9670;&nbsp;</a></span>readDataMode</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">readonly <a class="el" href="a00051.html#ae8f17164914364b8e5b3255503fef7d5">ReadDataMode</a> TM14.Networking.TcpClient.readDataMode</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Determines if the <a class="el" href="a00104.html" title="A wrapper class around the System.Net.Sockets.TcpClient class used to handle connecting to a server a...">TcpClient</a> will read data in its own thread or if the client will wait for a calling thread to read data. </p>
-
-</div>
-</div>
-<a id="a4f1ab98750514d54374a212b0fa9abe3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4f1ab98750514d54374a212b0fa9abe3">&#9670;&nbsp;</a></span>serverIp</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">readonly string TM14.Networking.TcpClient.serverIp</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>The IP address of the server the client will connect to. </p>
+<p>The "under-the-hood" buffer that is used to read and prepare packets. </p>
 
 </div>
 </div>
 <h2 class="groupheader">Property Documentation</h2>
-<a id="a6771a9101a72381af73908668e0f32f4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6771a9101a72381af73908668e0f32f4">&#9670;&nbsp;</a></span>IsConnected</h2>
+<a id="a8e3b5f0a776c59dc6e1e68c13a07e913"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8e3b5f0a776c59dc6e1e68c13a07e913">&#9670;&nbsp;</a></span>Queue</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -715,98 +218,17 @@ Private Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">bool TM14.Networking.TcpClient.IsConnected</td>
+          <td class="memname">Queue&lt;string&gt; TM14.Networking.PacketBuffer.Queue</td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">get</span></span>  </td>
+<span class="mlabels"><span class="mlabel">get</span><span class="mlabel">package</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p>Determines if the underlying System.Net.Sockets.TcpClient is connected. </p>
-
-</div>
-</div>
-<h2 class="groupheader">Event Documentation</h2>
-<a id="a24fed6465b47ee7a1710a45d47c43a0f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a24fed6465b47ee7a1710a45d47c43a0f">&#9670;&nbsp;</a></span>Connected</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">EventHandler&lt;EventArgs&gt; TM14.Networking.TcpClient.Connected</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>An event which is invoked whenever a connection to the server is established. </p>
-
-</div>
-</div>
-<a id="a9dd413c17f3e785ea11649698c57641e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9dd413c17f3e785ea11649698c57641e">&#9670;&nbsp;</a></span>ConnectionFailed</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">EventHandler&lt;<a class="el" href="a00084.html">ConnectionFailedEventArgs</a>&gt; TM14.Networking.TcpClient.ConnectionFailed</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>An event which is invoked whenever a connection attempt has failed. </p>
-
-</div>
-</div>
-<a id="ab8bd7435207b1329049108e5390cee5c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab8bd7435207b1329049108e5390cee5c">&#9670;&nbsp;</a></span>Disconnected</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">EventHandler&lt;EventArgs&gt; TM14.Networking.TcpClient.Disconnected</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>An event which is invoked whenever a connection to the server is closed. </p>
-
-</div>
-</div>
-<a id="a842012677723349043db0595cc39d29e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a842012677723349043db0595cc39d29e">&#9670;&nbsp;</a></span>HasMessage</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">EventHandler&lt;<a class="el" href="a00088.html">HasMessageEventArgs</a>&gt; TM14.Networking.TcpClient.HasMessage</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>An event which is invoked whenever the networking library has a message. </p>
-
-</div>
-</div>
-<a id="a6eedd8d0db87b76e30d92612c36b2dd6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6eedd8d0db87b76e30d92612c36b2dd6">&#9670;&nbsp;</a></span>HasPacket</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">EventHandler&lt;<a class="el" href="a00092.html">HasPacketEventArgs</a>&gt; TM14.Networking.TcpClient.HasPacket</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-<p>An event which is invoked whenever the client receives data and a packet becomes available for handling. </p>
+<p>The list of buffered packets ready for processing and handling. </p>
 
 </div>
 </div>
@@ -815,7 +237,7 @@ Private Attributes</h2></td></tr>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="a00050.html">TM14</a></li><li class="navelem"><a class="el" href="a00051.html">Networking</a></li><li class="navelem"><a class="el" href="a00104.html">TcpClient</a></li>
+    <li class="navelem"><a class="el" href="a00050.html">TM14</a></li><li class="navelem"><a class="el" href="a00051.html">Networking</a></li><li class="navelem"><a class="el" href="a00104.html">PacketBuffer</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>

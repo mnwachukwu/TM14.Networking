@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.9.1"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>TM14.Networking: TM14.Networking.PacketBuffer Class Reference</title>
+<title>TM14.Networking: TM14.Networking.Packet Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -26,7 +26,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">TM14.Networking
-   &#160;<span id="projectnumber">v1.0.1</span>
+   &#160;<span id="projectnumber">v1.1.0</span>
    </div>
    <div id="projectbrief">Quick and simple implementation of TcpClient and TcpListener with a Packet data contract for data exchange, a PacketBuffer for orderly data exchange, and encryption features for secure data exchange.</div>
   </td>
@@ -84,132 +84,229 @@ $(document).ready(function(){initNavTree('a00100.html',''); initResizable(); });
 
 <div class="header">
   <div class="summary">
-<a href="#pac-methods">Package Functions</a> &#124;
+<a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#properties">Properties</a> &#124;
-<a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="a00097.html">List of all members</a>  </div>
   <div class="headertitle">
-<div class="title">TM14.Networking.PacketBuffer Class Reference</div>  </div>
+<div class="title">TM14.Networking.Packet Class Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>A class which helps buffer packet data to ensure data is parsed correctly and in its entirety.  
+<p>A representation of a data packet that has a unique identifier, a header, and data.  
  <a href="a00100.html#details">More...</a></p>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pac-methods"></a>
-Package Functions</h2></td></tr>
-<tr class="memitem:a56c9801a828053fcf6b4bb7600aae8e0"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00100.html#a56c9801a828053fcf6b4bb7600aae8e0">PacketBuffer</a> ()</td></tr>
-<tr class="memdesc:a56c9801a828053fcf6b4bb7600aae8e0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor.  <a href="a00100.html#a56c9801a828053fcf6b4bb7600aae8e0">More...</a><br /></td></tr>
-<tr class="separator:a56c9801a828053fcf6b4bb7600aae8e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af231f1f0684574f1bb694f2902c794da"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00100.html#af231f1f0684574f1bb694f2902c794da">Enqueue</a> (string data)</td></tr>
-<tr class="memdesc:af231f1f0684574f1bb694f2902c794da"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds data to the buffer for parsing.  <a href="a00100.html#af231f1f0684574f1bb694f2902c794da">More...</a><br /></td></tr>
-<tr class="separator:af231f1f0684574f1bb694f2902c794da"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
+Public Member Functions</h2></td></tr>
+<tr class="memitem:aedde4431ea02d9d70ac4b8ac0fd5b614"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00100.html#aedde4431ea02d9d70ac4b8ac0fd5b614">Packet</a> (string header)</td></tr>
+<tr class="memdesc:aedde4431ea02d9d70ac4b8ac0fd5b614"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs a packet with a header and no data.  <a href="a00100.html#aedde4431ea02d9d70ac4b8ac0fd5b614">More...</a><br /></td></tr>
+<tr class="separator:aedde4431ea02d9d70ac4b8ac0fd5b614"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a14c67a7a2814d3caf6ac8ceb42adc5a5"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00100.html#a14c67a7a2814d3caf6ac8ceb42adc5a5">Packet</a> (string header, params string[] data)</td></tr>
+<tr class="memdesc:a14c67a7a2814d3caf6ac8ceb42adc5a5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs a packet with a header and string data.  <a href="a00100.html#a14c67a7a2814d3caf6ac8ceb42adc5a5">More...</a><br /></td></tr>
+<tr class="separator:a14c67a7a2814d3caf6ac8ceb42adc5a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a89e153069c96976f76cf882a1737e1d5"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00100.html#a89e153069c96976f76cf882a1737e1d5">Packet</a> (string header, params object[] data)</td></tr>
+<tr class="memdesc:a89e153069c96976f76cf882a1737e1d5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructs a packet with a header and object data.  <a href="a00100.html#a89e153069c96976f76cf882a1737e1d5">More...</a><br /></td></tr>
+<tr class="separator:a89e153069c96976f76cf882a1737e1d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aae843fda8cdbfff99467af53c42560c2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00100.html#aae843fda8cdbfff99467af53c42560c2">AddData</a> (params string[] data)</td></tr>
+<tr class="memdesc:aae843fda8cdbfff99467af53c42560c2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds string data to the packet.  <a href="a00100.html#aae843fda8cdbfff99467af53c42560c2">More...</a><br /></td></tr>
+<tr class="separator:aae843fda8cdbfff99467af53c42560c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a69c48ff5ae0137d1e11a8e433ff257d0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00100.html#a69c48ff5ae0137d1e11a8e433ff257d0">AddData</a> (params object[] data)</td></tr>
+<tr class="memdesc:a69c48ff5ae0137d1e11a8e433ff257d0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds object data to the packet.  <a href="a00100.html#a69c48ff5ae0137d1e11a8e433ff257d0">More...</a><br /></td></tr>
+<tr class="separator:a69c48ff5ae0137d1e11a8e433ff257d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af99a1c76db5e7cbc721d8dcf4fa78c63"><td class="memItemLeft" align="right" valign="top">new string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00100.html#af99a1c76db5e7cbc721d8dcf4fa78c63">ToString</a> ()</td></tr>
+<tr class="memdesc:af99a1c76db5e7cbc721d8dcf4fa78c63"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a JSON string representation of the packet.  <a href="a00100.html#af99a1c76db5e7cbc721d8dcf4fa78c63">More...</a><br /></td></tr>
+<tr class="separator:af99a1c76db5e7cbc721d8dcf4fa78c63"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="properties"></a>
 Properties</h2></td></tr>
-<tr class="memitem:a8e3b5f0a776c59dc6e1e68c13a07e913"><td class="memItemLeft" align="right" valign="top">Queue&lt; string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00100.html#a8e3b5f0a776c59dc6e1e68c13a07e913">Queue</a><code> [get]</code></td></tr>
-<tr class="memdesc:a8e3b5f0a776c59dc6e1e68c13a07e913"><td class="mdescLeft">&#160;</td><td class="mdescRight">The list of buffered packets ready for processing and handling.  <a href="a00100.html#a8e3b5f0a776c59dc6e1e68c13a07e913">More...</a><br /></td></tr>
-<tr class="separator:a8e3b5f0a776c59dc6e1e68c13a07e913"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-attribs"></a>
-Private Attributes</h2></td></tr>
-<tr class="memitem:a4f492b19db34c10f627fe70db9825c5a"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00100.html#a4f492b19db34c10f627fe70db9825c5a">internalBuffer</a></td></tr>
-<tr class="memdesc:a4f492b19db34c10f627fe70db9825c5a"><td class="mdescLeft">&#160;</td><td class="mdescRight">The "under-the-hood" buffer that is used to read and prepare packets.  <a href="a00100.html#a4f492b19db34c10f627fe70db9825c5a">More...</a><br /></td></tr>
-<tr class="separator:a4f492b19db34c10f627fe70db9825c5a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a06042bef777856ffd69001f17c22e1b3"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00100.html#a06042bef777856ffd69001f17c22e1b3">Guid</a><code> [get, set]</code></td></tr>
+<tr class="memdesc:a06042bef777856ffd69001f17c22e1b3"><td class="mdescLeft">&#160;</td><td class="mdescRight">The unique identifier of the packet.  <a href="a00100.html#a06042bef777856ffd69001f17c22e1b3">More...</a><br /></td></tr>
+<tr class="separator:a06042bef777856ffd69001f17c22e1b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afc320ed0d5b2282667d858612436b841"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00100.html#afc320ed0d5b2282667d858612436b841">Header</a><code> [get, set]</code></td></tr>
+<tr class="memdesc:afc320ed0d5b2282667d858612436b841"><td class="mdescLeft">&#160;</td><td class="mdescRight">The header of the packet. This typically represents the kind of data this packet contains.  <a href="a00100.html#afc320ed0d5b2282667d858612436b841">More...</a><br /></td></tr>
+<tr class="separator:afc320ed0d5b2282667d858612436b841"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a46046195b4ddbf85d8f804583cc6e791"><td class="memItemLeft" align="right" valign="top">List&lt; string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00100.html#a46046195b4ddbf85d8f804583cc6e791">Data</a><code> [get, set]</code></td></tr>
+<tr class="memdesc:a46046195b4ddbf85d8f804583cc6e791"><td class="mdescLeft">&#160;</td><td class="mdescRight">The data within the packet.  <a href="a00100.html#a46046195b4ddbf85d8f804583cc6e791">More...</a><br /></td></tr>
+<tr class="separator:a46046195b4ddbf85d8f804583cc6e791"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>A class which helps buffer packet data to ensure data is parsed correctly and in its entirety. </p>
+<div class="textblock"><p>A representation of a data packet that has a unique identifier, a header, and data. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a56c9801a828053fcf6b4bb7600aae8e0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a56c9801a828053fcf6b4bb7600aae8e0">&#9670;&nbsp;</a></span>PacketBuffer()</h2>
+<a id="aedde4431ea02d9d70ac4b8ac0fd5b614"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aedde4431ea02d9d70ac4b8ac0fd5b614">&#9670;&nbsp;</a></span>Packet() <span class="overload">[1/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">TM14.Networking.PacketBuffer.PacketBuffer </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">package</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Default constructor. </p>
-
-</div>
-</div>
-<h2 class="groupheader">Member Function Documentation</h2>
-<a id="af231f1f0684574f1bb694f2902c794da"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af231f1f0684574f1bb694f2902c794da">&#9670;&nbsp;</a></span>Enqueue()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void TM14.Networking.PacketBuffer.Enqueue </td>
+          <td class="memname">TM14.Networking.Packet.Packet </td>
           <td>(</td>
           <td class="paramtype">string&#160;</td>
-          <td class="paramname"><em>data</em></td><td>)</td>
+          <td class="paramname"><em>header</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">package</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
-<p>Adds data to the buffer for parsing. </p>
+<p>Constructs a packet with a header and no data. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">data</td><td>The data to buffer.</td></tr>
+    <tr><td class="paramname">header</td><td>The packet header.</td></tr>
   </table>
   </dd>
 </dl>
 
 </div>
 </div>
-<h2 class="groupheader">Member Data Documentation</h2>
-<a id="a4f492b19db34c10f627fe70db9825c5a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4f492b19db34c10f627fe70db9825c5a">&#9670;&nbsp;</a></span>internalBuffer</h2>
+<a id="a14c67a7a2814d3caf6ac8ceb42adc5a5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a14c67a7a2814d3caf6ac8ceb42adc5a5">&#9670;&nbsp;</a></span>Packet() <span class="overload">[2/3]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">string TM14.Networking.PacketBuffer.internalBuffer</td>
+          <td class="memname">TM14.Networking.Packet.Packet </td>
+          <td>(</td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>header</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">params string[]&#160;</td>
+          <td class="paramname"><em>data</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
         </tr>
       </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
 </div><div class="memdoc">
 
-<p>The "under-the-hood" buffer that is used to read and prepare packets. </p>
+<p>Constructs a packet with a header and string data. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">header</td><td>The packet header.</td></tr>
+    <tr><td class="paramname">data</td><td>The packet data.</td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="a89e153069c96976f76cf882a1737e1d5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a89e153069c96976f76cf882a1737e1d5">&#9670;&nbsp;</a></span>Packet() <span class="overload">[3/3]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">TM14.Networking.Packet.Packet </td>
+          <td>(</td>
+          <td class="paramtype">string&#160;</td>
+          <td class="paramname"><em>header</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">params object[]&#160;</td>
+          <td class="paramname"><em>data</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Constructs a packet with a header and object data. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">header</td><td>The packet header.</td></tr>
+    <tr><td class="paramname">data</td><td>The packet data.</td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="a69c48ff5ae0137d1e11a8e433ff257d0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a69c48ff5ae0137d1e11a8e433ff257d0">&#9670;&nbsp;</a></span>AddData() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void TM14.Networking.Packet.AddData </td>
+          <td>(</td>
+          <td class="paramtype">params object[]&#160;</td>
+          <td class="paramname"><em>data</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Adds object data to the packet. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">data</td><td>The packet data.</td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="aae843fda8cdbfff99467af53c42560c2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aae843fda8cdbfff99467af53c42560c2">&#9670;&nbsp;</a></span>AddData() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void TM14.Networking.Packet.AddData </td>
+          <td>(</td>
+          <td class="paramtype">params string[]&#160;</td>
+          <td class="paramname"><em>data</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Adds string data to the packet. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">data</td><td>The packet data.</td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
+<a id="af99a1c76db5e7cbc721d8dcf4fa78c63"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af99a1c76db5e7cbc721d8dcf4fa78c63">&#9670;&nbsp;</a></span>ToString()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">new string TM14.Networking.Packet.ToString </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Returns a JSON string representation of the packet. </p>
+<dl class="section return"><dt>Returns</dt><dd>A string representation of the packet.</dd></dl>
 
 </div>
 </div>
 <h2 class="groupheader">Property Documentation</h2>
-<a id="a8e3b5f0a776c59dc6e1e68c13a07e913"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8e3b5f0a776c59dc6e1e68c13a07e913">&#9670;&nbsp;</a></span>Queue</h2>
+<a id="a46046195b4ddbf85d8f804583cc6e791"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a46046195b4ddbf85d8f804583cc6e791">&#9670;&nbsp;</a></span>Data</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -218,17 +315,65 @@ Private Attributes</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">Queue&lt;string&gt; TM14.Networking.PacketBuffer.Queue</td>
+          <td class="memname">List&lt;string&gt; TM14.Networking.Packet.Data</td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">get</span><span class="mlabel">package</span></span>  </td>
+<span class="mlabels"><span class="mlabel">get</span><span class="mlabel">set</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
 
-<p>The list of buffered packets ready for processing and handling. </p>
+<p>The data within the packet. </p>
+
+</div>
+</div>
+<a id="a06042bef777856ffd69001f17c22e1b3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a06042bef777856ffd69001f17c22e1b3">&#9670;&nbsp;</a></span>Guid</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">string TM14.Networking.Packet.Guid</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span><span class="mlabel">set</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The unique identifier of the packet. </p>
+
+</div>
+</div>
+<a id="afc320ed0d5b2282667d858612436b841"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afc320ed0d5b2282667d858612436b841">&#9670;&nbsp;</a></span>Header</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">string TM14.Networking.Packet.Header</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">get</span><span class="mlabel">set</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>The header of the packet. This typically represents the kind of data this packet contains. </p>
 
 </div>
 </div>
@@ -237,7 +382,7 @@ Private Attributes</h2></td></tr>
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="a00050.html">TM14</a></li><li class="navelem"><a class="el" href="a00051.html">Networking</a></li><li class="navelem"><a class="el" href="a00100.html">PacketBuffer</a></li>
+    <li class="navelem"><a class="el" href="a00050.html">TM14</a></li><li class="navelem"><a class="el" href="a00051.html">Networking</a></li><li class="navelem"><a class="el" href="a00100.html">Packet</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1 </li>
   </ul>
 </div>

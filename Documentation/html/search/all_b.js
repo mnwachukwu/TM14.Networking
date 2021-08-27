@@ -1,10 +1,11 @@
 var searchData=
 [
-  ['onclientconnected_38',['OnClientConnected',['../a00108.html#aab424712b2f20718b96e1b33039a8e13',1,'TM14::Networking::TcpServer']]],
-  ['onclientdisconnected_39',['OnClientDisconnected',['../a00108.html#a16820834bbf901b99b541523bbeaf7b7',1,'TM14::Networking::TcpServer']]],
-  ['onconnect_40',['OnConnect',['../a00104.html#ab36e8d419a794a744b535821c15fbc4f',1,'TM14::Networking::TcpClient']]],
-  ['onconnectionfailed_41',['OnConnectionFailed',['../a00104.html#adb772b0224b423c3af580156d56bfa0a',1,'TM14::Networking::TcpClient']]],
-  ['ondisconnect_42',['OnDisconnect',['../a00104.html#ab78e4ec0699638a967b14470a8e09f4d',1,'TM14::Networking::TcpClient']]],
-  ['onhasmessage_43',['OnHasMessage',['../a00104.html#ab98cbc36fb2ec4818b90f7fcc4249985',1,'TM14.Networking.TcpClient.OnHasMessage()'],['../a00108.html#a13475da0cbe923ed20763c4c003c38b3',1,'TM14.Networking.TcpServer.OnHasMessage()']]],
-  ['onhaspacket_44',['OnHasPacket',['../a00104.html#a4ef3842e364441d4cdb776f02013860c',1,'TM14.Networking.TcpClient.OnHasPacket()'],['../a00108.html#a22d23db39e35a26fdc1c1c207508cb66',1,'TM14.Networking.TcpServer.OnHasPacket()']]]
+  ['onclientconnected_39',['OnClientConnected',['../a00112.html#a51f9fad432375a2efa3face082a0c700',1,'TM14::Networking::TcpServer']]],
+  ['onclientdisconnected_40',['OnClientDisconnected',['../a00112.html#a718fe1ce202c2eafbefbb85b7b57aae6',1,'TM14::Networking::TcpServer']]],
+  ['onconnect_41',['OnConnect',['../a00108.html#a7b46f9f26ffd937e8089280ecd8f5f44',1,'TM14::Networking::TcpClient']]],
+  ['onconnectionfailed_42',['OnConnectionFailed',['../a00108.html#addda63ff6a9303de3dfed94997399b9c',1,'TM14::Networking::TcpClient']]],
+  ['ondisconnect_43',['OnDisconnect',['../a00108.html#a1e58c8282abed675f26fdfedf40ae687',1,'TM14::Networking::TcpClient']]],
+  ['onhascaughtexception_44',['OnHasCaughtException',['../a00108.html#a04c33a03e0ad272a354851ad03d58bd5',1,'TM14.Networking.TcpClient.OnHasCaughtException()'],['../a00112.html#a1aa3528bd0275427b7b276f76976526d',1,'TM14.Networking.TcpServer.OnHasCaughtException()']]],
+  ['onhasmessage_45',['OnHasMessage',['../a00108.html#ac407f3ee79d3a514d471c46e065d336a',1,'TM14.Networking.TcpClient.OnHasMessage()'],['../a00112.html#aedbcc6da3dc567aa7ff155ec5e65c7b9',1,'TM14.Networking.TcpServer.OnHasMessage()']]],
+  ['onhaspacket_46',['OnHasPacket',['../a00108.html#a3a5d64182f1168d8a1b2ccd0513eceab',1,'TM14.Networking.TcpClient.OnHasPacket()'],['../a00112.html#a7ad37d36d51031c3470fffff5e471b66',1,'TM14.Networking.TcpServer.OnHasPacket()']]]
 ];

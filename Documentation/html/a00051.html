@@ -26,7 +26,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">TM14.Networking
-   &#160;<span id="projectnumber">v1.0.1</span>
+   &#160;<span id="projectnumber">v1.1.0</span>
    </div>
    <div id="projectbrief">Quick and simple implementation of TcpClient and TcpListener with a Packet data contract for data exchange, a PacketBuffer for orderly data exchange, and encryption features for secure data exchange.</div>
   </td>
@@ -85,8 +85,7 @@ $(document).ready(function(){initNavTree('a00051.html',''); initResizable(); });
 <div class="header">
   <div class="summary">
 <a href="#namespaces">Namespaces</a> &#124;
-<a href="#nested-classes">Classes</a> &#124;
-<a href="#enum-members">Enumerations</a>  </div>
+<a href="#nested-classes">Classes</a>  </div>
   <div class="headertitle">
 <div class="title">TM14.Networking Namespace Reference</div>  </div>
 </div><!--header-->
@@ -100,58 +99,19 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00072.html">DataTransferProtocol</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Establishes the set of protocols that the server and all clients must be aware of in order to transfer data without errors.  <a href="a00072.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00096.html">Packet</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A representation of a data packet that has a unique identifier, a header, and data.  <a href="a00096.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00100.html">Packet</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A representation of a data packet that has a unique identifier, a header, and data.  <a href="a00100.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00100.html">PacketBuffer</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A class which helps buffer packet data to ensure data is parsed correctly and in its entirety.  <a href="a00100.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00104.html">PacketBuffer</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A class which helps buffer packet data to ensure data is parsed correctly and in its entirety.  <a href="a00104.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00104.html">TcpClient</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A wrapper class around the System.Net.Sockets.TcpClient class used to handle connecting to a server and sending/receiving data.  <a href="a00104.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00108.html">TcpClient</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A wrapper class around the System.Net.Sockets.TcpClient class used to handle connecting to a server and sending/receiving data.  <a href="a00108.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00108.html">TcpServer</a></td></tr>
-<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A wrapper class around the TcpListener class used to handle connected clients and sending/receiving data.  <a href="a00108.html#details">More...</a><br /></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00112.html">TcpServer</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">A wrapper class around the TcpListener class used to handle connected clients and sending/receiving data.  <a href="a00112.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="enum-members"></a>
-Enumerations</h2></td></tr>
-<tr class="memitem:ae8f17164914364b8e5b3255503fef7d5"><td class="memItemLeft" align="right" valign="top">enum class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="a00051.html#ae8f17164914364b8e5b3255503fef7d5">ReadDataMode</a> { <a class="el" href="a00051.html#ae8f17164914364b8e5b3255503fef7d5a8c8f467a4cf3c17edfc5a065af155d2d">Internally</a>
-, <a class="el" href="a00051.html#ae8f17164914364b8e5b3255503fef7d5a8ea9afb26a291a4477f89e61fc11bf6c">Externally</a>
- }</td></tr>
-<tr class="memdesc:ae8f17164914364b8e5b3255503fef7d5"><td class="mdescLeft">&#160;</td><td class="mdescRight">A list of options used to determine how the TcpClient will read data.  <a href="a00051.html#ae8f17164914364b8e5b3255503fef7d5">More...</a><br /></td></tr>
-<tr class="separator:ae8f17164914364b8e5b3255503fef7d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Enumeration Type Documentation</h2>
-<a id="ae8f17164914364b8e5b3255503fef7d5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae8f17164914364b8e5b3255503fef7d5">&#9670;&nbsp;</a></span>ReadDataMode</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">enum <a class="el" href="a00051.html#ae8f17164914364b8e5b3255503fef7d5">TM14.Networking.ReadDataMode</a></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">strong</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>A list of options used to determine how the <a class="el" href="a00104.html" title="A wrapper class around the System.Net.Sockets.TcpClient class used to handle connecting to a server a...">TcpClient</a> will read data. </p>
-<table class="fieldtable">
-<tr><th colspan="2">Enumerator</th></tr><tr><td class="fieldname"><a id="ae8f17164914364b8e5b3255503fef7d5a8c8f467a4cf3c17edfc5a065af155d2d"></a>Internally&#160;</td><td class="fielddoc"><p>This mode is used to make the <a class="el" href="a00104.html" title="A wrapper class around the System.Net.Sockets.TcpClient class used to handle connecting to a server a...">TcpClient</a> start its own read data loop. </p>
-</td></tr>
-<tr><td class="fieldname"><a id="ae8f17164914364b8e5b3255503fef7d5a8ea9afb26a291a4477f89e61fc11bf6c"></a>Externally&#160;</td><td class="fielddoc"><p>This mode is used to make the <a class="el" href="a00104.html" title="A wrapper class around the System.Net.Sockets.TcpClient class used to handle connecting to a server a...">TcpClient</a> wait for calls to <a class="el" href="a00104.html#ac0869584875f5ee01daf956d07626fb9" title="Handles reading data from the server, passing it to the HandleData method.">TcpClient.ReadData</a> to read data. </p>
-</td></tr>
-</table>
-
-</div>
-</div>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
