@@ -151,7 +151,6 @@ namespace TM14.Networking
                 if (ExcludedIps.Contains(ipAddress))
                 {
                     // TODO: Send a message indicating that the client has been excluded
-                    DisconnectClient(client);
                 }
                 else
                 {
