@@ -23,8 +23,6 @@ Copyright &copy; [Studio TM14](https://tm14.net/)
 // Initialize the TcpClient somewhere
 var tcpClient = new TcpClient(ServerIp, ServerPort);
 tcpClient.HasPacket += TcpClient_HasPacket;
-
-// Connect to server
 tcpClient.Connect();
 ```
 
