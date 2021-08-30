@@ -115,10 +115,6 @@ namespace TM14.Networking
 
         /// <summary>
         /// Handles reading data from the server, passing it to the HandleData method.
-        /// <remarks>
-        /// This method will block the calling thread and intended to be used by the
-        /// <see cref="TcpClient"/> class.
-        /// </remarks>
         /// </summary>
         private void ReadData()
         {
