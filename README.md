@@ -21,8 +21,11 @@ Copyright &copy; [Studio TM14](https://tm14.net/)
 ### Initialize
 ```cs
 // Initialize the TcpClient somewhere
-var TcpClient = new TcpClient(ServerIp, ServerPort);
-TcpClient.HasPacket += TcpClient_HasPacket;
+var tcpClient = new TcpClient(ServerIp, ServerPort);
+tcpClient.HasPacket += TcpClient_HasPacket;
+
+// Connect to server
+tcpClient.Connect();
 ```
 
 ### Sending data
@@ -31,7 +34,7 @@ TcpClient.HasPacket += TcpClient_HasPacket;
 public static void SendData(string packetHeader, params string[] packetData)
 {
     var packet = new Packet(packetHeader, packetData);
-    TcpClient.SendData(packet);
+    tcpClient.SendData(packet);
 }
 ```
 
@@ -59,9 +62,9 @@ private static void HandlePacket(Packet packet)
 ### Initialize
 ```cs
 // Initialize the TcpServer somewhere
-var TcpServer = new TcpServer(ServerIp, ServerPort);
-TcpServer.HasPacket += TcpServer_HasPacket;
-TcpServer.StartListener();
+var tcpServer = new TcpServer(ServerIp, ServerPort);
+tcpServer.HasPacket += TcpServer_HasPacket;
+tcpServer.StartListener();
 ```
 
 ### Sending data
@@ -70,7 +73,7 @@ TcpServer.StartListener();
 public static void SendData(System.Net.Sockets.TcpClient client, string packetHeader, params string[] packetData)
 {
     var packet = new Packet(packetHeader, packetData);
-    TcpServer.SendDataTo(client, packet);
+    tcpServer.SendDataTo(client, packet);
 }
 ```
 

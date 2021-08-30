@@ -102,15 +102,18 @@ Client</h2>
 <h3><a class="anchor" id="autotoc_md6"></a>
 Initialize</h3>
 <div class="fragment"><div class="line"><span class="comment">// Initialize the TcpClient somewhere</span></div>
-<div class="line">var TcpClient = <span class="keyword">new</span> TcpClient(ServerIp, ServerPort);</div>
-<div class="line">TcpClient.HasPacket += TcpClient_HasPacket;</div>
+<div class="line">var tcpClient = <span class="keyword">new</span> TcpClient(ServerIp, ServerPort);</div>
+<div class="line">tcpClient.HasPacket += TcpClient_HasPacket;</div>
+<div class="line"> </div>
+<div class="line"><span class="comment">// Connect to server</span></div>
+<div class="line">tcpClient.Connect();</div>
 </div><!-- fragment --><h3><a class="anchor" id="autotoc_md7"></a>
 Sending data</h3>
 <div class="fragment"><div class="line"><span class="comment">// Example method to build and send data</span></div>
 <div class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keywordtype">void</span> SendData(<span class="keywordtype">string</span> packetHeader, params <span class="keywordtype">string</span>[] packetData)</div>
 <div class="line">{</div>
 <div class="line">    var packet = <span class="keyword">new</span> Packet(packetHeader, packetData);</div>
-<div class="line">    TcpClient.SendData(packet);</div>
+<div class="line">    tcpClient.SendData(packet);</div>
 <div class="line">}</div>
 </div><!-- fragment --><h3><a class="anchor" id="autotoc_md8"></a>
 Receiving data</h3>
@@ -135,16 +138,16 @@ Server</h2>
 <h3><a class="anchor" id="autotoc_md10"></a>
 Initialize</h3>
 <div class="fragment"><div class="line"><span class="comment">// Initialize the TcpServer somewhere</span></div>
-<div class="line">var TcpServer = <span class="keyword">new</span> TcpServer(ServerIp, ServerPort);</div>
-<div class="line">TcpServer.HasPacket += TcpServer_HasPacket;</div>
-<div class="line">TcpServer.StartListener();</div>
+<div class="line">var tcpServer = <span class="keyword">new</span> TcpServer(ServerIp, ServerPort);</div>
+<div class="line">tcpServer.HasPacket += TcpServer_HasPacket;</div>
+<div class="line">tcpServer.StartListener();</div>
 </div><!-- fragment --><h3><a class="anchor" id="autotoc_md11"></a>
 Sending data</h3>
 <div class="fragment"><div class="line"><span class="comment">// Example method to build and send data</span></div>
 <div class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keywordtype">void</span> SendData(System.Net.Sockets.TcpClient client, <span class="keywordtype">string</span> packetHeader, params <span class="keywordtype">string</span>[] packetData)</div>
 <div class="line">{</div>
 <div class="line">    var packet = <span class="keyword">new</span> Packet(packetHeader, packetData);</div>
-<div class="line">    TcpServer.SendDataTo(client, packet);</div>
+<div class="line">    tcpServer.SendDataTo(client, packet);</div>
 <div class="line">}</div>
 </div><!-- fragment --><h3><a class="anchor" id="autotoc_md12"></a>
 Receiving data</h3>
