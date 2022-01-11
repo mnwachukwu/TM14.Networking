@@ -129,7 +129,7 @@ namespace TM14.Networking
 
             if (readDataThread.ContainsKey(client))
             {
-                readDataThread[client].Abort();
+                readDataThread[client].Interrupt();
                 readDataThread.Remove(client);
             }
         }
@@ -193,7 +193,7 @@ namespace TM14.Networking
 
                 DisconnectClient(client);
             }
-            catch (ThreadAbortException)
+            catch (ThreadInterruptedException)
             {
                 readDataThread.Remove(client);
             }
