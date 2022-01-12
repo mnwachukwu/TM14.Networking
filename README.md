@@ -28,7 +28,7 @@ tcpClient.Connect();
 
 ### Sending data
 ```cs
-// Example method to build and send data
+// Example method to build and send packets of data
 public static void SendData(string packetHeader, params string[] packetData)
 {
     var packet = new Packet(packetHeader, packetData);
@@ -67,7 +67,7 @@ tcpServer.StartListener();
 
 ### Sending data
 ```cs
-// Example method to build and send data
+// Example method to build and send packets of data
 public static void SendData(System.Net.Sockets.TcpClient client, string packetHeader, params string[] packetData)
 {
     var packet = new Packet(packetHeader, packetData);
