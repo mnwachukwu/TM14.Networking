@@ -125,9 +125,9 @@ This method is not included in the library but, it can be implemented into your 
 
 # Handling Exceptions
 
-As a philosophy, I don't think that errors in the networking layer should break an entire application. This library will "swallow" exceptions thrown by it while handling data, disconnecting users as needed.
+As a philosophy, I don't think that exceptions in the networking layer should crash an application. Especially not a server application. This library will "swallow" exceptions thrown by it while handling data, disconnecting clients as needed.
 
-However, you may wish to utilize the errors that are thrown by this library. You may want to log errors, or use the exception to break code execution. If this is desired, you can hook into an event either on the client or the server (or both) called `HasCaughtException`. This event, when raised, exposes any exceptions thrown by the networking library during data transmission.
+However, you may wish to utilize the exceptions that are thrown by this library. You may want to log errors, or use the exception to break code execution. If this is desired, you can hook into an event either on the client or the server (or both) called `HasCaughtException`. This event, when raised, exposes any exceptions thrown by the networking library during data transmission.
 
 ## Client Example
 ```cs
