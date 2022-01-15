@@ -26,7 +26,7 @@
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">TM14.Networking
-   &#160;<span id="projectnumber">v1.1.0</span>
+   &#160;<span id="projectnumber">v1.1.1</span>
    </div>
    <div id="projectbrief">Quick and simple implementation of TcpClient and TcpListener with a Packet data contract for data exchange, a PacketBuffer for orderly data exchange, and encryption features for secure data exchange.</div>
   </td>
@@ -97,6 +97,7 @@ $(document).ready(function(){initNavTree('a00170.html',''); initResizable(); });
 <p>Copyright &copy; <a href="https://tm14.net/">Studio TM14</a></p>
 <h1><a class="anchor" id="autotoc_md4"></a>
 Example Usage</h1>
+<p><em>Note: You must properly configure the <code>SecretKey</code> of your application(s) before the code in this example will work. Refer to the <b>Security</b> section of this documentation (below this section) for more information.</em></p>
 <h2><a class="anchor" id="autotoc_md5"></a>
 Client</h2>
 <h3><a class="anchor" id="autotoc_md6"></a>
@@ -107,7 +108,7 @@ Initialize</h3>
 <div class="line">tcpClient.Connect();</div>
 </div><!-- fragment --><h3><a class="anchor" id="autotoc_md7"></a>
 Sending data</h3>
-<div class="fragment"><div class="line"><span class="comment">// Example method to build and send data</span></div>
+<div class="fragment"><div class="line"><span class="comment">// Example method to build and send packets of data</span></div>
 <div class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keywordtype">void</span> SendData(<span class="keywordtype">string</span> packetHeader, params <span class="keywordtype">string</span>[] packetData)</div>
 <div class="line">{</div>
 <div class="line">    var packet = <span class="keyword">new</span> Packet(packetHeader, packetData);</div>
@@ -141,7 +142,7 @@ Initialize</h3>
 <div class="line">tcpServer.StartListener();</div>
 </div><!-- fragment --><h3><a class="anchor" id="autotoc_md11"></a>
 Sending data</h3>
-<div class="fragment"><div class="line"><span class="comment">// Example method to build and send data</span></div>
+<div class="fragment"><div class="line"><span class="comment">// Example method to build and send packets of data</span></div>
 <div class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keywordtype">void</span> SendData(System.Net.Sockets.TcpClient client, <span class="keywordtype">string</span> packetHeader, params <span class="keywordtype">string</span>[] packetData)</div>
 <div class="line">{</div>
 <div class="line">    var packet = <span class="keyword">new</span> Packet(packetHeader, packetData);</div>
@@ -169,10 +170,10 @@ Receiving data</h3>
 Security</h1>
 <h2><a class="anchor" id="autotoc_md14"></a>
 Setting a SecretKey</h2>
-<p>Within the <code>DataTransferProtocol</code> class, there is a member called <code>SecretKey</code> intended to secure trafic created by this library via encryption. It can easily be set by calling the <code>DataTransferProtocol.SetSecretKey()</code> method.</p>
+<p>Within the <code>DataTransferProtocol</code> class, there is a member called <code>SecretKey</code> intended to secure trafic created by this library via encryption. It can't be null or empty and it must be able to be converted from a base 64 <code>string</code> to a <code>byte[32]</code>.</p>
+<p><code>SecretKey</code> can easily be set by calling the <code>DataTransferProtocol.SetSecretKey()</code> method.</p>
 <p><code>SecretKey</code> is defined as an <code>internal static string</code> so that you may use external secure mechanisms to set the value. It could also be defined as an <code>internal const string</code> so that you can set it in code, rather than during run-time. However, unless your application is obfuscated (encrypting or hiding away constant values), this compromises the network security of your application. This approach also breaks the <code>DataTransferProtocol.SetSecretKey()</code> method, but it can just be deleted.</p>
 <p>The client and server applications implementing this library must have the same <code>SecretKey</code> when communicating with each other or else, they will not be able to decrypt each other's traffic.</p>
-<p><code>SecretKey</code> can't be null or empty and it must be able to be converted from a base 64 <code>string</code> to a <code>byte[32]</code>.</p>
 <h2><a class="anchor" id="autotoc_md15"></a>
 Generating a SecretKey</h2>
 <p>If you're looking for an easy way to get a secret key to use that's compatible with this library, consider the following method.</p>
@@ -184,8 +185,32 @@ Generating a SecretKey</h2>
 <div class="line">    <span class="comment">// You want to use the value of `keyString` as your SecretKey</span></div>
 <div class="line">    Console.WriteLine($<span class="stringliteral">&quot;Key As String: {keyString}&quot;</span>);</div>
 <div class="line">}</div>
-</div><!-- fragment --><p>This method is not included in the library but, it can be implemented into your copy of the library or, retooled to be used outside of the library in order to generate a secret key for your application. </p>
-</div></div><!-- contents -->
+</div><!-- fragment --><p>This method is not included in the library but, it can be implemented into your copy of the library or, retooled to be used outside of the library in order to generate a secret key for your application.</p>
+<h1><a class="anchor" id="autotoc_md16"></a>
+Handling Exceptions</h1>
+<p>As a philosophy, I don't think that exceptions in the networking layer should crash an application. Especially not a server application. This library will "swallow" exceptions thrown by it while handling data, disconnecting clients as needed.</p>
+<p>However, you may wish to utilize the exceptions that are thrown by this library. You may want to log errors, or use the exception to break code execution. If this is desired, you can hook into an event either on the client or the server (or both) called <code>HasCaughtException</code>. This event, when raised, exposes any exceptions thrown by the networking library during data transmission.</p>
+<h2><a class="anchor" id="autotoc_md17"></a>
+Client Example</h2>
+<div class="fragment"><div class="line">var tcpClient = <span class="keyword">new</span> TcpClient(ServerIp, ServerPort);</div>
+<div class="line">tcpClient.HasCaughtException += TcpClient_HasCaughtException;</div>
+<div class="line"> </div>
+<div class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keywordtype">void</span> TcpClient_HasCaughtException(<span class="keywordtype">object</span> sender, HasCaughtExceptionEventArgs e)</div>
+<div class="line">{</div>
+<div class="line">    Console.WriteLine($<span class="stringliteral">&quot;{e.TimeStamp:g} {e.Exception.Message}&quot;</span>);</div>
+<div class="line">    <span class="keywordflow">throw</span> e.Exception;</div>
+<div class="line">}</div>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md18"></a>
+Server Example</h2>
+<div class="fragment"><div class="line">var tcpServer = <span class="keyword">new</span> TcpServer(ServerIp, ServerPort);</div>
+<div class="line">tcpServer.HasCaughtException += TcpServer_HasCaughtException;</div>
+<div class="line"> </div>
+<div class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keywordtype">void</span> TcpServer_HasCaughtException(<span class="keywordtype">object</span> sender, HasCaughtExceptionEventArgs e)</div>
+<div class="line">{</div>
+<div class="line">    Console.WriteLine($<span class="stringliteral">&quot;{e.TimeStamp:g} {e.Exception.Message}&quot;</span>);</div>
+<div class="line">    <span class="keywordflow">throw</span> e.Exception;</div>
+<div class="line">}</div>
+</div><!-- fragment --> </div></div><!-- contents -->
 </div><!-- PageDoc -->
 </div><!-- doc-content -->
 <!-- start footer part -->

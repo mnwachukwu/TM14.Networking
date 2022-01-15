@@ -45,6 +45,10 @@ var NAVTREE =
       [ "Security", "a00170.html#autotoc_md13", [
         [ "Setting a SecretKey", "a00170.html#autotoc_md14", null ],
         [ "Generating a SecretKey", "a00170.html#autotoc_md15", null ]
+      ] ],
+      [ "Handling Exceptions", "a00170.html#autotoc_md16", [
+        [ "Client Example", "a00170.html#autotoc_md17", null ],
+        [ "Server Example", "a00170.html#autotoc_md18", null ]
       ] ]
     ] ],
     [ "Classes", "annotated.html", [
