@@ -17,6 +17,8 @@ This project is open source on [Github](https://github.com/mnwachukwu/TM14.Netwo
 Copyright &copy; [Studio TM14](https://tm14.net/)
 
 # Example Usage
+*Note: You must properly configure the `SecretKey` of your application(s) before the code in this example will work. Refer to the **Security** section of this documentation (below this section) for more information.*
+
 ## Client
 ### Initialize
 ```cs
@@ -97,13 +99,13 @@ private static void HandlePacket(System.Net.Sockets.TcpClient client, Packet pac
 
 # Security
 ## Setting a SecretKey
-Within the `DataTransferProtocol` class, there is a member called `SecretKey` intended to secure trafic created by this library via encryption. It can easily be set by calling the `DataTransferProtocol.SetSecretKey()` method.
+Within the `DataTransferProtocol` class, there is a member called `SecretKey` intended to secure trafic created by this library via encryption. It can't be null or empty and it must be able to be converted from a base 64 `string` to a `byte[32]`.
+
+`SecretKey` can easily be set by calling the `DataTransferProtocol.SetSecretKey()` method.
 
 `SecretKey` is defined as an `internal static string` so that you may use external secure mechanisms to set the value. It could also be defined as an `internal const string` so that you can set it in code, rather than during run-time. However, unless your application is obfuscated (encrypting or hiding away constant values), this compromises the network security of your application. This approach also breaks the `DataTransferProtocol.SetSecretKey()` method, but it can just be deleted.
 
 The client and server applications implementing this library must have the same `SecretKey` when communicating with each other or else, they will not be able to decrypt each other's traffic.
-
-`SecretKey` can't be null or empty and it must be able to be converted from a base 64 `string` to a `byte[32]`.
 
 ## Generating a SecretKey
 If you're looking for an easy way to get a secret key to use that's compatible with this library, consider the following method.
@@ -120,3 +122,33 @@ public static void GenerateUsableKey()
 ```
 
 This method is not included in the library but, it can be implemented into your copy of the library or, retooled to be used outside of the library in order to generate a secret key for your application.
+
+# Handling Exceptions
+
+As a philosophy, I don't think that errors in the networking layer should break an entire application. This library will "swallow" exceptions thrown by it while handling data, disconnecting users as needed.
+
+However, you may wish to utilize the errors that are thrown by this library. You may want to log errors, or use the exception to break code execution. If this is desired, you can hook into an event either on the client or the server (or both) called `HasCaughtException`. This event, when raised, exposes any exceptions thrown by the networking library during data transmission.
+
+## Client Example
+```cs
+var tcpClient = new TcpClient(ServerIp, ServerPort);
+tcpClient.HasCaughtException += TcpClient_HasCaughtException;
+
+private static void TcpClient_HasCaughtException(object sender, HasCaughtExceptionEventArgs e)
+{
+    Console.WriteLine($"{e.TimeStamp:g} {e.Exception.Message}");
+    throw e.Exception;
+}
+```
+
+## Server Example
+```cs
+var tcpServer = new TcpServer(ServerIp, ServerPort);
+tcpServer.HasCaughtException += TcpServer_HasCaughtException;
+
+private static void TcpServer_HasCaughtException(object sender, HasCaughtExceptionEventArgs e)
+{
+    Console.WriteLine($"{e.TimeStamp:g} {e.Exception.Message}");
+    throw e.Exception;
+}
+```
