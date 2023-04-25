@@ -74,6 +74,11 @@ namespace TM14.Networking
         /// </summary>
         public event EventHandler<HasCaughtExceptionEventArgs> HasCaughtException;
 
+        // <summary>
+        /// Tells the read thread that it is time to disconnect, and does so before reading any more data.
+        /// </summary>
+        private bool requestDisconnect;
+
         /// <summary>
         /// Instantiates a client and prepares it to connect to a server.
         /// </summary>
@@ -132,6 +137,11 @@ namespace TM14.Networking
 
                 while ((i = stream.Read(bytes, 0, bytes.Length)) != 0)
                 {
+                    if (requestDisconnect)
+                    {
+                        break;
+                    }
+
                     var data = Encoding.Unicode.GetString(bytes, 0, i);
                     var keyBytes = Convert.FromBase64String(DataTransferProtocol.SecretKey);
 
@@ -186,9 +196,17 @@ namespace TM14.Networking
         }
 
         /// <summary>
+        /// Breaks the loop in <see cref="ReadData"/> to in order to call <see cref="Disconnect"/> on the caller's behalf.
+        /// </summary>
+        public void RequestDisconnect()
+        {
+            requestDisconnect = true;
+        }
+
+        /// <summary>
         /// Closes the connection to the server.
         /// </summary>
-        public void Disconnect()
+        private void Disconnect()
         {
             if (client != null && client.Connected)
             {
