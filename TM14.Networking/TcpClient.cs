@@ -37,7 +37,7 @@ namespace TM14.Networking
         /// <summary>
         /// The port which the client will communicate on.
         /// </summary>
-        private readonly int port;
+        private readonly int serverPort;
 
         /// <summary>
         /// Determines if the underlying <see cref="System.Net.Sockets.TcpClient"/> is connected.
@@ -74,7 +74,7 @@ namespace TM14.Networking
         /// </summary>
         public event EventHandler<HasCaughtExceptionEventArgs> HasCaughtException;
 
-        // <summary>
+        /// <summary>
         /// Tells the read thread that it is time to disconnect, and does so before reading any more data.
         /// </summary>
         private bool requestDisconnect;
@@ -82,12 +82,12 @@ namespace TM14.Networking
         /// <summary>
         /// Instantiates a client and prepares it to connect to a server.
         /// </summary>
-        /// <param name="serverIp">The IP to connect to.</param>
+        /// <param name="ip">The IP to connect to.</param>
         /// <param name="port">The port to connect over.</param>
-        public TcpClient(string serverIp, int port)
+        public TcpClient(string ip, int port)
         {
-            this.serverIp = serverIp;
-            this.port = port;
+            serverIp = ip;
+            serverPort = port;
             packetBuffer = new PacketBuffer();
         }
 
@@ -184,7 +184,7 @@ namespace TM14.Networking
         {
             try
             {
-                client = new System.Net.Sockets.TcpClient(serverIp, port);
+                client = new System.Net.Sockets.TcpClient(serverIp, serverPort);
                 OnConnect();
                 readDataThread = new Thread(ReadData);
                 readDataThread.Start();

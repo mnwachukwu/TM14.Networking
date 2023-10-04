@@ -22,6 +22,16 @@ namespace TM14.Networking
         private readonly TcpListener server;
 
         /// <summary>
+        /// 
+        /// </summary>
+        private readonly string localIpAddress;
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private readonly int localPort;
+
+        /// <summary>
         /// Contains a collection of <see cref="ReadData"/> threads, indexed by the client utilizing the thread.
         /// </summary>
         private readonly Dictionary<System.Net.Sockets.TcpClient, Thread> readDataThread;
@@ -78,9 +88,11 @@ namespace TM14.Networking
         /// <param name="port">The port on which the server program is listening.</param>
         public TcpServer(string ip, int port)
         {
-            var localAddr = IPAddress.Parse(ip);
+            var ipAddress = IPAddress.Parse(ip);
 
-            server = new TcpListener(localAddr, port);
+            server = new TcpListener(ipAddress, port);
+            localIpAddress = ip;
+            localPort = port;
             ConnectedClients = new List<System.Net.Sockets.TcpClient>();
             readDataThread = new Dictionary<System.Net.Sockets.TcpClient, Thread>();
             packetBuffer = new PacketBuffer();
@@ -141,7 +153,7 @@ namespace TM14.Networking
         /// </summary>
         private void ListenerLoop()
         {
-            Message("Server is now listening for connections.");
+            Message($"Server is now listening for connections at {localIpAddress}:{localPort}.");
 
             while (IsActive)
             {
