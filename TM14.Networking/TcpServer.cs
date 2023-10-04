@@ -22,12 +22,12 @@ namespace TM14.Networking
         private readonly TcpListener server;
 
         /// <summary>
-        /// 
+        /// The IP address of the server.
         /// </summary>
         private readonly string localIpAddress;
 
         /// <summary>
-        /// 
+        /// The Port the server will listen on.
         /// </summary>
         private readonly int localPort;
 
