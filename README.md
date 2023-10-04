@@ -113,7 +113,7 @@ If you're looking for an easy way to get a secret key to use that's compatible w
 ```cs
 public static void GenerateUsableKey()
 {
-    var key = NewKey();
+    var key = AesHmacCrypto.NewKey();
     var keyString = Convert.ToBase64String(key);
 
     // You want to use the value of `keyString` as your SecretKey
