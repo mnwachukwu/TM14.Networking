@@ -5,7 +5,6 @@ using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
-using System.Threading;
 using Newtonsoft.Json;
 using TM14.Networking.Events;
 
@@ -22,24 +21,14 @@ namespace TM14.Networking
         private readonly TcpListener server;
 
         /// <summary>
-        /// The IP address of the server.
-        /// </summary>
-        private readonly string localIpAddress;
-
-        /// <summary>
         /// The Port the server will listen on.
         /// </summary>
         private readonly int localPort;
 
         /// <summary>
-        /// Contains a collection of <see cref="ReadData"/> threads, indexed by the client utilizing the thread.
-        /// </summary>
-        private readonly Dictionary<System.Net.Sockets.TcpClient, Thread> readDataThread;
-
-        /// <summary>
         /// A buffer for reading packets in an orderly fashion.
         /// </summary>
-        private readonly PacketBuffer packetBuffer;
+        private readonly Dictionary<System.Net.Sockets.TcpClient, PacketBuffer> packetBuffer;
 
         /// <summary>
         /// An event which is invoked whenever the library has a message.
@@ -86,16 +75,12 @@ namespace TM14.Networking
         /// </summary>
         /// <param name="ip">The IP address of the computer the server program is running on.</param>
         /// <param name="port">The port on which the server program is listening.</param>
-        public TcpServer(string ip, int port)
+        public TcpServer(int port)
         {
-            var ipAddress = IPAddress.Parse(ip);
-
-            server = new TcpListener(ipAddress, port);
-            localIpAddress = ip;
+            server = new TcpListener(IPAddress.Any, port);
             localPort = port;
             ConnectedClients = new List<System.Net.Sockets.TcpClient>();
-            readDataThread = new Dictionary<System.Net.Sockets.TcpClient, Thread>();
-            packetBuffer = new PacketBuffer();
+            packetBuffer = new Dictionary<System.Net.Sockets.TcpClient, PacketBuffer>();
             ExcludedIps = new List<string>();
         }
 
@@ -139,10 +124,9 @@ namespace TM14.Networking
 
             ConnectedClients.Remove(client);
 
-            if (readDataThread.ContainsKey(client))
+            if (packetBuffer.ContainsKey(client))
             {
-                readDataThread[client].Interrupt();
-                readDataThread.Remove(client);
+                packetBuffer.Remove(client);
             }
         }
 
@@ -153,7 +137,7 @@ namespace TM14.Networking
         /// </summary>
         private void ListenerLoop()
         {
-            Message($"Server is now listening for connections at {localIpAddress}:{localPort}.");
+            Message($"Server is now listening for connections on port {localPort}.");
 
             while (IsActive)
             {
@@ -168,8 +152,7 @@ namespace TM14.Networking
                 {
                     OnClientConnected(client);
                     ConnectedClients.Add(client);
-                    readDataThread[client] = new Thread(ReadData);
-                    readDataThread[client].Start(client);
+                    ReadData(client);
                 }
             }
         }
@@ -177,10 +160,9 @@ namespace TM14.Networking
         /// <summary>
         /// Handles reading data from a client, passing it to the HandleData method.
         /// </summary>
-        /// <param name="obj">The client whose data should be read.</param>
-        private void ReadData(object obj)
+        /// <param name="client">The client whose data should be read.</param>
+        private async void ReadData(System.Net.Sockets.TcpClient client)
         {
-            var client = (System.Net.Sockets.TcpClient)obj;
             var stream = client.GetStream();
             var bytes = new byte[DataTransferProtocol.BufferSize];
 
@@ -188,26 +170,22 @@ namespace TM14.Networking
             {
                 int i;
 
-                while ((i = stream.Read(bytes, 0, bytes.Length)) != 0)
+                while ((i = await stream.ReadAsync(bytes, 0, bytes.Length)) != 0)
                 {
                     var data = Encoding.Unicode.GetString(bytes, 0, i);
                     var keyBytes = Convert.FromBase64String(DataTransferProtocol.SecretKey);
 
-                    packetBuffer.Enqueue(data);
+                    packetBuffer[client].Enqueue(data);
 
-                    while (packetBuffer.Queue.Any())
+                    while (packetBuffer[client].Queue.Any())
                     {
-                        var decryptedPacketString = AesHmacCrypto.SimpleDecrypt(packetBuffer.Queue.Dequeue(), keyBytes, keyBytes);
+                        var decryptedPacketString = AesHmacCrypto.SimpleDecrypt(packetBuffer[client].Queue.Dequeue(), keyBytes, keyBytes);
 
                         HandleData(client, decryptedPacketString);
                     }
                 }
 
                 DisconnectClient(client);
-            }
-            catch (ThreadInterruptedException)
-            {
-                readDataThread.Remove(client);
             }
             catch (Exception e)
             {
