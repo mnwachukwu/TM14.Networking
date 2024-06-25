@@ -20,11 +20,6 @@ namespace TM14.Networking
         private System.Net.Sockets.TcpClient client;
 
         /// <summary>
-        /// The thread used to read data.
-        /// </summary>
-        private Thread readDataThread;
-
-        /// <summary>
         /// A buffer for reading packets in an orderly fashion.
         /// </summary>
         private readonly PacketBuffer packetBuffer;
@@ -121,7 +116,7 @@ namespace TM14.Networking
         /// <summary>
         /// Handles reading data from the server, passing it to the HandleData method.
         /// </summary>
-        private void ReadData()
+        private async void ReadData()
         {
             if (!client.Connected)
             {
@@ -135,13 +130,8 @@ namespace TM14.Networking
             {
                 int i;
 
-                while ((i = stream.Read(bytes, 0, bytes.Length)) != 0)
+                while ((i = await stream.ReadAsync(bytes, 0, bytes.Length)) != 0)
                 {
-                    if (requestDisconnect)
-                    {
-                        break;
-                    }
-
                     var data = Encoding.Unicode.GetString(bytes, 0, i);
                     var keyBytes = Convert.FromBase64String(DataTransferProtocol.SecretKey);
 
@@ -154,8 +144,6 @@ namespace TM14.Networking
                         HandleData(decryptedPacketString);
                     }
                 }
-
-                Disconnect();
             }
             catch (Exception e)
             {
@@ -186,21 +174,12 @@ namespace TM14.Networking
             {
                 client = new System.Net.Sockets.TcpClient(serverIp, serverPort);
                 OnConnect();
-                readDataThread = new Thread(ReadData);
-                readDataThread.Start();
+                ReadData();
             }
             catch (SocketException e)
             {
                 OnConnectionFailed(e);
             }
-        }
-
-        /// <summary>
-        /// Breaks the loop in <see cref="ReadData"/> to in order to call <see cref="Disconnect"/> on the caller's behalf.
-        /// </summary>
-        public void RequestDisconnect()
-        {
-            requestDisconnect = true;
         }
 
         /// <summary>
