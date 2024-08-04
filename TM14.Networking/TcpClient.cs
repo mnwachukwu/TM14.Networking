@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Net.Sockets;
 using System.Text;
@@ -103,6 +104,14 @@ namespace TM14.Networking
                 {
                     stream.Write(dataBytes, 0, dataBytes.Length);
                 }
+                catch (ObjectDisposedException)
+                {
+                    Debug.WriteLine("Object disposed exception caught.");
+                }
+                catch (IOException)
+                {
+                    Debug.WriteLine("IO exception caught.");
+                }
                 catch (Exception e)
                 {
                     // TODO: Display a message to the user here
@@ -144,6 +153,14 @@ namespace TM14.Networking
                         HandleData(decryptedPacketString);
                     }
                 }
+            }
+            catch (ObjectDisposedException)
+            {
+                Debug.WriteLine("Object disposed exception caught.");
+            }
+            catch (IOException)
+            {
+                Debug.WriteLine("IO exception caught.");
             }
             catch (Exception e)
             {

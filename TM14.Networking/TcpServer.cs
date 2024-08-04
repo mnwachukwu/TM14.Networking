@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
@@ -187,6 +188,26 @@ namespace TM14.Networking
 
                 DisconnectClient(client);
             }
+            catch (IOException e)
+            {
+                if (e.InnerException?.GetType() == typeof(SocketException))
+                {
+                    if (((SocketException)e.InnerException).SocketErrorCode != SocketError.ConnectionAborted)
+                    {
+                        // TODO: Send a message to the client here
+
+                        OnHasCaughtException(e, DateTime.Now);
+                        DisconnectClient(client);
+                    }
+                }
+                else
+                {
+                    // TODO: Send a message to the client here
+
+                    OnHasCaughtException(e, DateTime.Now);
+                    DisconnectClient(client);
+                }
+            }
             catch (Exception e)
             {
                 // TODO: Send a message to the client here
@@ -253,6 +274,26 @@ namespace TM14.Networking
                 try
                 {
                     stream.Write(dataBytes, 0, dataBytes.Length);
+                }
+                catch (IOException e)
+                {
+                    if (e.InnerException?.GetType() == typeof(SocketException))
+                    {
+                        if (((SocketException)e.InnerException).SocketErrorCode != SocketError.ConnectionAborted)
+                        {
+                            // TODO: Send a message to the client here
+
+                            OnHasCaughtException(e, DateTime.Now);
+                            DisconnectClient(client);
+                        }
+                    }
+                    else
+                    {
+                        // TODO: Send a message to the client here
+
+                        OnHasCaughtException(e, DateTime.Now);
+                        DisconnectClient(client);
+                    }
                 }
                 catch (Exception e)
                 {
